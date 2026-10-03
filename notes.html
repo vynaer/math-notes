@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子笔记</title>
+<style>
+  :root {
+    --ink: #2c2c2c;
+    --ink-light: #6b6b6b;
+    --ink-faint: #9a9a9a;
+    --paper: #faf9f6;
+    --paper-shadow: #e8e6e0;
+    --accent: #3a6b8a;
+    --accent-light: #eaf0f4;
+    --line: #d4cfc7;
+    --highlight: #f5e6c8;
+    --sidebar-bg: #f3f1ec;
+    --sidebar-width: 280px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+    background: #faf9f6;
+    background: var(--paper);
+    color: #2c2c2c;
+    color: var(--ink);
+    line-height: 1.9;
+  }
+  html { scroll-behavior: smooth; }
+
+  /* ===== 侧边栏 ===== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 280px;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: #f3f1ec;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: transform 0.25s ease;
+  }
+  .sidebar-header {
+    padding: 26px 20px 18px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+  .sidebar-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+  }
+  .sidebar-header .sub {
+    font-size: 0.76rem;
+    color: var(--ink-light);
+    letter-spacing: 0.2em;
+    margin-top: 8px;
+  }
+  .sidebar-search {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sidebar-search input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--paper);
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sidebar-search input:focus { border-color: var(--accent); }
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0 24px;
+  }
+  .nav-group { margin-bottom: 6px; }
+  .nav-group-title {
+    display: block;
+    padding: 12px 20px 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+  }
+  .nav-item {
+    display: block;
+    padding: 7px 20px 7px 30px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+    line-height: 1.5;
+  }
+  .nav-item:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .nav-item.active {
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .sidebar-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--line);
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  /* ===== 移动端菜单按钮 ===== */
+  .menu-toggle {
+    display: none;
+    position: fixed;
+    top: 16px; left: 16px;
+    z-index: 200;
+    width: 42px; height: 42px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 99;
+  }
+  .overlay.show { display: block; }
+
+  /* ===== 主内容区 ===== */
+  .content {
+    margin-left: 280px;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    padding: 48px 64px 100px;
+    max-width: 1000px;
+  }
+  .page {
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    min-height: auto;
+    background: transparent;
+  }
+  .page::before { display: none; }
+  .cover { display: none; }
+  .toc, .toc-list, .toc-section, .toc-item, .toc-sub { display: none; }
+
+  .section-header {
+    margin-bottom: 40px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .section-num { font-size: 0.95rem; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; }
+  .section-title { font-size: 2.1rem; font-weight: 700; letter-spacing: 0.12em; color: var(--ink); }
+
+  .entry {
+    margin-bottom: 48px;
+    padding: 0 0 0 20px;
+    border-left: 3px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  .entry-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .entry-date { font-size: 0.82rem; color: var(--ink-light); font-variant-numeric: tabular-nums; letter-spacing: 0.05em; border-bottom: 1px solid var(--line); padding-bottom: 2px; white-space: nowrap; }
+  .entry-title { font-size: 1.22rem; font-weight: 600; color: var(--ink); }
+  .entry-body { font-size: 1rem; color: var(--ink); line-height: 2; }
+  .entry-body .placeholder { color: var(--ink-light); opacity: 0.6; font-style: italic; font-size: 0.95rem; }
+  .entry-body p { margin-bottom: 10px; }
+  .entry-body p:last-child { margin-bottom: 0; }
+  .formula { margin: 14px 0; padding: 10px 16px; background: rgba(58,107,138,0.04); border-left: 3px solid var(--accent); font-family: "Cambria Math","Times New Roman",serif; font-size: 1.02rem; line-height: 2; overflow-x: auto; }
+  .note { margin-top: 14px; padding: 10px 14px; background: var(--highlight); border-radius: 3px; font-size: 0.92rem; color: #6b5b3a; line-height: 1.8; }
+  .note::before { content: "记"; display: inline-block; background: #c9a96a; color: white; font-size: 0.72rem; padding: 1px 7px; border-radius: 2px; margin-right: 8px; vertical-align: middle; letter-spacing: 0.1em; }
+  .sub-h { font-weight: 600; color: var(--accent); margin-top: 16px; margin-bottom: 6px; font-size: 0.98rem; letter-spacing: 0.05em; }
+  .sub-h:first-child { margin-top: 0; }
+  ul.simple { list-style: none; padding-left: 0; margin: 8px 0; }
+  ul.simple li { position: relative; padding-left: 18px; margin-bottom: 4px; }
+  ul.simple li::before { content: "·"; position: absolute; left: 4px; color: var(--accent); font-weight: bold; font-size: 1.2em; line-height: 1; }
+
+  /* ===== 要点框（借鉴科普书写法）===== */
+  .keypoint { margin: 14px 0; padding: 14px 18px; background: linear-gradient(135deg, rgba(58,107,138,0.06), rgba(58,107,138,0.02)); border: 1px solid rgba(58,107,138,0.2); border-radius: 6px; }
+  .keypoint-title { font-size: 0.82rem; font-weight: 700; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .keypoint-title::before { content: "●"; font-size: 0.5rem; }
+  .keypoint ol { padding-left: 22px; margin: 0; }
+  .keypoint ol li { margin-bottom: 5px; line-height: 1.85; font-size: 0.95rem; }
+  .keypoint ol li:last-child { margin-bottom: 0; }
+
+  /* ===== 核心洞察框 ===== */
+  .insight { margin: 14px 0; padding: 14px 18px; background: rgba(180,80,80,0.05); border-left: 3px solid #b45050; border-radius: 0 6px 6px 0; }
+  .insight-title { font-size: 0.82rem; font-weight: 700; color: #b45050; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .insight p { margin: 0; font-size: 0.95rem; line-height: 1.85; }
+
+  /* ===== 表格 ===== */
+  table.data { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.92rem; }
+  table.data th, table.data td { border: 1px solid var(--line); padding: 7px 12px; text-align: center; }
+  table.data th { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+  table.data tbody tr:nth-child(even) { background: rgba(0,0,0,0.015); }
+
+  /* ===== 图示（SVG）容器 ===== */
+  .figure { margin: 16px 0; text-align: center; }
+  .figure svg { max-width: 100%; height: auto; }
+  .figure-caption { font-size: 0.8rem; color: var(--ink-light); margin-top: 6px; font-style: italic; }
+
+  /* ===== 标准分数（堆叠写法）===== */
+  .frac { display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; margin: 0 3px; line-height: 1; }
+  .frac .num { border-bottom: 1.5px solid var(--ink); padding: 1px 5px; font-size: 0.9em; }
+  .frac .den { padding: 1px 5px; font-size: 0.9em; }
+  .frac.large .num, .frac.large .den { font-size: 1em; padding: 2px 8px; }
+
+  /* ===== 矩阵（圆括号矩阵）===== */
+  .matrix {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    margin: 0 4px;
+    padding: 4px 10px;
+    border-left: 1.5px solid var(--ink);
+    border-right: 1.5px solid var(--ink);
+    border-radius: 12px/24px;
+    line-height: 1.7;
+  }
+  .matrix .row { display: flex; gap: 16px; justify-content: center; align-items: center; }
+
+  /* ===== 组合数（二项式系数）===== */
+  .binom {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    margin: 0 2px;
+    padding: 2px 6px;
+    border-left: 1.5px solid var(--ink);
+    border-right: 1.5px solid var(--ink);
+    line-height: 1.3;
+    text-align: center;
+  }
+  .binom .num { font-size: 0.85em; }
+  .binom .den { font-size: 0.85em; }
+
+  /* ===== 求和/乘积符号带上下限 ===== */
+  .op-sum, .op-prod {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 2px;
+    line-height: 1;
+  }
+  .op-sum .lim, .op-prod .lim { font-size: 0.7em; }
+  .op-sum .op { font-size: 1.4em; line-height: 1; }
+  .op-prod .op { font-size: 1.2em; line-height: 1; }
+  .op-sum .sup, .op-prod .sup { font-size: 0.7em; }
+
+  /* ===== 极限符号 ===== */
+  .op-lim { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 2px; line-height: 1; }
+  .op-lim .sub { font-size: 0.72em; }
+
+  /* ===== 定积分 ===== */
+  .op-int { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 2px; line-height: 1; }
+  .op-int .sup { font-size: 0.7em; }
+  .op-int .sub { font-size: 0.7em; }
+
+  /* 公式块内文字间距优化 */
+  .formula { letter-spacing: 0.01em; }
+
+  .back-top {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, opacity 0.2s;
+    z-index: 90;
+    border: none;
+    cursor: pointer;
+  }
+  .back-top:hover { transform: translateY(-3px); }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 768px) {
+    .menu-toggle { display: flex; }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); box-shadow: 2px 0 16px rgba(0,0,0,0.2); }
+    .content { margin-left: 0; padding: 72px 20px 80px; }
+    .section-title { font-size: 1.6rem; }
+    .entry-title { font-size: 1.1rem; }
+    .entry { margin-bottom: 36px; padding-left: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 密码保护遮罩 ===== -->
+<div id="pwOverlay" style="position:fixed;inset:0;z-index:99999;background:#faf9f6;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Noto Serif SC','Source Han Serif SC','Songti SC','SimSun',serif;">
+  <div style="text-align:center;max-width:360px;padding:0 24px;">
+    <div style="font-size:28px;font-weight:700;color:#2c2c2c;margin-bottom:8px;">电子笔记</div>
+    <div style="font-size:14px;color:#6b6b6b;margin-bottom:32px;">请输入访问密码以查看内容</div>
+    <input id="pwInput" type="password" placeholder="输入密码" autocomplete="off"
+      style="width:100%;padding:12px 16px;font-size:16px;border:1px solid #d4cfc7;border-radius:8px;background:#fff;color:#2c2c2c;outline:none;box-sizing:border-box;transition:border-color .2s;"
+      onfocus="this.style.borderColor='#3a6b8a'" onblur="this.style.borderColor='#d4cfc7'">
+    <button id="pwBtn"
+      style="width:100%;margin-top:14px;padding:12px;font-size:15px;border:none;border-radius:8px;background:#3a6b8a;color:#fff;cursor:pointer;transition:background .2s;"
+      onmouseover="this.style.background='#2d5570'" onmouseout="this.style.background='#3a6b8a'">进入</button>
+    <div id="pwErr" style="margin-top:14px;font-size:13px;color:#c0392b;min-height:18px;"></div>
+  </div>
+</div>
+<style>
+  body > *:not(#pwOverlay) { visibility: hidden; }
+  body.pw-unlocked > *:not(#pwOverlay) { visibility: visible; }
+</style>
+
+<!-- ===== 侧边栏 ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>电子笔记</h1>
+    <div class="sub">数学零散知识记录</div>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="searchInput" placeholder="搜索条目…" autocomplete="off" />
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+    <div class="nav-group">
+      <span class="nav-group-title">定义</span>
+      <a href="#def-1" class="nav-item" data-title="十进制正规数">十进制正规数</a>
+      <a href="#def-2" class="nav-item" data-title="斐波那契进制与泽肯多夫定理">斐波那契进制与泽肯多夫定理</a>
+      <a href="#def-3" class="nav-item" data-title="朗伯 W 函数">朗伯 W 函数</a>
+      <a href="#def-tetration" class="nav-item" data-title="迭代幂运算（Tetration）与幂塔导数">迭代幂运算（Tetration）与幂塔导数</a>
+      <a href="#def-4" class="nav-item" data-title="自相似图形的豪斯多夫维数">自相似图形的豪斯多夫维数</a>
+      <a href="#def-5" class="nav-item" data-title="有序整数分拆">有序整数分拆（Composition）</a>
+      <a href="#def-6" class="nav-item" data-title="伯努利数与欧拉-麦克劳林公式">伯努利数与欧拉-麦克劳林公式</a>
+      <a href="#def-7" class="nav-item" data-title="Beta 函数、Gamma 函数与华里士公式">Beta 函数、Gamma 函数与华里士公式</a>
+      <a href="#def-8" class="nav-item" data-title="几个有趣的常数">几个有趣的常数</a>
+      <a href="#def-9" class="nav-item" data-title="欧拉角与罗德里格斯旋转公式">欧拉角与罗德里格斯旋转公式</a>
+      <a href="#def-10" class="nav-item" data-title="赋范可除代数与维数定理">赋范可除代数与维数定理</a>
+      <a href="#def-11" class="nav-item" data-title="正多胞体与高维欧拉公式">正多胞体与高维欧拉公式</a>
+    </div>
+    <div class="nav-group">
+      <span class="nav-group-title">定理</span>
+      <a href="#thm-1" class="nav-item" data-title="彭赛列闭合定理">彭赛列闭合定理</a>
+      <a href="#thm-2" class="nav-item" data-title="霍迪奇定理">霍迪奇定理</a>
+      <a href="#thm-3" class="nav-item" data-title="伯特兰-切比雪夫定理">伯特兰-切比雪夫定理</a>
+      <a href="#thm-4" class="nav-item" data-title="勒让德公式与库默尔定理">勒让德公式与库默尔定理</a>
+      <a href="#thm-5" class="nav-item" data-title="卢卡斯定理">卢卡斯定理</a>
+      <a href="#thm-6" class="nav-item" data-title="多项式消次与三次方程求根公式">多项式消次与三次方程求根公式</a>
+      <a href="#thm-7" class="nav-item" data-title="三角级数求和公式">三角级数求和公式</a>
+      <a href="#thm-8" class="nav-item" data-title="多项式定理">多项式定理</a>
+    </div>
+    <div class="nav-group">
+      <span class="nav-group-title">趣题</span>
+      <a href="#puzzle-1" class="nav-item" data-title="中文读数长度的渐近行为">中文读数长度的渐近行为</a>
+      <a href="#puzzle-2" class="nav-item" data-title="雾中船问题（Bellman 失海问题）">雾中船问题（Bellman 失海问题）</a>
+    </div>
+    <div class="nav-group">
+      <span class="nav-group-title">经验</span>
+      <a href="#section-4" class="nav-item" data-title="经验">经验</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">快捷键 J / K 上下条</div>
+</aside>
+
+<button class="menu-toggle" id="menuToggle" aria-label="菜单">☰</button>
+<div class="overlay" id="overlay"></div>
+
+<!-- ===== 主内容 ===== -->
+<main class="content" id="content">
+
+  <!-- ====== 定义 ====== -->
+  <div class="page" id="section-1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">定义</h2>
+    </div>
+
+    <!-- 001：十进制正规数 + 构造性结果（合并） -->
+    <div class="entry" id="def-1">
+      <div class="entry-header">
+        <span class="entry-date">001 · 数论 / 分析</span>
+        <span class="entry-title">十进制正规数</span>
+      </div>
+      <div class="entry-body">
+        <p>一个实数的小数无限展开中，任意 k 位数字串出现的极限概率均等，即所有 10<sup>k</sup> 种等长串以相同频率出现，称该数为十进制正规数。</p>
+        <p>严格定义：设实数 x ∈ (0, 1) 的十进制小数展开为 x = 0.a<sub>1</sub>a<sub>2</sub>a<sub>3</sub>…a<sub>n</sub>…，对任意长度 k ≥ 1，任意长度为 k 的数字串 s ∈ {0, …, 9}<sup>k</sup>，记 N<sub>s</sub>(n) 为前 n 位中 s 出现的次数。若</p>
+        <div class="formula"><span class="op-lim">lim<span class="sub">n→∞</span></span> <span class="frac"><span class="num">N<sub>s</sub>(n)</span><span class="den">n</span></span> = <span class="frac"><span class="num">1</span><span class="den">10<sup>k</sup></span></span></div>
+        <p>对一切 s 成立，则称 x 为十进制正规数。同理可定义 b 进制正规数。</p>
+
+        <p class="sub-h">正规数的构造性结果</p>
+        <p class="sub-h" style="font-size:0.95rem;">科普兰-厄尔多斯常数</p>
+        <p>全体素数拼接：0.2357111317192329… 是十进制正规数。任意进制同理。</p>
+        <p class="sub-h" style="font-size:0.95rem;">达文波特-厄尔多斯多项式族</p>
+        <p>任取非常数整系数多项式 f(n)（f(n)→+∞），则 0.f(1)f(2)f(3)… 是正规数。如 f(n)=n, n<sup>2</sup>, 2n+1。</p>
+        <p class="sub-h" style="font-size:0.95rem;">Stoneham 常数族</p>
+        <div class="formula">α<sub>b,c</sub> = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">1</span><span class="den">c<sup>k</sup> · b<sup>c<sup>k</sup></sup></span></span></div>
+        <p>在 b 进制下正规，但在 bc 进制下不正规——正规性是依赖于进制的性质。</p>
+        <div class="note">几乎所有实数都是正规数（测度为 1），但具体证明某个常见常数（如 π、√2、e）是正规数却极其困难——至今无人能证。几乎所有数都满足，但你一个也举不出来。能构造出的正规数不多，大多"人为拼出来"。Stoneham 常数揭示了进制依赖性：一个数可以在二进制下正规，在六进制下却不正规。</div>
+      </div>
+    </div>
+
+    <!-- 002：斐波那契进制 + 泽肯多夫定理（合并） -->
+    <div class="entry" id="def-2">
+      <div class="entry-header">
+        <span class="entry-date">002 · 数论 / 组合</span>
+        <span class="entry-title">斐波那契进制与泽肯多夫定理</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">斐波那契进制（泽肯多夫表示）</p>
+        <p>以斐波那契数列为位权的记数系统。约定 F<sub>1</sub> = 1，F<sub>2</sub> = 2，F<sub>3</sub> = 3，F<sub>4</sub> = 5，F<sub>5</sub> = 8…… 任意正整数 N 可写作：</p>
+        <div class="formula">N = <span class="op-sum"><span class="op">∑</span><span class="lim">k</span></span> d<sub>k</sub> F<sub>k</sub>，其中 d<sub>k</sub> ∈ {0, 1}</div>
+        <p>且<strong>不允许出现连续的 1</strong>。例如 10101<sub>Fib</sub> = F<sub>5</sub> + F<sub>3</sub> + F<sub>1</sub> = 8 + 3 + 1 = 12。进位规则：011<sub>Fib</sub> → 100<sub>Fib</sub>。</p>
+
+        <p class="sub-h">泽肯多夫定理</p>
+        <p><strong>定理</strong>：任一正整数可<strong>唯一</strong>表示为若干个<strong>不相邻</strong>的斐波那契数之和。</p>
+        <p><strong>存在性</strong>（归纳法）：取满足 F<sub>m</sub> ≤ n &lt; F<sub>m+1</sub> 的最大下标 m，记 r = n − F<sub>m</sub>。则 r &lt; F<sub>m−1</sub>，由归纳假设 r 有合法表示且最大项 &lt; F<sub>m−1</sub>，不与 F<sub>m</sub> 相邻。</p>
+        <p><strong>唯一性</strong>：设两种表示最大下标不同，不含 F<sub>m</sub> 的一边最大值为 F<sub>m−1</sub> + F<sub>m−3</sub> + … &lt; F<sub>m</sub>（隔项和严格小于下一项），矛盾。</p>
+        <div class="note">二进制的唯一性几乎显然（每位取 0 或 1），但斐波那契进制加上"不相邻"约束后唯一性反而需要证明——证明本身揭示了斐波那契数列"隔项和小于下一项"这个优雅性质。长度为 n 的 0/1 串中不出现相邻 1 的方案数恰好是斐波那契数，这正是该进制的计数基础。</div>
+      </div>
+    </div>
+
+    <!-- 003 -->
+    <div class="entry" id="def-3">
+      <div class="entry-header">
+        <span class="entry-date">003 · 分析 / 复变</span>
+        <span class="entry-title">朗伯 W 函数</span>
+      </div>
+      <div class="entry-body">
+        <p>朗伯 W 函数 W(z) 是 f(w) = w·e<sup>w</sup> 的反函数：x·e<sup>x</sup> = t ⟺ x = W(t)。分为两支：</p>
+        <ul class="simple">
+          <li><strong>主分支 W<sub>0</sub>(z)</strong>：定义域 z ≥ −<span class="frac"><span class="num">1</span><span class="den">e</span></span> ≈ −0.36</li>
+          <li><strong>负分支 W₋<sub>1</sub>(z)</strong>：定义域 −<span class="frac"><span class="num">1</span><span class="den">e</span></span> ≤ z &lt; 0</li>
+        </ul>
+        <p>两支在 z = −<span class="frac"><span class="num">1</span><span class="den">e</span></span> 处汇合：W<sub>0</sub>(−<span class="frac"><span class="num">1</span><span class="den">e</span></span>) = W₋<sub>1</sub>(−<span class="frac"><span class="num">1</span><span class="den">e</span></span>) = −1。</p>
+        <p class="sub-h">基本性质</p>
+        <ul class="simple">
+          <li>W(z) ~ ln z − ln ln z，当 z → +∞</li>
+          <li>导数：W'(z) = <span class="frac"><span class="num">W(z)</span><span class="den">z(1 + W(z))</span></span>，W'(0) = 1</li>
+          <li>泰勒展开：W<sub>0</sub>(z) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">n=1</span></span> <span class="frac"><span class="num">(−n)<sup>n−1</sup></span><span class="den">n!</span></span> z<sup>n</sup>，|z| &lt; <span class="frac"><span class="num">1</span><span class="den">e</span></span></li>
+        </ul>
+        <p class="sub-h">Ω 常数</p>
+        <p>Ω = W<sub>0</sub>(1) ≈ 0.567，满足 e<sup>−Ω</sup> = Ω。Ω 是超越数。其他数值：W<sub>0</sub>(2) ≈ 0.853，W<sub>0</sub>(3) ≈ 1.05。</p>
+        <div class="note">初次遇到 x·e<sup>x</sup> = t 或 x + ln x = t 时，W 函数就像"开方"——它不是初等函数，但一旦认识了它，一大类超越方程就有了"闭式解"。</div>
+      </div>
+    </div>
+
+    <!-- 004：迭代幂运算（Tetration）与幂塔导数 -->
+    <div class="entry" id="def-tetration">
+      <div class="entry-header">
+        <span class="entry-date">004 · 分析 / 超运算</span>
+        <span class="entry-title">迭代幂运算（Tetration）与幂塔导数</span>
+      </div>
+      <div class="entry-body">
+        <p>加法是重复计数，乘法是重复加法，幂运算是重复乘法——那么"重复幂运算"是什么？这就是<strong>迭代幂运算</strong>（Tetration），也叫幂塔、超-4 运算。</p>
+        <p>定义 y<sub>n</sub> = <sup>n</sup>x = x ↑↑ n，即 n 个 x 从右往左嵌套取幂：</p>
+        <div class="formula">y<sub>0</sub> = 1，&nbsp; y<sub>1</sub> = x，&nbsp; y<sub>n</sub> = x<sup>y<sub>n−1</sub></sup></div>
+        <p>例如 y<sub>2</sub> = x<sup>x</sup>，y<sub>3</sub> = x<sup>x<sup>x</sup></sup>，y<sub>4</sub> = x<sup>x<sup>x<sup>x</sup></sup></sup>。注意幂运算不满足结合律，必须从最顶层（最右边）开始算。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">与初等运算的层级关系</div>
+          <ol>
+            <li><strong>加法</strong>（超-1）：a + b = 重复计数 b 次</li>
+            <li><strong>乘法</strong>（超-2）：a × b = 重复加 b 次</li>
+            <li><strong>幂运算</strong>（超-3）：a<sup>b</sup> = 重复乘 b 次</li>
+            <li><strong>迭代幂</strong>（超-4）：<sup>b</sup>a = 重复取幂 b 次</li>
+            <li>更高层：Pentation（超-5）、Hexation（超-6）……存在但极少使用</li>
+          </ol>
+        </div>
+
+        <p class="sub-h">幂塔的导数公式</p>
+        <p>对 y<sub>n</sub> = x ↑↑ n 求导。由 y<sub>n</sub> = x<sup>y<sub>n−1</sub></sup> = e<sup>y<sub>n−1</sub>·ln x</sup>，用链式法则：</p>
+        <div class="formula">y<sub>n</sub>' = y<sub>n</sub> · ( y<sub>n−1</sub>' · ln x + <span class="frac"><span class="num">y<sub>n−1</sub></span><span class="den">x</span></span> )</div>
+        <p>这是一个递推式。反复代入展开，可得显式求和公式：</p>
+        <div class="formula">y<sub>n</sub>' = <span class="frac"><span class="num">1</span><span class="den">x</span></span> · <span class="op-sum"><span class="sup">n−1</span><span class="op">∑</span><span class="lim">k=0</span></span> ( y<sub>n</sub> · y<sub>n−1</sub> · … · y<sub>n−k</sub> ) · (ln x)<sup>k</sup></div>
+        <p>即每一项是"从 y<sub>n</sub> 起连续 k+1 层的乘积"乘以 (ln x)<sup>k</sup>，再除以 x。</p>
+
+        <p class="sub-h">验证：前几层</p>
+        <ul class="simple">
+          <li><strong>n=1</strong>：y<sub>1</sub> = x，y<sub>1</sub>' = 1。公式给出 <span class="frac"><span class="num">1</span><span class="den">x</span></span>·y<sub>1</sub>·(ln x)<sup>0</sup> = <span class="frac"><span class="num">1</span><span class="den">x</span></span>·x = 1 ✓</li>
+          <li><strong>n=2</strong>：y<sub>2</sub> = x<sup>x</sup>。直接求导 y<sub>2</sub>' = x<sup>x</sup>(ln x + 1)。公式给出 <span class="frac"><span class="num">1</span><span class="den">x</span></span>[y<sub>2</sub>·y<sub>1</sub> + y<sub>2</sub>·y<sub>1</sub>·y<sub>0</sub>·ln x] = <span class="frac"><span class="num">1</span><span class="den">x</span></span>[y<sub>2</sub>·x + y<sub>2</sub>·x·1·ln x] = y<sub>2</sub>(1 + ln x) ✓</li>
+          <li><strong>n=3</strong>：y<sub>3</sub> = x<sup>x<sup>x</sup></sup>，y<sub>3</sub>' = <span class="frac"><span class="num">y<sub>3</sub>·y<sub>2</sub></span><span class="den">x</span></span> · (1 + x·ln x + x·ln<sup>2</sup>x) ✓</li>
+        </ul>
+
+        <div class="figure">
+          <svg viewBox="0 0 440 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- 标题 -->
+            <text x="220" y="18" text-anchor="middle" font-size="12" fill="#3a6b8a" font-weight="600">幂塔的嵌套结构（从右往左计算）</text>
+            <!-- y3 = x^(x^x) -->
+            <g transform="translate(60, 80)" font-family="serif">
+              <text x="0" y="0" font-size="24" fill="#2c2c2c">
+                y<tspan font-size="0.6em" dy="0.25em">3</tspan> = x
+                <tspan font-size="17" fill="#b45050">(</tspan>
+                <tspan font-size="15" dy="-7" fill="#3a6b8a">x</tspan>
+                <tspan font-size="12" dy="-6" fill="#6a8b3a">x</tspan>
+                <tspan font-size="17" dy="13" fill="#b45050">)</tspan>
+              </text>
+              <text x="0" y="36" font-size="10" fill="#6b6b6b">三层：指数的指数</text>
+            </g>
+            <!-- 层数增长 -->
+            <g transform="translate(270, 50)" font-family="serif">
+              <text x="0" y="0" font-size="13" fill="#2c2c2c">y<tspan font-size="0.6em" dy="0.25em">1</tspan> = x</text>
+              <text x="0" y="24" font-size="13" fill="#2c2c2c">y<tspan font-size="0.6em" dy="0.25em">2</tspan> = x<tspan font-size="9" dy="-5">x</tspan></text>
+              <text x="0" y="50" font-size="13" fill="#2c2c2c">y<tspan font-size="0.6em" dy="0.25em">3</tspan> = x<tspan font-size="9" dy="-5">x<tspan font-size="7" dy="-4">x</tspan></tspan></text>
+              <text x="0" y="78" font-size="13" fill="#2c2c2c">y<tspan font-size="0.6em" dy="0.25em">4</tspan> = x<tspan font-size="9" dy="-5">x<tspan font-size="7" dy="-4">x<tspan font-size="6" dy="-3">x</tspan></tspan></tspan></text>
+              <text x="0" y="106" font-size="10" fill="#6b6b6b">每加一层，高度增长极快</text>
+              <text x="0" y="126" font-size="10" fill="#6b6b6b">如 <tspan font-size="0.6em" dy="-0.5em">3</tspan>2 = 2<tspan font-size="0.6em" dy="-0.5em">22</tspan> = 16，但 <tspan font-size="0.6em" dy="-0.5em">4</tspan>2 = 2<tspan font-size="0.6em" dy="-0.5em">16</tspan> = 65536</text>
+              <text x="0" y="144" font-size="10" fill="#6b6b6b">而 <tspan font-size="0.6em" dy="-0.5em">5</tspan>2 = 2<tspan font-size="0.6em" dy="-0.5em">65536</tspan>，已远超可观测宇宙原子数</text>
+            </g>
+          </svg>
+          <div class="figure-caption">幂塔增长极为迅猛：<sup>4</sup>2 = 65536，<sup>5</sup>2 已是天文数字。这也是迭代幂在实际计算中极少超过 4~5 层的原因</div>
+        </div>
+
+        <p class="sub-h">无穷幂塔与朗伯 W 函数</p>
+        <p>当层数趋于无穷时，幂塔 h(x) = x<sup>x<sup>x<sup>⋯</sup></sup></sup> 满足不动点方程 h = x<sup>h</sup>。两边取对数：ln h = h ln x，即 (−h ln x)·e<sup>−h ln x</sup> = −ln x。用 W 函数解得：</p>
+        <div class="formula">h(x) = <span class="frac"><span class="num">W(−ln x)</span><span class="den">−ln x</span></span></div>
+        <p><strong>收敛域</strong>：无穷幂塔仅在 e<sup>−e</sup> ≈ 0.066 ≤ x ≤ e<sup><span class="frac"><span class="num">1</span><span class="den">e</span></span></sup> ≈ 1.444 时收敛。x = e<sup><span class="frac"><span class="num">1</span><span class="den">e</span></span></sup> 时 h = e；x = e<sup>−e</sup> 时 h = <span class="frac"><span class="num">1</span><span class="den">e</span></span>。</p>
+
+        <p class="sub-h">特殊值</p>
+        <ul class="simple">
+          <li><sup>0</sup>x = 1（空积约定，类似 x<sup>0</sup> = 1）</li>
+          <li><sup>1</sup>x = x，<sup>2</sup>x = x<sup>x</sup>，<sup>3</sup>x = x<sup>x<sup>x</sup></sup></li>
+          <li><sup>n</sup>1 = 1（任何层数，1 的任何次幂都是 1）</li>
+          <li><sup>n</sup>2：1, 2, 4, 16, 65536, 2<sup>65536</sup>, … 增长极其恐怖</li>
+        </ul>
+        <div class="note">迭代幂运算展示了"运算层级"的威力：每升一级，增长速度发生质变。幂塔的导数公式揭示了一个优雅结构——每层的贡献是"前面所有层的乘积"乘以 (ln x) 的幂次。无穷幂塔恰好是朗伯 W 函数的一个应用，收敛域 e<sup>−e</sup> ≤ x ≤ e<sup>1/e</sup> 是一个经典且反直觉的结果——x 不能太大也不能太小。</div>
+      </div>
+    </div>
+
+    <!-- 004 -->
+    <div class="entry" id="def-4">
+      <div class="entry-header">
+        <span class="entry-date">004 · 分形几何</span>
+        <span class="entry-title">自相似图形的豪斯多夫维数</span>
+      </div>
+      <div class="entry-body">
+        <p>一条线段有 1 维，一个正方形有 2 维——这是直觉。但如果一个图形"比线粗一点，又比面薄一点"，它该有几维？分形几何给出了答案：维数可以是分数。</p>
+        <p>对严格自相似的分形图形，若整体放大 k 倍后可拆成 N 个与原集合全等的子集，则豪斯多夫维数：</p>
+        <div class="formula">d = <span class="frac"><span class="num">ln N</span><span class="den">ln k</span></span></div>
+
+        <div class="figure">
+          <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- 康托尔三分集 -->
+            <g transform="translate(20,20)">
+              <text x="120" y="-6" text-anchor="middle" font-size="11" fill="#3a6b8a" font-weight="600">康托尔三分集 d=ln2/ln3≈0.631</text>
+              <!-- 第0代 -->
+              <line x1="0" y1="20" x2="240" y2="20" stroke="#2c2c2c" stroke-width="6"/>
+              <text x="-10" y="24" text-anchor="end" font-size="9" fill="#6b6b6b">n=0</text>
+              <!-- 第1代 -->
+              <line x1="0" y1="50" x2="80" y2="50" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="160" y1="50" x2="240" y2="50" stroke="#2c2c2c" stroke-width="6"/>
+              <text x="-10" y="54" text-anchor="end" font-size="9" fill="#6b6b6b">n=1</text>
+              <!-- 第2代 -->
+              <line x1="0" y1="80" x2="26.67" y2="80" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="53.33" y1="80" x2="80" y2="80" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="160" y1="80" x2="186.67" y2="80" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="213.33" y1="80" x2="240" y2="80" stroke="#2c2c2c" stroke-width="6"/>
+              <text x="-10" y="84" text-anchor="end" font-size="9" fill="#6b6b6b">n=2</text>
+              <!-- 第3代 简化 -->
+              <line x1="0" y1="110" x2="8.89" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="17.78" y1="110" x2="26.67" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="53.33" y1="110" x2="62.22" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="71.11" y1="110" x2="80" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="160" y1="110" x2="168.89" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="177.78" y1="110" x2="186.67" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="213.33" y1="110" x2="222.22" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <line x1="231.11" y1="110" x2="240" y2="110" stroke="#2c2c2c" stroke-width="6"/>
+              <text x="-10" y="114" text-anchor="end" font-size="9" fill="#6b6b6b">n=3</text>
+              <text x="-10" y="140" text-anchor="end" font-size="9" fill="#6b6b6b">⋮</text>
+            </g>
+            <!-- 科赫雪花（一次迭代）-->
+            <g transform="translate(320,30)">
+              <text x="110" y="-16" text-anchor="middle" font-size="11" fill="#3a6b8a" font-weight="600">科赫雪花 d=ln4/ln3≈1.262</text>
+              <polygon points="110,10 200,160 20,160" fill="none" stroke="#2c2c2c" stroke-width="2"/>
+              <!-- 第一条边的迭代（顶边）简化显示 -->
+            </g>
+            <!-- 箭头标注 -->
+            <g transform="translate(300,100)" font-size="13" fill="#b45050">
+              <text text-anchor="middle">每次：</text>
+              <text y="22" text-anchor="middle">1段 → 4段，每段长 1/3</text>
+              <text y="44" text-anchor="middle">N=4, k=3</text>
+            </g>
+          </svg>
+          <div class="figure-caption">康托尔集每次挖去中间 1/3；科赫曲线每次将线段三等分、中间段替换为等边三角形的两边</div>
+        </div>
+
+        <p class="sub-h">经典例子</p>
+        <table class="data">
+          <tr><th>图形</th><th>N（子集数）</th><th>k（放大倍数）</th><th>维数 d</th></tr>
+          <tr><td>线段</td><td>2</td><td>2</td><td>1</td></tr>
+          <tr><td>正方形</td><td>4</td><td>2</td><td>2</td></tr>
+          <tr><td>康托尔三分集</td><td>2</td><td>3</td><td>ln2/ln3 ≈ 0.631</td></tr>
+          <tr><td>科赫雪花</td><td>4</td><td>3</td><td>ln4/ln3 ≈ 1.262</td></tr>
+          <tr><td>谢尔宾斯基三角形</td><td>3</td><td>2</td><td>ln3/ln2 ≈ 1.585</td></tr>
+        </table>
+        <div class="note">分形维数可以不是整数——这正是"分形"名字的来源（fractal = fractional dimension）。科赫雪花的长度无限但面积有限，维数介于 1 和 2 之间。直觉上：康托尔集"比点多、比线少"，所以维数在 0 和 1 之间；科赫曲线"比线复杂、比面简单"，维数在 1 和 2 之间。</div>
+      </div>
+    </div>
+
+    <!-- 005 -->
+    <div class="entry" id="def-5">
+      <div class="entry-header">
+        <span class="entry-date">005 · 组合数学</span>
+        <span class="entry-title">有序整数分拆（Composition）</span>
+      </div>
+      <div class="entry-body">
+        <p>将正整数 n 拆为若干正整数的和，顺序不同视为不同分拆。记 a<sub>n</sub> 为总数。</p>
+        <p class="sub-h">① 用 1 ~ m 分拆</p>
+        <ul class="simple">
+          <li>n ≤ m：a<sub>n</sub> = a<sub>n−1</sub> + … + a<sub>1</sub> + 1</li>
+          <li>n &gt; m：a<sub>n</sub> = a<sub>n−1</sub> + … + a<sub>n−m</sub></li>
+        </ul>
+        <p>m = 2 时退化为斐波那契递推。隔板法直接给出无限制时共 2<sup>n−1</sup> 种。</p>
+        <p class="sub-h">② 通项（特征方程法）</p>
+        <p>以 m=2 为例：λ<sup>2</sup> = λ + 1，解得 λ<sub>1</sub> = (1+√5)/2, λ<sub>2</sub> = (1−√5)/2，</p>
+        <div class="formula">a<sub>n</sub> = <span class="frac"><span class="num">1</span><span class="den">√5</span></span> · [ <span class="frac"><span class="num">1 + √5</span><span class="den">2</span></span><sup>n+1</sup> − <span class="frac"><span class="num">1 − √5</span><span class="den">2</span></span><sup>n+1</sup> ]</div>
+        <div class="note">递推法和特征方程法给出了更一般的框架——当各部分大小有限制时，这套方法依然适用。</div>
+      </div>
+    </div>
+
+    <!-- 006：伯努利数 + 欧拉-麦克劳林公式（合并） -->
+    <div class="entry" id="def-6">
+      <div class="entry-header">
+        <span class="entry-date">006 · 数论 / 分析</span>
+        <span class="entry-title">伯努利数与欧拉-麦克劳林公式</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">伯努利数</p>
+        <p>通过生成函数定义：</p>
+        <div class="formula"><span class="frac"><span class="num">x</span><span class="den">e<sup>x</sup> − 1</span></span> = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">n=0</span></span> <span class="frac"><span class="num">B<sub>n</sub></span><span class="den">n!</span></span> x<sup>n</sup></div>
+        <p>前几个值：B<sub>0</sub> = 1，B<sub>1</sub> = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，B<sub>2</sub> = <span class="frac"><span class="num">1</span><span class="den">6</span></span>，B<sub>3</sub> = 0，B<sub>4</sub> = −<span class="frac"><span class="num">1</span><span class="den">30</span></span>，B<sub>5</sub> = 0，B<sub>6</sub> = <span class="frac"><span class="num">1</span><span class="den">42</span></span>，…</p>
+        <p>重要性质：除 B<sub>1</sub> 外，所有奇数下标伯努利数为 0（B<sub>2n+1</sub> = 0, n ≥ 1）。</p>
+
+        <p class="sub-h">递推公式</p>
+        <div class="formula">B<sub>n</sub> = −<span class="frac"><span class="num">1</span><span class="den">n+1</span></span> · <span class="op-sum"><span class="sup">n−1</span><span class="op">∑</span><span class="lim">k=0</span></span> <span class="binom"><span class="num">n+1</span><span class="den">k</span></span> · B<sub>k</sub></div>
+
+        <p class="sub-h">冯·施陶特-克劳森定理</p>
+        <p>B<sub>2n</sub> 的分母恰好是所有满足 p−1 | 2n 的素数 p 的乘积：</p>
+        <div class="formula">denom(B<sub>2n</sub>) = <span class="op-prod"><span class="op">∏</span><span class="lim">p−1 | 2n</span></span> p</div>
+        <p>例如：denom(B<sub>2</sub>) = 6，denom(B<sub>4</sub>) = 30，denom(B<sub>6</sub>) = 42，denom(B<sub>12</sub>) = 2730。</p>
+
+        <p class="sub-h">欧拉-麦克劳林公式</p>
+        <p>连接离散求和与连续积分的桥梁：</p>
+        <div class="formula"><span class="op-sum"><span class="sup">b</span><span class="op">∑</span><span class="lim">k=a</span></span> f(k) = <span class="op-int"><span class="sup">b</span><span class="op">∫</span><span class="sub">a</span></span> f(x) dx + <span class="frac"><span class="num">f(a) + f(b)</span><span class="den">2</span></span> + <span class="op-sum"><span class="sup">m</span><span class="op">∑</span><span class="lim">j=1</span></span> <span class="frac"><span class="num">B<sub>2j</sub></span><span class="den">(2j)!</span></span> · [f<sup>(2j−1)</sup>(b) − f<sup>(2j−1)</sup>(a)] + R<sub>m</sub></div>
+        <p class="sub-h">经典应用</p>
+        <ul class="simple">
+          <li>调和级数：H<sub>n</sub> = ln n + γ + <span class="frac"><span class="num">1</span><span class="den">2n</span></span> − <span class="frac"><span class="num">1</span><span class="den">12n<sup>2</sup></span></span> + …</li>
+          <li>斯特林公式：ln n! ≈ n ln n − n + <span class="frac"><span class="num">ln(2πn)</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">12n</span></span> − …</li>
+          <li>ζ(2n) = <span class="frac"><span class="num">(−1)<sup>n+1</sup> B<sub>2n</sub> (2π)<sup>2n</sup></span><span class="den">2·(2n)!</span></span></li>
+        </ul>
+        <div class="note">伯努利数把幂和求和、欧拉-麦克劳林公式、黎曼 zeta 函数偶数值、费马大定理的正则素数等看似无关的领域串联在一起。分母的素数结构是数论中非常漂亮的结果。欧拉-麦克劳林公式是"求和 ≈ 积分 + 修正项"的精确化，修正项系数恰好是伯努利数——这也是伯努利数出现在那么多看似不相关公式里的原因。</div>
+      </div>
+    </div>
+
+    <!-- 007：Beta/Gamma + 余元/加倍/华里士公式（合并） -->
+    <div class="entry" id="def-7">
+      <div class="entry-header">
+        <span class="entry-date">007 · 分析 / 特殊函数</span>
+        <span class="entry-title">Beta 函数、Gamma 函数与华里士公式</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">Gamma 函数</p>
+        <div class="formula">Γ(z) = ∫<sub>0</sub><sup>+∞</sup> t<sup>z−1</sup> e<sup>−t</sup> dt &nbsp; (Re z &gt; 0)</div>
+        <ul class="simple">
+          <li>递推：Γ(z+1) = z Γ(z)；正整数：Γ(n+1) = n!</li>
+          <li>特殊值：Γ(<span class="frac"><span class="num">1</span><span class="den">2</span></span>) = √π</li>
+        </ul>
+
+        <p class="sub-h">Beta 函数</p>
+        <div class="formula">B(p, q) = <span class="op-int"><span class="sup">1</span><span class="op">∫</span><span class="sub">0</span></span> t<sup>p−1</sup>(1−t)<sup>q−1</sup> dt = <span class="frac"><span class="num">Γ(p) Γ(q)</span><span class="den">Γ(p+q)</span></span></div>
+        <p>与组合数的联系：B(k+1, n−k+1) = <span class="frac"><span class="num">1</span><span class="den">(n+1) <span class="binom"><span class="num">n</span><span class="den">k</span></span></span></span>。</p>
+        <p>三角函数积分的一般公式（华里士公式的推广）：</p>
+        <div class="formula"><span class="op-int"><span class="sup">π/2</span><span class="op">∫</span><span class="sub">0</span></span> sin<sup>m</sup>x cos<sup>n</sup>x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span> · <span class="frac"><span class="num">Γ(<span class="frac"><span class="num">m+1</span><span class="den">2</span></span>) Γ(<span class="frac"><span class="num">n+1</span><span class="den">2</span></span>)</span><span class="den">Γ(<span class="frac"><span class="num">m+n+2</span><span class="den">2</span></span>)</span></span></div>
+
+        <p class="sub-h">余元公式（Euler 反射公式）</p>
+        <div class="formula">Γ(z) Γ(1−z) = <span class="frac"><span class="num">π</span><span class="den">sin(π z)</span></span></div>
+        <p>令 z = <span class="frac"><span class="num">1</span><span class="den">2</span></span> 即得 Γ(<span class="frac"><span class="num">1</span><span class="den">2</span></span>) = √π。揭示了 Gamma 函数与三角函数的深刻联系。</p>
+
+        <p class="sub-h">勒让德加倍公式</p>
+        <div class="formula">Γ(2z) = <span class="frac"><span class="num">2<sup>2z−1</sup></span><span class="den">√π</span></span> · Γ(z) · Γ(z + <span class="frac"><span class="num">1</span><span class="den">2</span></span>)</div>
+
+        <p class="sub-h">华里士公式（Wallis 公式）</p>
+        <p>记 I<sub>n</sub> = ∫<sub>0</sub><sup>π/2</sup> sin<sup>n</sup>x dx，分部积分得递推：</p>
+        <div class="formula">I<sub>2k</sub> = <span class="frac"><span class="num">π</span><span class="den">2</span></span> · <span class="frac"><span class="num">(2k−1)!!</span><span class="den">(2k)!!</span></span>，&nbsp; I<sub>2k+1</sub> = <span class="frac"><span class="num">(2k)!!</span><span class="den">(2k+1)!!</span></span></div>
+        <p class="sub-h">华里士乘积</p>
+        <div class="formula"><span class="frac"><span class="num">π</span><span class="den">2</span></span> = <span class="op-prod"><span class="sup">∞</span><span class="op">∏</span><span class="lim">n=1</span></span> <span class="frac"><span class="num">2n</span><span class="den">2n−1</span></span> · <span class="frac"><span class="num">2n</span><span class="den">2n+1</span></span></div>
+        <p>历史上第一个把 π 表示为有理数无穷乘积的公式。核心技巧：夹逼 sin<sup>2k+1</sup>x ≤ sin<sup>2k</sup>x ≤ sin<sup>2k−1</sup>x 积分后取极限。</p>
+
+        <p class="sub-h">斯特林公式（渐近展开）</p>
+        <div class="formula">Γ(z+1) ≈ z<sup>z</sup> e<sup>−z</sup> √(2π z)</div>
+        <p>正整数时即 n! ≈ n<sup>n</sup> e<sup>−n</sup> √(2π n)。华里士乘积可由此导出，反之华里士公式也可确定斯特林公式中的系数 √(2π)。</p>
+        <div class="note">这几个公式构成了一个紧密网络：余元公式连接三角/复分析，加倍公式展示缩放性质，华里士公式把 π 表示为有理数无穷乘积，斯特林公式描述无穷远行为。Gamma 函数把"阶乘"从整数推广到全体实数，Beta 函数则是桥梁——许多含三角函数、幂函数的积分都能通过换元变成 Beta 积分再求值。</div>
+      </div>
+    </div>
+
+    <!-- 008 -->
+    <div class="entry" id="def-8">
+      <div class="entry-header">
+        <span class="entry-date">008 · 数论 / 趣味常数</span>
+        <span class="entry-title">几个有趣的常数</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">① 布伦常数（Brun's constant）</p>
+        <p>所有孪生素数对的倒数之和：B<sub>2</sub> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>+<span class="frac"><span class="num">1</span><span class="den">5</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">5</span></span>+<span class="frac"><span class="num">1</span><span class="den">7</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">11</span></span>+<span class="frac"><span class="num">1</span><span class="den">13</span></span>) + … ≈ 1.902160583。有限值——布伦筛法证明了收敛性。而全体素数倒数和是发散的。</p>
+        <p class="sub-h">② 杜芬数（Dottie number）</p>
+        <p>cos x = x 的唯一实根：D ≈ 0.7390851332。超越数。从任意实数出发反复取余弦最终都收敛到此数——不动点定理的直观例子。</p>
+        <p class="sub-h">③ 康威常数（Conway's constant）</p>
+        <p>外观数列 1, 11, 21, 1211, 111221, 312211, … 长度之比极限 λ ≈ 1.303577269，是某 71 次多项式的唯一正实根。任何以非 22 结尾的数字串作为起点，增长速度都由同一个 λ 控制。</p>
+        <div class="note">三个常数代表三种风味：布伦常数是"稀少但存在"；杜芬数是极简的超越数例子；康威常数展示"从简单规则中涌现出复杂代数结构"。</div>
+      </div>
+    </div>
+
+    <!-- 009：欧拉角 + 罗德里格斯旋转公式（合并） -->
+    <div class="entry" id="def-9">
+      <div class="entry-header">
+        <span class="entry-date">009 · 线性代数 / 三维几何</span>
+        <span class="entry-title">欧拉角与罗德里格斯旋转公式</span>
+      </div>
+      <div class="entry-body">
+        <p>欧拉角是三维旋转群 SO(3) 的三参数参数化，用三次依次执行的旋转描述刚体姿态。想象一架飞机：先绕垂直轴偏航（yaw），再绕水平轴俯仰（pitch），最后绕纵轴滚转（roll）——这三个角度就是一组欧拉角。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- 坐标系 -->
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#3a6b8a"/>
+              </marker>
+            </defs>
+            <!-- 原点 -->
+            <circle cx="200" cy="110" r="3" fill="#2c2c2c"/>
+            <!-- x轴 -->
+            <line x1="200" y1="110" x2="340" y2="110" stroke="#3a6b8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <text x="348" y="114" font-size="12" fill="#3a6b8a" font-weight="bold">x（滚转 roll）</text>
+            <!-- y轴 -->
+            <line x1="200" y1="110" x2="200" y2="30" stroke="#b45050" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <text x="180" y="24" font-size="12" fill="#b45050" font-weight="bold">y（俯仰 pitch）</text>
+            <!-- z轴 -->
+            <line x1="200" y1="110" x2="110" y2="180" stroke="#6a8b3a" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <text x="70" y="195" font-size="12" fill="#6a8b3a" font-weight="bold">z（偏航 yaw）</text>
+            <!-- 飞机示意 -->
+            <g transform="translate(200,110) rotate(-20)">
+              <ellipse cx="0" cy="0" rx="50" ry="8" fill="#e8e6e0" stroke="#6b6b6b" stroke-width="1"/>
+              <line x1="-10" y1="0" x2="-10" y2="-30" stroke="#6b6b6b" stroke-width="2"/>
+              <polygon points="-10,-30 -20,-22 -10,-18 0,-22" fill="#e8e6e0" stroke="#6b6b6b" stroke-width="1"/>
+            </g>
+            <text x="200" y="210" text-anchor="middle" font-size="10" fill="#6b6b6b">航空标准 Z-Y-X 内在旋转：偏航 → 俯仰 → 滚转</text>
+          </svg>
+          <div class="figure-caption">欧拉角用三次绕轴旋转描述姿态。航空中常用 Z-Y-X 顺序：先偏航（z）、再俯仰（y）、最后滚转（x）</div>
+        </div>
+
+        <p class="sub-h">单轴旋转矩阵（右手坐标系，逆时针为正）</p>
+        <div class="formula">R<sub>x</sub>(θ) = <span class="matrix"><span class="row"><span>1</span><span>0</span><span>0</span></span><span class="row"><span>0</span><span>cosθ</span><span>−sinθ</span></span><span class="row"><span>0</span><span>sinθ</span><span>cosθ</span></span></span></div>
+        <div class="formula">R<sub>y</sub>(θ) = <span class="matrix"><span class="row"><span>cosθ</span><span>0</span><span>sinθ</span></span><span class="row"><span>0</span><span>1</span><span>0</span></span><span class="row"><span>−sinθ</span><span>0</span><span>cosθ</span></span></span></div>
+        <div class="formula">R<sub>z</sub>(θ) = <span class="matrix"><span class="row"><span>cosθ</span><span>−sinθ</span><span>0</span></span><span class="row"><span>sinθ</span><span>cosθ</span><span>0</span></span><span class="row"><span>0</span><span>0</span><span>1</span></span></span></div>
+        <p>矩阵乘法规则：<strong>先作用放右侧，后作用放左侧</strong>（R = R<sub>B</sub>·R<sub>A</sub>）。</p>
+
+        <p class="sub-h">外在旋转 vs 内在旋转</p>
+        <ul class="simple">
+          <li><strong>外在（静态）</strong>：三次旋转绕固定世界轴。R<sub>外</sub> = R<sub>C</sub>(γ)·R<sub>B</sub>(β)·R<sub>A</sub>(α)</li>
+          <li><strong>内在（动态）</strong>：每次绕物体当前自身轴。R<sub>内</sub> = R<sub>A</sub>(α)·R<sub>B</sub>(β)·R<sub>C</sub>(γ)。工程中最常用。</li>
+        </ul>
+
+        <p class="sub-h">内在-外在等价定理</p>
+        <p><strong>定理</strong>：按顺序 X<sub>1</sub>→X<sub>2</sub>→X<sub>3</sub> 的内在旋转 ≡ 按顺序 X<sub>3</sub>→X<sub>2</sub>→X<sub>1</sub> 的外在旋转，角度数值相等。</p>
+        <p><strong>证明</strong>（两步情形，三步同理）：要证 内在 A→B = 外在 B→A。第一步绕自身 A 轴转 α，初始时自身 A 轴与世界 A 轴重合，矩阵 R<sub>A</sub>(α)。第二步绕旋转后的自身 B 轴转 β，用<strong>共轭变换</strong>：R<sub>绕自身B轴</sub> = R<sub>A</sub>(α)·R<sub>B</sub>(β)·R<sub>A</sub>(α)<sup>−1</sup>。总矩阵 R<sub>内</sub> = R<sub>A</sub>(α)·R<sub>B</sub>(β) = R<sub>外</sub>。证毕。</p>
+
+        <p class="sub-h">经典欧拉角 vs 泰特-布莱恩角</p>
+        <p>合法旋转顺序共 3×2×2 = 12 种，分两大类：</p>
+        <ul class="simple">
+          <li><strong>经典欧拉角</strong>（6 种）：首尾同轴（Z-X-Z, Z-Y-Z, X-Y-X, X-Z-X, Y-X-Y, Y-Z-Y）。角度命名：进动/章动/自转。奇点：中间角 = 0° 或 180°</li>
+          <li><strong>泰特-布莱恩角</strong>（6 种）：三轴全不同（Z-Y-X, Z-X-Y, X-Y-Z, X-Z-Y, Y-X-Z, Y-Z-X）。角度命名：偏航/俯仰/滚转。奇点：中间角 = ±90°</li>
+        </ul>
+        <p>Z-Y-X 内在旋转（航空标准）的前向向量：f = (cosα·cosβ, sinα·cosβ, −sinβ)<sup>T</sup>。</p>
+
+        <p class="sub-h">万向锁（Gimbal Lock）</p>
+        <p>中间角取到奇点值时，自由度从 3 退化为 2。</p>
+        <ul class="simple">
+          <li>数学本质：雅可比矩阵秩亏</li>
+          <li>拓扑本质：SO(3) ≅ RP<sup>3</sup>，由<strong>毛球定理</strong>，不存在全局光滑的三参数参数化——任何用三个实数表示三维旋转的方式都必然有奇点</li>
+          <li>规避：避开奇点区域，或改用四元数（SLERP 插值）</li>
+        </ul>
+
+        <p class="sub-h">罗德里格斯旋转公式</p>
+        <p>由奥林德·罗德里格斯 1840 年提出。设旋转轴为单位向量 k，向量 v 绕 k 按右手定则逆时针旋转 θ：</p>
+        <div class="formula">v' = v cosθ + (k × v) sinθ + k (k·v)(1 − cosθ)</div>
+        <p class="sub-h" style="font-size:0.95rem;">三项几何意义</p>
+        <ul class="simple">
+          <li>v cosθ：垂直于轴的平面上的投影缩放</li>
+          <li>(k × v) sinθ：切向分量，实现"转向"</li>
+          <li>k(k·v)(1−cosθ)：平行于轴的分量修正，沿轴方向不变</li>
+        </ul>
+        <p class="sub-h" style="font-size:0.95rem;">垂直轴简化</p>
+        <p>k·v = 0 时第三项消失：v' = v cosθ + (k × v) sinθ。旋转完全在垂直平面内，与二维旋转一致。</p>
+        <p>坐标展开（轴 k = (<span class="frac"><span class="num">−y</span><span class="den">r</span></span>, <span class="frac"><span class="num">x</span><span class="den">r</span></span>, 0)，r = √(x<sup>2</sup>+y<sup>2</sup>)）：</p>
+        <div class="formula">x' = x cosθ + <span class="frac"><span class="num">xz</span><span class="den">r</span></span> sinθ，&nbsp; y' = y cosθ + <span class="frac"><span class="num">yz</span><span class="den">r</span></span> sinθ，&nbsp; z' = z cosθ − r sinθ</div>
+        <p class="sub-h" style="font-size:0.95rem;">优势</p>
+        <ul class="simple">
+          <li>通用：适用于任意过原点旋转轴</li>
+          <li>无分支：只有叉乘、点积、线性组合</li>
+          <li>数值稳定：累计误差小</li>
+        </ul>
+        <div class="note">共轭变换是群论的核心技巧：绕"歪掉的轴"旋转 = 先转回标准位置 → 绕标准轴旋转 → 再转回去。不同行业对坐标轴和旋转顺序的约定差异极大（航空航天用 Z-Y-X 内在，Unity 用 Z-X-Y 左手系，ROS 用 X-Y-Z 外在），使用前务必确认约定。欧拉角与罗德里格斯公式是两种互补工具：欧拉角三角度参数化，直观但有奇点；罗德里格斯"轴+角"参数化，无奇点但参数冗余（轴有正负二义性）。</div>
+      </div>
+    </div>
+
+    <!-- 010：赋范可除代数 + 弗罗贝尼乌斯 + 赫尔维茨（三合一） -->
+    <div class="entry" id="def-10">
+      <div class="entry-header">
+        <span class="entry-date">010 · 抽象代数</span>
+        <span class="entry-title">赋范可除代数与维数定理</span>
+      </div>
+      <div class="entry-body">
+        <p>"n 维数系" = 实数域上的 n 维代数。要成为"好用的数系"，通常要求：有单位元 1、可除性（非零元有唯一逆元）、赋范性（|ab| = |a|·|b|）、（可选）交换律/结合律。保留性质越多，维数限制越严格。</p>
+
+        <p class="sub-h">为什么不存在三元数</p>
+        <p>用三次单位根构造三元数会产生<strong>零因子</strong>（两非零数相乘为 0），可除性失效。更深层：实系数奇次多项式必有实根，构造的代数天然可拆分。</p>
+
+        <p class="sub-h">弗罗贝尼乌斯定理</p>
+        <p><strong>定理</strong>：实数域上有限维、结合、可除的代数只有 3 种——实数 ℝ（1 维）、复数 ℂ（2 维）、四元数 ℍ（4 维）。三维结合可除代数不存在。</p>
+
+        <p class="sub-h">赫尔维茨定理（Hurwitz 定理）</p>
+        <p><strong>定理</strong>：实数域上有限维、赋范、<strong>交错</strong>的代数，维数只能是 1、2、4、8。</p>
+        <p>交错律：对任意 a, b，(aa)b = a(ab) 且 (ba)a = b(aa)——比结合律弱，但足以保证无零因子。</p>
+        <table style="width:100%; border-collapse:collapse; margin:10px 0; font-size:0.95rem;">
+          <tr style="border-bottom:1px solid var(--line);"><th style="text-align:left; padding:6px 8px;">维数</th><th style="text-align:left; padding:6px 8px;">数系</th><th style="text-align:left; padding:6px 8px;">交换</th><th style="text-align:left; padding:6px 8px;">结合</th><th style="text-align:left; padding:6px 8px;">可除</th></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:6px 8px;">1</td><td style="padding:6px 8px;">实数 ℝ</td><td style="padding:6px 8px;">✓</td><td style="padding:6px 8px;">✓</td><td style="padding:6px 8px;">✓</td></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:6px 8px;">2</td><td style="padding:6px 8px;">复数 ℂ</td><td style="padding:6px 8px;">✓</td><td style="padding:6px 8px;">✓</td><td style="padding:6px 8px;">✓</td></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:6px 8px;">4</td><td style="padding:6px 8px;">四元数 ℍ</td><td style="padding:6px 8px;">✗</td><td style="padding:6px 8px;">✓</td><td style="padding:6px 8px;">✓</td></tr>
+          <tr><td style="padding:6px 8px;">8</td><td style="padding:6px 8px;">八元数 𝕆</td><td style="padding:6px 8px;">✗</td><td style="padding:6px 8px;">✗（交错）</td><td style="padding:6px 8px;">✓</td></tr>
+        </table>
+        <p>16 维十六元数也存在，但连交错律都不满足，有大量零因子，已不具备"数系"的核心意义。</p>
+
+        <p class="sub-h">左正则表示</p>
+        <p>对 n 维数系中每个数 a，"左乘"操作 L<sub>a</sub>(b) = a·b 是 n 维线性变换，可用 n×n 矩阵表示。数与矩阵一一对应，信息量等价——但全体矩阵比数系大得多，只有一小类特殊矩阵才对应数系元素。例如复数 a+bi 对应矩阵 <span class="matrix"><span class="row"><span>a</span><span>−b</span></span><span class="row"><span>b</span><span>a</span></span></span>，只是所有 2×2 矩阵中"旋转+等比缩放"那一小类。</p>
+        <div class="note">赫尔维茨定理给出了"好用的数系"维数的完整答案：1、2、4、8，一个都不能多。这和 Bott 周期定理、除法代数的存在性紧密相关——1、2、4、8 这几个数在拓扑学中反复出现，背后是同一个深刻的数学结构。弗罗贝尼乌斯定理是赫尔维茨定理在"保留结合律"约束下的特例。</div>
+      </div>
+    </div>
+
+    <!-- 011：正多胞体 + 高维欧拉公式（合并） -->
+    <div class="entry" id="def-11">
+      <div class="entry-header">
+        <span class="entry-date">011 · 高维几何</span>
+        <span class="entry-title">正多胞体与高维欧拉公式</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">正多胞体（Regular Polytopes）</p>
+        <p>二维有无穷多种正多边形，三维只有 5 种柏拉图立体——那么更高维呢？直觉上"维度越高约束越强，种类应该越少"，但实际规律出人意料：</p>
+        <table class="data">
+          <tr><th>维度 n</th><th>正多胞体数量</th><th>名称</th></tr>
+          <tr><td>2</td><td>∞</td><td>正多边形（正三角形、正方形、正五边形……）</td></tr>
+          <tr><td>3</td><td>5</td><td>正四面体、正六面体、正八面体、正十二面体、正二十面体</td></tr>
+          <tr><td>4</td><td>6</td><td>正五胞体、正八胞体(超立方体)、正十六胞体、正二十四胞体、正一百二十胞体、正六百胞体</td></tr>
+          <tr><td>≥ 5</td><td>3</td><td>正单纯形、正超立方体、正正轴形（对应三维的正四面体、正方体、正八面体）</td></tr>
+        </table>
+        <p>数量从二维无穷 → 三维 5 → 四维 <strong>6（反弹！）</strong> → 五维及以上 3（收敛稳定）。四维反而比三维多 1 种，并非"维度越高数量越少"的单调趋势。</p>
+        <div class="insight">
+          <div class="insight-title">核心洞察</div>
+          <p>任意维度都能构造出 3 种"基础型"（单纯形、超立方体、正轴形），它们的对称性最简洁普适。正十二面体、正二十面体、四维正二十四胞体这类"特殊型"只在低维有足够几何空间满足"所有面/胞全等、所有顶点对称"的严格条件。五维以上空间的几何约束强到只容得下 3 种基础型。</p>
+        </div>
+
+        <p class="sub-h">高维欧拉公式</p>
+        <p>经典 V − E + F = 2 在高维凸多胞体上的推广。</p>
+        <p><strong>定理</strong>：对 n 维凸多胞体，设 N<sub>k</sub> 为 k 维面数量（k=0 顶点，k=1 棱，k=2 面，…），则：</p>
+        <div class="formula"><span class="op-sum"><span class="sup">n−1</span><span class="op">∑</span><span class="lim">k=0</span></span> (−1)<sup>k</sup> N<sub>k</sub> = 1 − (−1)<sup>n</sup></div>
+        <p class="sub-h">特例</p>
+        <ul class="simple">
+          <li>三维（n=3）：V − E + F = 2</li>
+          <li>四维（n=4）：V − E + F − C = 0</li>
+        </ul>
+        <p>右边 1−(−1)<sup>n</sup> 就是 n 维球的欧拉示性数。凸多胞体与球拓扑等价，故示性数相同。</p>
+        <div class="note">五维以上几何对称约束强到只容得下 3 种基础型。正十二面体、正二十面体、四维正二十四胞体这类"特殊型"只在低维有足够几何空间满足严格对称条件。欧拉示性数是拓扑不变量——"形状的DNA"，不管怎么揉捏变形（不撕裂不粘合），V−E+F 永远不变。高维欧拉公式把它推广到任意维度，是代数拓扑学的基石之一。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ====== 定理 ====== -->
+  <div class="page" id="section-2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">定理</h2>
+    </div>
+
+    <!-- 001 -->
+    <div class="entry" id="thm-1">
+      <div class="entry-header">
+        <span class="entry-date">001 · 射影几何</span>
+        <span class="entry-title">彭赛列闭合定理</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>定理</strong>：给定两条二次曲线 C（外）和 D（内），从 C 上任一点出发，交替作 D 的切线交 C，若某起点经 n 次后回到起点（形成彭赛列 n 边形），则 C 上任意起点都能作出闭合 n 边形。闭合性只由两曲线相对位置决定，与起点无关。</p>
+        <p class="sub-h">特例：双心四边形</p>
+        <div class="formula"><span class="frac"><span class="num">1</span><span class="den">(R−d)<sup>2</sup></span></span> + <span class="frac"><span class="num">1</span><span class="den">(R+d)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">r<sup>2</sup></span></span></div>
+        <p>其中 R 为外接圆半径，r 为内切圆半径，d 为圆心距。</p>
+        <div class="note">把"几何闭合"问题转化为纯粹"存在性"问题——只要找到一个闭合的，就有无穷多个。与椭圆光学性质、二次曲线配极理论紧密相关。</div>
+      </div>
+    </div>
+
+    <!-- 002 -->
+    <div class="entry" id="thm-2">
+      <div class="entry-header">
+        <span class="entry-date">002 · 几何 / 积分</span>
+        <span class="entry-title">霍迪奇定理</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>定理</strong>：取光滑凸闭合曲线 C，定长弦两端贴合 C 滑动一周。弦上定点把弦分为 p、q 两段，该定点划出内曲线 C'。则环形面积恒为：</p>
+        <div class="formula">S<sub>C</sub> − S<sub>C'</sub> = πpq</div>
+        <p>只与弦被分成的两段长度有关，与原曲线形状无关！p = q = L/2 时面积 = πL<sup>2</sup>/4，恰好等于直径为 L 的圆面积。</p>
+        <div class="note">背后是积分几何中的运动学公式（克罗夫顿公式一族），和曲线整体形状无关。</div>
+      </div>
+    </div>
+
+    <!-- 003 -->
+    <div class="entry" id="thm-3">
+      <div class="entry-header">
+        <span class="entry-date">003 · 数论</span>
+        <span class="entry-title">伯特兰-切比雪夫定理</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>定理</strong>：对任意 n ∈ ℤ⁺，(n, 2n] 内必存在素数。</p>
+        <p class="sub-h">应用：n! 不是完全平方数</p>
+        <p>(n/2, n] 中存在素数 p，在 n! 中只出现一次（2p &gt; n），指数为奇数。也证明了素数无穷（设最大素数 P，取 n = P，则 (P, 2P] 内有新素数，矛盾）。</p>
+        <div class="note">素数定理告诉我们 (n, 2n] 内素数个数约为 n/ln n。切比雪夫原始证明用 C(2n,n) 的素因子分析。</div>
+      </div>
+    </div>
+
+    <!-- 004：勒让德公式 + 库默尔定理（合并） -->
+    <div class="entry" id="thm-4">
+      <div class="entry-header">
+        <span class="entry-date">004 · 数论</span>
+        <span class="entry-title">勒让德公式与库默尔定理</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">勒让德公式</p>
+        <p>v<sub>p</sub>(n!) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">k=1</span></span> ⌊<span class="frac"><span class="num">n</span><span class="den">p<sup>k</sup></span></span>⌋ = <span class="frac"><span class="num">n − S<sub>p</sub>(n)</span><span class="den">p − 1</span></span></p>
+        <p>其中 S<sub>p</sub>(n) 为 n 在 p 进制下各位数字和。组合数推广：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) = <span class="frac"><span class="num">S<sub>p</sub>(m) + S<sub>p</sub>(n−m) − S<sub>p</sub>(n)</span><span class="den">p − 1</span></span>。</p>
+
+        <p class="sub-h">库默尔定理</p>
+        <p><strong>定理</strong>：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) 等于 p 进制下 m + (n−m) = n 时的<strong>进位次数</strong>。</p>
+        <div class="note">每进位一次，数字和减少 p−1，对应 v<sub>p</sub> 增加 1。勒让德公式用数字和，库默尔定理用进位次数，两者完全等价。与卢卡斯定理（005）呼应：m<sub>i</sub> &gt; n<sub>i</sub> 说明该位必然进位，v<sub>p</sub> ≥ 1，即 C(n,m) ≡ 0 mod p。</div>
+      </div>
+    </div>
+
+    <!-- 005 -->
+    <div class="entry" id="thm-5">
+      <div class="entry-header">
+        <span class="entry-date">005 · 数论 / 组合</span>
+        <span class="entry-title">卢卡斯定理</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>定理</strong>：设 p 为素数，n, m 的 p 进制展开为 n = <span class="op-sum"><span class="op">∑</span><span class="lim">i</span></span> n<sub>i</sub>p<sup>i</sup>，m = <span class="op-sum"><span class="op">∑</span><span class="lim">i</span></span> m<sub>i</sub>p<sup>i</sup>，则</p>
+        <div class="formula"><span class="binom"><span class="num">n</span><span class="den">m</span></span> ≡ <span class="op-prod"><span class="op">∏</span><span class="lim">i</span></span> <span class="binom"><span class="num">n<sub>i</sub></span><span class="den">m<sub>i</sub></span></span> &nbsp; (mod p)</div>
+        <p>若某位 m<sub>i</sub> &gt; n<sub>i</sub>，则 <span class="binom"><span class="num">n<sub>i</sub></span><span class="den">m<sub>i</sub></span> = 0，原式模 p 为 0。</p>
+        <div class="note">和勒让德公式与库默尔定理（004）呼应：m<sub>i</sub> &gt; n<sub>i</sub> 说明该位必然进位，v<sub>p</sub> ≥ 1，即 C(n,m) ≡ 0 mod p。把"大组合数模素数"拆成"小组合数相乘模素数"，竞赛中极其常用。</div>
+      </div>
+    </div>
+
+    <!-- 006 -->
+    <div class="entry" id="thm-6">
+      <div class="entry-header">
+        <span class="entry-date">006 · 代数</span>
+        <span class="entry-title">多项式消次与三次方程求根公式</span>
+      </div>
+      <div class="entry-body">
+        <p class="sub-h">n 次多项式消次</p>
+        <div class="formula">令 x = t − <span class="frac"><span class="num">a<sub>1</sub></span><span class="den">n a<sub>0</sub></span></span>，消去 x<sup>n−1</sup> 项</div>
+        <p class="sub-h">卡尔达诺公式</p>
+        <p>三次方程 ax<sup>3</sup>+bx<sup>2</sup>+cx+d=0，换元 x = y − <span class="frac"><span class="num">b</span><span class="den">3a</span></span> 化为 y<sup>3</sup>+py+q=0。令 y = u+v，设 uv = −<span class="frac"><span class="num">p</span><span class="den">3</span></span>，则 u<sup>3</sup>+v<sup>3</sup> = −q，u<sup>3</sup>v<sup>3</sup> = −<span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span>。A=u<sup>3</sup>, B=v<sup>3</sup> 是 t<sup>2</sup>+qt−<span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span>=0 的根。</p>
+        <p class="sub-h">判别式 Δ = <span class="frac"><span class="num">q<sup>2</sup></span><span class="den">4</span></span> + <span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span></p>
+        <ul class="simple">
+          <li>Δ &gt; 0：一实根 + 一对共轭复根</li>
+          <li>Δ = 0：重根，三实根</li>
+          <li>Δ &lt; 0：三互不等实根（不可约情形）</li>
+        </ul>
+        <p>记 ω = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> + <span class="frac"><span class="num">i√3</span><span class="den">2</span></span>（三次单位根），三根为：</p>
+        <div class="formula">y<sub>1</sub> = <sup>3</sup>√A + <sup>3</sup>√B，&nbsp; y<sub>2</sub> = ω<sup>3</sup>√A + ω<sup>23</sup>√B，&nbsp; y<sub>3</sub> = ω<sup>23</sup>√A + ω<sup>3</sup>√B</div>
+        <div class="note">"不可约情形"最出人意料：三根都是实数，但公式中必须引入复数才能表示——这是历史上虚数被认真对待的起因之一。</div>
+      </div>
+    </div>
+
+    <!-- 007 -->
+    <div class="entry" id="thm-7">
+      <div class="entry-header">
+        <span class="entry-date">007 · 分析 / 三角级数</span>
+        <span class="entry-title">三角级数求和公式</span>
+      </div>
+      <div class="entry-body">
+        <p>令 z = e<sup>ix</sup>，由等比级数及其导数分离实虚部：</p>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k sin(kx) = <span class="frac"><span class="num">(n+1) sin(nx) − n sin((n+1)x)</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k cos(kx) = <span class="frac"><span class="num">(n+1) cos(nx) − n cos((n+1)x) − 1</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
+        <p class="sub-h">特例 x = 2π/n（用单位根推导）</p>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k sin(2πk/n) = −<span class="frac"><span class="num">n</span><span class="den">2 tan(π/n)</span></span>，&nbsp; <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k cos(2πk/n) = <span class="frac"><span class="num">n</span><span class="den">2</span></span></div>
+        <p>设 ω = e<sup>2πi/n</sup>，T = <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> kω<sup>k</sup>，则 T(1−ω) = −nω，故 T = <span class="frac"><span class="num">n</span><span class="den">2</span></span> − i · <span class="frac"><span class="num">n</span><span class="den">2</span></span> · cot(π/n)。</p>
+        <div class="note">复数方法把三角求和变成代数运算。结果可用于计算正 n 边形顶点上等量电荷在中心的电场强度。</div>
+      </div>
+    </div>
+
+    <!-- 008 -->
+    <div class="entry" id="thm-8">
+      <div class="entry-header">
+        <span class="entry-date">008 · 组合数学</span>
+        <span class="entry-title">多项式定理</span>
+      </div>
+      <div class="entry-body">
+        <p>(a+b)<sup>2</sup> = a<sup>2</sup>+2ab+b<sup>2</sup>，(a+b+c)<sup>2</sup> = a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>+2ab+2ac+2bc——那么 (a+b+c+d+…)<sup>n</sup> 怎么展开？多项式定理给出答案。</p>
+        <div class="formula">(x<sub>1</sub> + x<sub>2</sub> + … + x<sub>m</sub>)<sup>n</sup> = <span class="op-sum"><span class="op">∑</span><span class="lim">n<sub>1</sub>+…+n<sub>m</sub>=n</span></span> <span class="frac"><span class="num">n!</span><span class="den">n<sub>1</sub>! n<sub>2</sub>! … n<sub>m</sub>!</span></span> · x<sub>1</sub><sup>n<sub>1</sub></sup> x<sub>2</sub><sup>n<sub>2</sub></sup> … x<sub>m</sub><sup>n<sub>m</sub></sup></div>
+        <p>求和遍历所有满足 n<sub>1</sub>+n<sub>2</sub>+…+n<sub>m</sub>=n 的非负整数组。系数 <span class="frac"><span class="num">n!</span><span class="den">n<sub>1</sub>! n<sub>2</sub>! … n<sub>m</sub>!</span></span> 称为<strong>多项式系数</strong>，记作 <span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span>。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">层级关系</div>
+          <ol>
+            <li><strong>多项式定理</strong>（m 个变量）⊃ 三项式定理（m=3）⊃ 二项式定理（m=2）</li>
+            <li>系数 = 把 n 个不同位置分成大小为 n<sub>1</sub>,…,n<sub>m</sub> 的 m 组的方案数</li>
+            <li>系数和 = m<sup>n</sup>（令所有变量取 1）</li>
+          </ol>
+        </div>
+
+        <p class="sub-h">特例</p>
+        <ul class="simple">
+          <li><strong>m=2（二项式定理）</strong>：系数 <span class="binom"><span class="num">n</span><span class="den">k, n−k</span></span> = <span class="binom"><span class="num">n</span><span class="den">k</span></span></li>
+          <li><strong>m=3（三项式定理）</strong>：(x+y+z)<sup>n</sup> = <span class="op-sum"><span class="op">∑</span><span class="lim">a+b+c=n</span></span> <span class="frac"><span class="num">n!</span><span class="den">a! b! c!</span></span> x<sup>a</sup>y<sup>b</sup>z<sup>c</sup></li>
+        </ul>
+
+        <p class="sub-h">组合意义</p>
+        <p>把 n 个因式相乘，每个因式选一个变量。要得到 x<sub>1</sub><sup>n<sub>1</sub></sup>x<sub>2</sub><sup>n<sub>2</sub></sup>…x<sub>m</sub><sup>n<sub>m</sub></sup>，相当于把 n 个位置分成大小为 n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub> 的 m 组——等价于多重集合 {n<sub>1</sub>·x<sub>1</sub>, n<sub>2</sub>·x<sub>2</sub>, …, n<sub>m</sub>·x<sub>m</sub>} 的全排列数。</p>
+
+        <p class="sub-h">系数和</p>
+        <p>令全部变量取 1：</p>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">n<sub>1</sub>+…+n<sub>m</sub>=n</span></span> <span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span> = m<sup>n</sup></div>
+        <p>m=2 时即二项式系数和 2<sup>n</sup>。</p>
+
+        <p class="sub-h">带系数的展开</p>
+        <p>若括号内带系数，如 (2a − b + 3c)<sup>5</sup> 中 a<sup>2</sup>b<sup>2</sup>c<sup>1</sup> 的系数：</p>
+        <div class="formula"><span class="binom"><span class="num">5</span><span class="den">2, 2, 1</span></span> · 2<sup>2</sup> · (−1)<sup>2</sup> · 3<sup>1</sup> = <span class="frac"><span class="num">5!</span><span class="den">2! 2! 1!</span></span> · 4 · 1 · 3 = 360</div>
+
+        <p class="sub-h">推导思路</p>
+        <p>把前 m−1 个变量打包：[(x<sub>1</sub>+…+x<sub>m−1</sub>) + x<sub>m</sub>]<sup>n</sup>，先用二项式定理展开，再对 (x<sub>1</sub>+…+x<sub>m−1</sub>)<sup>n−n<sub>m</sub></sup> 递归套用多项式定理——本质上是反复使用二项式定理。</p>
+        <div class="note">多项式定理是二项式、三项式的终极推广。多项式系数在组合数学、概率论（多项分布）、统计力学中频繁出现。与"有序整数分拆"不同：多项式系数是把 n 个不同位置分成指定大小的组，而 composition 是把 n 拆成有序的正整数之和。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ====== 趣题 ====== -->
+  <div class="page" id="section-3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">趣题</h2>
+    </div>
+
+    <!-- 001 -->
+    <div class="entry" id="puzzle-1">
+      <div class="entry-header">
+        <span class="entry-date">001 · 渐近分析 / 组合</span>
+        <span class="entry-title">中文读数长度的渐近行为</span>
+      </div>
+      <div class="entry-body">
+        <p>"100" 读作"一百"（2 字），"999" 读作"九百九十九"（5 字），"100000000" 读作"一亿"（2 字）……数越大读的字越多，但多多少？和数的大小是什么关系？</p>
+        <p>设 f(N) 为正整数 N 用中文普通话读出的汉字个数（不含"零"）。考察 f(N) 与 ln N 的比值极限。</p>
+
+        <p class="sub-h">中文读数规则</p>
+        <ul class="simple">
+          <li>数字字符：零一二三四五六七八九，各占 1 字</li>
+          <li>数位单位：十、百、千，各占 1 字</li>
+          <li>四位分节大单位：万(10<sup>4</sup>)、亿(10<sup>8</sup>)、兆(10<sup>12</sup>)……每 4k 位一个，各占 1 字</li>
+        </ul>
+
+        <p class="sub-h">渐近尺度</p>
+        <p>N ≈ 10<sup>m</sup> ⟹ ln N = m ln 10。中文按 4 位分块，共 ⌈<span class="frac"><span class="num">m</span><span class="den">4</span></span>⌉ 块。每块最多 4 个数字 + 3 个权（千、百、十）= 7 字，再加块尾大单位 1 字。故每块字数为常数，不随 m 增长：</p>
+        <div class="formula">f(N) = Θ(<span class="frac"><span class="num">m</span><span class="den">4</span></span>) = Θ(<span class="frac"><span class="num">ln N</span><span class="den">ln 10</span></span>)</div>
+        <p>比值 <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> 是有界量，但普通极限<strong>不存在</strong>——在两个常数之间震荡。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心结论</div>
+          <ol>
+            <li><strong>量级</strong>：f(N) ∝ log<sub>10</sub> N，即汉字数与十进制位数成正比</li>
+            <li><strong>上极限</strong>：全为 9 时取得，limsup = <span class="frac"><span class="num">2</span><span class="den">ln 10</span></span> ≈ <strong>0.869</strong></li>
+            <li><strong>下极限</strong>：1 后全 0 时取得，liminf = <span class="frac"><span class="num">1</span><span class="den">4 ln 10</span></span> ≈ <strong>0.109</strong></li>
+            <li><strong>结论</strong>：比值在 0.109 ~ 0.869 之间震荡，<strong>不收敛</strong></li>
+          </ol>
+        </div>
+
+        <p class="sub-h">上极限（全为 9，如 9999…9999）</p>
+        <p>N = 10<sup>4k</sup> − 1，即 4k 个 9。每块"九千九百九十九"= 7 字，k 块共 7k 字；块尾单位"万、亿…"共 k−1 个（末尾无单位）。总字数 f ≈ 8k：</p>
+        <div class="formula"><span class="op-lim">limsup<span class="sub">N→∞</span></span> <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> = <span class="frac"><span class="num">8k</span><span class="den">4k ln 10</span></span> = <strong><span class="frac"><span class="num">2</span><span class="den">ln 10</span></span> ≈ 0.869</strong></div>
+
+        <p class="sub-h">下极限（1 后面全 0，如一亿、一兆）</p>
+        <p>N = 10<sup>4k</sup>，读作"一兆…亿万"，仅 k+1 字（1 个数字 + k 个大单位）：</p>
+        <div class="formula"><span class="op-lim">liminf<span class="sub">N→∞</span></span> <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> = <span class="frac"><span class="num">k</span><span class="den">4k ln 10</span></span> = <strong><span class="frac"><span class="num">1</span><span class="den">4 ln 10</span></span> ≈ 0.109</strong></div>
+
+        <p class="sub-h">含"零"的情形</p>
+        <p>数字中间出现 0 时插入"零"字，但每块内部最多插 3 个零，每块总字数仍为常数。量级不变，f(N) = O(log N)，上下极限只略增大，仍无单一极限。</p>
+
+        <p class="sub-h">与英文对比</p>
+        <p>英文按 3 位分节（thousand, million, billion…），故 limsup 常数分母为 3 ln 10。中文 4 位分节是根源差异。</p>
+        <div class="note">这个问题把语言文字规则转化为渐近分析，很适合体会"离散结构的对数尺度"。一个有趣的对照："一亿"只有 2 个字，"99999999"却要读约 16 个字——数差不多大，读法长度差了 8 倍。</div>
+      </div>
+    </div>
+
+    <!-- 002 -->
+    <div class="entry" id="puzzle-2">
+      <div class="entry-header">
+        <span class="entry-date">002 · 几何 / 搜索论</span>
+        <span class="entry-title">雾中船问题（Bellman 失海问题）</span>
+      </div>
+      <div class="entry-body">
+        <p>船距直线海岸线垂直距离 1km，起雾后完全不知道岸的方位。设计一条连续航行路径，保证无论岸是哪条距自己 1 的直线都能碰到，且使<strong>最坏情况下</strong>的总航程最小（极小极大优化 min-max）。</p>
+
+        <p class="sub-h">几何转化</p>
+        <p>所有可能的海岸线 = 单位圆 r=1 的全部切线。一条直线到原点距离为 1 ⟺ 它是单位圆的切线。路径必须与每条切线在某点相交。目标：</p>
+        <div class="formula">min<sub>γ</sub> { max<sub>τ</sub> [路径 γ 走到与切线 τ 相交的路程] }</div>
+
+        <div class="figure">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- 单位圆 -->
+            <circle cx="200" cy="150" r="60" fill="none" stroke="#3a6b8a" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- 船的起始位置（原点） -->
+            <circle cx="200" cy="150" r="4" fill="#b45050"/>
+            <text x="208" y="146" font-size="10" fill="#b45050">船</text>
+            <!-- 几条切线（海岸线）-->
+            <line x1="60" y1="150" x2="340" y2="150" stroke="#6b6b6b" stroke-width="1"/>
+            <text x="344" y="154" font-size="9" fill="#6b6b6b">海岸线（切线）之一</text>
+            <!-- 切线2 -->
+            <line x1="140" y1="50" x2="300" y2="250" stroke="#6b6b6b" stroke-width="1"/>
+            <!-- 切线3 -->
+            <line x1="80" y1="80" x2="260" y2="260" stroke="#6b6b6b" stroke-width="1"/>
+            <!-- 最优路径示意（向外扩张的螺旋） -->
+            <path d="M 200 150 Q 230 120 260 140 Q 290 165 270 195 Q 240 220 210 200 Q 180 180 200 150" fill="none" stroke="#b45050" stroke-width="2"/>
+            <text x="270" y="120" font-size="10" fill="#b45050">最优路径（向外扩张）</text>
+            <!-- 切点标注 -->
+            <circle cx="140" cy="150" r="2" fill="#3a6b8a"/>
+            <text x="124" y="142" font-size="8" fill="#3a6b8a">切点</text>
+            <!-- 标注 -->
+            <text x="200" y="285" text-anchor="middle" font-size="10" fill="#2c2c2c">不必走到切点，可在圆外更早撞上切线</text>
+          </svg>
+          <div class="figure-caption">虚线为单位圆，灰线为可能的海岸线（单位圆的切线）。最优路径（红色）一边旋转一边向外扩张，在圆外拦截切线</div>
+        </div>
+
+        <p class="sub-h">朴素方案</p>
+        <ul class="simple">
+          <li><strong>方案 1</strong>：朝任一方向直行 1km——若刚好朝岸则 1km 到，最坏方向垂直于岸则永远碰不到，<strong>不可行</strong>。</li>
+          <li><strong>方案 2</strong>：阿基米德螺旋——一定能碰到，但最坏距离很大。</li>
+          <li><strong>方案 3</strong>：先直行 1km，再沿半径 1 的圆转圈——最坏航程 1 + <span class="frac"><span class="num">2</span><span class="den">3</span></span>π ≈ 5.712。</li>
+        </ul>
+
+        <p class="sub-h">核心误解拆解</p>
+        <p><strong>常见直觉</strong>：既然海岸线是单位圆的切线，那我走遍单位圆所有切点（即沿圆周走一圈）不就碰到每条切线了？</p>
+        <p><strong>关键错觉</strong>：路径经过切点 ≠ 路径只能在切点与切线相交。切线是无限长直线，除切点外还延伸到圆外大片区域——你完全不必跑到切点本身，<strong>可以在圆外某点更早撞上这条直线</strong>。</p>
+        <p>这就是最优策略的核心：<strong>一边旋转一边缓慢向外扩张</strong>（r(θ) > 1），让那些本来需要绕很远才碰到的切线被提前拦截，牺牲部分方向的最短航程来压缩最坏情形。</p>
+
+        <p class="sub-h">理论结果</p>
+        <ul class="simple">
+          <li><strong>严格下界</strong>：任何可行路径的最坏航程 ≥ 约 <strong>4.603</strong></li>
+          <li><strong>已知最好构造</strong>：数值近似达到约 <strong>4.605</strong>，非常贴近下界</li>
+          <li><strong>重要事实</strong>：至今没有解析闭式最优解，也没有严格证明 4.605 的路径就是全局最优——这是一个<strong>未完全解决的公开数学问题</strong></li>
+        </ul>
+        <p>对比：简单圆策略 ≈ 5.712，"先走 a 再绕单位圆"策略族内最优 ≈ 5.09，都远差于 4.605。</p>
+
+        <p class="sub-h">近缘问题（容易混淆）</p>
+        <ul class="simple">
+          <li><strong>Zalgaller 问题</strong>：人在宽为 2 的带状森林中，不知方位，求保证逃出的最坏路程——此问题有<strong>严格解析最优解</strong>（Zalgaller 1961），路径为直线段+圆弧拼接。</li>
+          <li>雾中船是半平面已知到边界距离=1 的情形，至今无解析最优。两者常被混淆。</li>
+        </ul>
+        <div class="note">Bellman 失海问题（1963 提出）是搜索几何中的经典开放问题。最反直觉之处在于：目标不是"访问所有切点"，而是"与每条切线相交于任意点"——向外扩张能更早拦截某些切线。极小极大的必要条件是多条不同海岸线同时达到同一最大路程 L（若只有一条岸最坏，还可微调路径压低它）。该问题没有初等闭式解，只能数值求解变分法方程组。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ====== 经验 ====== -->
+  <div class="page" id="section-4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">经验</h2>
+    </div>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-date">待补充</span>
+        <span class="entry-title">（暂无内容）</span>
+      </div>
+      <div class="entry-body">
+        <p class="placeholder">离当前水平较近、可能很快在正规体系中学到的知识暂存于此……</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<button class="back-top" id="backTop" title="返回顶部">↑</button>
+
+<script>
+// ===== 密码保护 =====
+(function() {
+  var PASSWORD = 'mn2026';
+  var overlay = document.getElementById('pwOverlay');
+  var input = document.getElementById('pwInput');
+  var btn = document.getElementById('pwBtn');
+  var err = document.getElementById('pwErr');
+  function unlock() {
+    document.body.classList.add('pw-unlocked');
+    overlay.style.display = 'none';
+    sessionStorage.setItem('pw_ok', '1');
+  }
+  if (sessionStorage.getItem('pw_ok') === '1') {
+    unlock();
+    return;
+  }
+  function check() {
+    if (input.value === PASSWORD) {
+      err.textContent = '';
+      unlock();
+    } else {
+      err.textContent = '密码错误，请重试';
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.addEventListener('click', check);
+  input.addEventListener('keydown', function(e) { if (e.key === 'Enter') check(); });
+  setTimeout(function() { input.focus(); }, 100);
+})();
+
+try {
+(function() {
+  const sidebar = document.getElementById('sidebar');
+  const navItems = Array.from(document.querySelectorAll('.nav-item'));
+  const entries = Array.from(document.querySelectorAll('.entry[id]'));
+  const searchInput = document.getElementById('searchInput');
+  const menuToggle = document.getElementById('menuToggle');
+  const overlay = document.getElementById('overlay');
+  const backTop = document.getElementById('backTop');
+
+  // ===== 平滑跳转 =====
+  function scrollToTarget(href) {
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', href);
+    }
+  }
+  navItems.forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      scrollToTarget(item.getAttribute('href'));
+      closeSidebar();
+    });
+  });
+
+  // ===== 滚动时高亮当前条目 =====
+  function updateActive() {
+    let currentId = '';
+    const offset = 120;
+    for (let i = 0; i < entries.length; i++) {
+      const rect = entries[i].getBoundingClientRect();
+      if (rect.top <= offset) currentId = entries[i].id;
+      else break;
+    }
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href') === '#' + currentId);
+    });
+  }
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { updateActive(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  updateActive();
+
+  // ===== 返回顶部按钮显隐 =====
+  window.addEventListener('scroll', () => {
+    backTop.style.opacity = window.scrollY > 400 ? '1' : '0';
+    backTop.style.pointerEvents = window.scrollY > 400 ? 'auto' : 'none';
+  }, { passive: true });
+  backTop.style.opacity = '0';
+  backTop.style.pointerEvents = 'none';
+  backTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== 搜索过滤 =====
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    navItems.forEach(item => {
+      const title = item.getAttribute('data-title') || item.textContent;
+      const match = !q || title.toLowerCase().includes(q);
+      item.style.display = match ? '' : 'none';
+    });
+  });
+
+  // ===== 移动端侧边栏 =====
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  }
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+  menuToggle.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // ===== 键盘导航：J 下一条，K 上一条 =====
+  function visibleNavItems() {
+    return navItems.filter(i => i.style.display !== 'none');
+  }
+  let currentIdx = -1;
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const items = visibleNavItems();
+    if (items.length === 0) return;
+    if (e.key === 'j' || e.key === 'J') {
+      e.preventDefault();
+      currentIdx = Math.min(currentIdx + 1, items.length - 1);
+      items[currentIdx].click();
+    } else if (e.key === 'k' || e.key === 'K') {
+      e.preventDefault();
+      currentIdx = Math.max(currentIdx - 1, 0);
+      items[currentIdx].click();
+    } else if (e.key === 'Escape') {
+      closeSidebar();
+    }
+  });
+
+  // 同步 currentIdx 到当前激活项
+  function syncCurrentIdx() {
+    const active = navItems.findIndex(i => i.classList.contains('active'));
+    if (active >= 0) {
+      const visible = visibleNavItems();
+      const pos = visible.indexOf(navItems[active]);
+      if (pos >= 0) currentIdx = pos;
+    }
+  }
+  const observer = new MutationObserver(syncCurrentIdx);
+  navItems.forEach(i => observer.observe(i, { attributes: true, attributeFilter: ['class'] }));
+})();
+} catch(e) { if (typeof console !== 'undefined' && console.error) console.error('Script error:', e); }
+</script>
+
+</body>
+</html>
