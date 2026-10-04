@@ -533,10 +533,10 @@
       <div class="entry-body">
         <p>朗伯 W 函数 W(z) 是 f(w) = w·e<sup>w</sup> 的反函数：x·e<sup>x</sup> = t ⟺ x = W(t)。分为两支：</p>
         <ul class="simple">
-          <li><strong>主分支 W<sub>0</sub>(z)</strong>：定义域 z ≥ −<span class="frac"><span class="num">1</span><span class="den">e</span></span> ≈ −0.36</li>
-          <li><strong>负分支 W₋<sub>1</sub>(z)</strong>：定义域 −<span class="frac"><span class="num">1</span><span class="den">e</span></span> ≤ z &lt; 0</li>
+          <li><strong>主分支 W<sub>0</sub>(z)</strong>：定义域 $z \ge -\dfrac{1}{e} \approx -0.36$</li>
+          <li><strong>负分支 W₋<sub>1</sub>(z)</strong>：定义域 $-\dfrac{1}{e} \le z < 0$</li>
         </ul>
-        <p>两支在 z = −<span class="frac"><span class="num">1</span><span class="den">e</span></span> 处汇合：W<sub>0</sub>(−<span class="frac"><span class="num">1</span><span class="den">e</span></span>) = W₋<sub>1</sub>(−<span class="frac"><span class="num">1</span><span class="den">e</span></span>) = −1。</p>
+        <p>两支在 $z = -\dfrac{1}{e}$ 处汇合：$W_0\left(-\dfrac{1}{e}\right) = W_{-1}\left(-\dfrac{1}{e}\right) = -1$。</p>
 
         <div class="figure">
           <svg viewBox="0 0 400 240" width="400" height="240">
@@ -869,7 +869,7 @@
         <p class="sub-h">伯努利数</p>
         <p>通过生成函数定义：</p>
         <div class="formula">$$\frac{x}{e^x - 1} = \sum_{n=0}^{\infty} \frac{B_n}{n!} x^n$$</div>
-        <p>前几个值：B<sub>0</sub> = 1，B<sub>1</sub> = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，B<sub>2</sub> = <span class="frac"><span class="num">1</span><span class="den">6</span></span>，B<sub>3</sub> = 0，B<sub>4</sub> = −<span class="frac"><span class="num">1</span><span class="den">30</span></span>，B<sub>5</sub> = 0，B<sub>6</sub> = <span class="frac"><span class="num">1</span><span class="den">42</span></span>，…</p>
+        <p>前几个值：$B_0 = 1$，$B_1 = -\dfrac{1}{2}$，$B_2 = \dfrac{1}{6}$，$B_3 = 0$，$B_4 = -\dfrac{1}{30}$，$B_5 = 0$，$B_6 = \dfrac{1}{42}$，…</p>
         <p>重要性质：除 B<sub>1</sub> 外，所有奇数下标伯努利数为 0（B<sub>2n+1</sub> = 0, n ≥ 1）。</p>
 
         <p class="sub-h">递推公式</p>
@@ -885,9 +885,9 @@
         <div class="formula">$$\sum_{k=a}^{b} f(k) = \int_a^b f(x)\,dx + \frac{f(a)+f(b)}{2} + \sum_{j=1}^{m} \frac{B_{2j}}{(2j)!} \left[f^{(2j-1)}(b) - f^{(2j-1)}(a)\right] + R_m$$</div>
         <p class="sub-h">经典应用</p>
         <ul class="simple">
-          <li>调和级数：H<sub>n</sub> = ln n + γ + <span class="frac"><span class="num">1</span><span class="den">2n</span></span> − <span class="frac"><span class="num">1</span><span class="den">12n<sup>2</sup></span></span> + …</li>
-          <li>斯特林公式：ln n! ≈ n ln n − n + <span class="frac"><span class="num">ln(2πn)</span><span class="den">2</span></span> + <span class="frac"><span class="num">1</span><span class="den">12n</span></span> − …</li>
-          <li>ζ(2n) = <span class="frac"><span class="num">(−1)<sup>n+1</sup> B<sub>2n</sub> (2π)<sup>2n</sup></span><span class="den">2·(2n)!</span></span></li>
+          <li>调和级数：$H_n = \ln n + \gamma + \dfrac{1}{2n} - \dfrac{1}{12n^2} + \cdots$</li>
+          <li>斯特林公式：$\ln n! \approx n\ln n - n + \dfrac{\ln(2\pi n)}{2} + \dfrac{1}{12n} - \cdots$</li>
+          <li>$\zeta(2n) = \dfrac{(-1)^{n+1} B_{2n} (2\pi)^{2n}}{2 \cdot (2n)!}$</li>
         </ul>
         <div class="note">伯努利数把幂和求和、欧拉-麦克劳林公式、黎曼 zeta 函数偶数值、费马大定理的正则素数等看似无关的领域串联在一起。分母的素数结构是数论中非常漂亮的结果。欧拉-麦克劳林公式是"求和 ≈ 积分 + 修正项"的精确化，修正项系数恰好是伯努利数——这也是伯努利数出现在那么多看似不相关公式里的原因。</div>
 
@@ -948,7 +948,7 @@
         <div class="formula">$$\Gamma(z) = \int_0^{+\infty} t^{z-1} e^{-t}\,dt \quad (\operatorname{Re} z > 0)$$</div>
         <ul class="simple">
           <li>递推：Γ(z+1) = z Γ(z)；正整数：Γ(n+1) = n!</li>
-          <li>特殊值：Γ(<span class="frac"><span class="num">1</span><span class="den">2</span></span>) = √π</li>
+          <li>特殊值：$\Gamma\left(\dfrac{1}{2}\right) = \sqrt{\pi}$</li>
         </ul>
 
         <p class="sub-h">Beta 函数</p>
@@ -959,7 +959,7 @@
 
         <p class="sub-h">余元公式（Euler 反射公式）</p>
         <div class="formula">$$\Gamma(z) \Gamma(1-z) = \frac{\pi}{\sin(\pi z)}$$</div>
-        <p>令 z = <span class="frac"><span class="num">1</span><span class="den">2</span></span> 即得 Γ(<span class="frac"><span class="num">1</span><span class="den">2</span></span>) = √π。揭示了 Gamma 函数与三角函数的深刻联系。</p>
+        <p>令 $z = \dfrac{1}{2}$ 即得 $\Gamma\left(\dfrac{1}{2}\right) = \sqrt{\pi}$。揭示了 Gamma 函数与三角函数的深刻联系。</p>
 
         <p class="sub-h">勒让德加倍公式</p>
         <div class="formula">$$\Gamma(2z) = \frac{2^{2z-1}}{\sqrt{\pi}} \cdot \Gamma(z) \cdot \Gamma\left(z + \frac{1}{2}\right)$$</div>
