@@ -316,6 +316,20 @@
     .entry { margin-bottom: 36px; padding-left: 14px; }
   }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
 </head>
 <body>
 
@@ -416,7 +430,7 @@
       <div class="entry-body">
         <p>一个实数的小数无限展开中，任意 k 位数字串出现的极限概率均等，即所有 10<sup>k</sup> 种等长串以相同频率出现，称该数为十进制正规数。</p>
         <p>严格定义：设实数 x ∈ (0, 1) 的十进制小数展开为 x = 0.a<sub>1</sub>a<sub>2</sub>a<sub>3</sub>…a<sub>n</sub>…，对任意长度 k ≥ 1，任意长度为 k 的数字串 s ∈ {0, …, 9}<sup>k</sup>，记 N<sub>s</sub>(n) 为前 n 位中 s 出现的次数。若</p>
-        <div class="formula"><span class="op-lim">lim<span class="sub">n→∞</span></span> <span class="frac"><span class="num">N<sub>s</sub>(n)</span><span class="den">n</span></span> = <span class="frac"><span class="num">1</span><span class="den">10<sup>k</sup></span></span></div>
+        <div class="formula">$$\lim_{n\to\infty} \frac{N_s(n)}{n} = \frac{1}{10^k}$$</div>
         <p>对一切 s 成立，则称 x 为十进制正规数。同理可定义 b 进制正规数。</p>
 
         <p class="sub-h">正规数的构造性结果</p>
@@ -425,7 +439,7 @@
         <p class="sub-h" style="font-size:0.95rem;">达文波特-厄尔多斯多项式族</p>
         <p>任取非常数整系数多项式 f(n)（f(n)→+∞），则 0.f(1)f(2)f(3)… 是正规数。如 f(n)=n, n<sup>2</sup>, 2n+1。</p>
         <p class="sub-h" style="font-size:0.95rem;">Stoneham 常数族</p>
-        <div class="formula">α<sub>b,c</sub> = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">1</span><span class="den">c<sup>k</sup> · b<sup>c<sup>k</sup></sup></span></span></div>
+        <div class="formula">$$\alpha_{b,c} = \sum_{k=1}^{\infty} \frac{1}{c^k \cdot b^{c^k}}$$</div>
         <p>在 b 进制下正规，但在 bc 进制下不正规——正规性是依赖于进制的性质。</p>
         <div class="note">几乎所有实数都是正规数（测度为 1），但具体证明某个常见常数（如 π、√2、e）是正规数却极其困难——至今无人能证。几乎所有数都满足，但你一个也举不出来。能构造出的正规数不多，大多"人为拼出来"。Stoneham 常数揭示了进制依赖性：一个数可以在二进制下正规，在六进制下却不正规。</div>
 
@@ -434,7 +448,7 @@
         <p>这个定理的反直觉之处在于：它保证了正规数"遍地都是"，但我们却连一个自然出现的常数（π、e、√2）的正规性都证明不了。这是"存在性证明 vs 构造性证明"差距的经典案例。</p>
 
         <p class="sub-h">外尔等分布准则</p>
-        <p>正规性与等分布密切相关。赫尔曼·外尔 1916 年证明：序列 {a<sub>n</sub>} 在 [0,1) 上等分布 ⟺ 对任意非零整数 k，<span class="op-lim">lim<span class="sub">N→∞</span></span> <span class="frac"><span class="num">1</span><span class="den">N</span></span> <span class="op-sum"><span class="sup">N</span><span class="op">∑</span><span class="lim">n=1</span></span> e<sup>2πik·a<sub>n</sub></sup> = 0。</p>
+        <p>正规性与等分布密切相关。赫尔曼·外尔 1916 年证明：序列 {a<sub>n</sub>} 在 [0,1) 上等分布 ⟺ 对任意非零整数 k，$\displaystyle \lim_{N\to\infty} \frac{1}{N} \sum_{n=1}^{N} e^{2\pi i k \cdot a_n} = 0$。</p>
         <p>对正规数 x，序列 {10<sup>n</sup>x mod 1} 在 [0,1) 上等分布。这给出了检验正规性的解析工具：计算指数和的极限。例如 {nα mod 1} 对无理数 α 等分布（外尔定理），但这只说明 x = 0.α2α3α… 形式的数在某种意义下"均匀"，不等于十进制正规。</p>
 
         <p class="sub-h">进制依赖性：Stoneham 常数的震撼</p>
@@ -462,7 +476,7 @@
       <div class="entry-body">
         <p class="sub-h">斐波那契进制（泽肯多夫表示）</p>
         <p>以斐波那契数列为位权的记数系统。约定 F<sub>1</sub> = 1，F<sub>2</sub> = 2，F<sub>3</sub> = 3，F<sub>4</sub> = 5，F<sub>5</sub> = 8…… 任意正整数 N 可写作：</p>
-        <div class="formula">N = <span class="op-sum"><span class="op">∑</span><span class="lim">k</span></span> d<sub>k</sub> F<sub>k</sub>，其中 d<sub>k</sub> ∈ {0, 1}</div>
+        <div class="formula">$$N = \sum_{k} d_k F_k, \quad d_k \in \{0, 1\}$$</div>
         <p>且<strong>不允许出现连续的 1</strong>。例如 10101<sub>Fib</sub> = F<sub>5</sub> + F<sub>3</sub> + F<sub>1</sub> = 8 + 3 + 1 = 12。进位规则：011<sub>Fib</sub> → 100<sub>Fib</sub>。</p>
 
         <p class="sub-h">泽肯多夫定理</p>
@@ -558,8 +572,8 @@
         <p class="sub-h">基本性质</p>
         <ul class="simple">
           <li>W(z) ~ ln z − ln ln z，当 z → +∞</li>
-          <li>导数：W'(z) = <span class="frac"><span class="num">W(z)</span><span class="den">z(1 + W(z))</span></span>，W'(0) = 1</li>
-          <li>泰勒展开：W<sub>0</sub>(z) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">n=1</span></span> <span class="frac"><span class="num">(−n)<sup>n−1</sup></span><span class="den">n!</span></span> z<sup>n</sup>，|z| &lt; <span class="frac"><span class="num">1</span><span class="den">e</span></span></li>
+          <li>导数：$W'(z) = \dfrac{W(z)}{z(1+W(z))}$，$W'(0) = 1$</li>
+          <li>泰勒展开：$W_0(z) = \displaystyle\sum_{n=1}^{\infty} \frac{(-n)^{n-1}}{n!} z^n$，$|z| < \dfrac{1}{e}$</li>
         </ul>
         <p class="sub-h">Ω 常数</p>
         <p>Ω = W<sub>0</sub>(1) ≈ 0.567，满足 e<sup>−Ω</sup> = Ω。Ω 是超越数。其他数值：W<sub>0</sub>(2) ≈ 0.853，W<sub>0</sub>(3) ≈ 1.05。</p>
@@ -573,7 +587,7 @@
 
         <p class="sub-h">W 函数与树计数（Cayley 公式）</p>
         <p>W 函数的泰勒展开系数与<strong>有根标号树</strong>的计数密切相关。Cayley 公式：n 个顶点的有根标号树有 n<sup>n−1</sup> 棵。W 函数的展开：</p>
-        <div class="formula">W<sub>0</sub>(z) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">n=1</span></span> <span class="frac"><span class="num">(−n)<sup>n−1</sup></span><span class="den">n!</span></span> z<sup>n</sup> = z − z<sup>2</sup> + <span class="frac"><span class="num">3</span><span class="den">2</span></span>z<sup>3</sup> − <span class="frac"><span class="num">8</span><span class="den">3</span></span>z<sup>4</sup> + …</div>
+        <div class="formula">$$W_0(z) = \sum_{n=1}^{\infty} \frac{(-n)^{n-1}}{n!} z^n = z - z^2 + \frac{3}{2}z^3 - \frac{8}{3}z^4 + \cdots$$</div>
         <p>系数 (−n)<sup>n−1</sup>/n! 的绝对值正是 n<sup>n−1</sup>/n!，即 n 个顶点有根树数除以 n!。这是组合数学中"生成函数 ↔ 计数"的漂亮联系。</p>
 
         <p class="sub-h">应用场景</p>
@@ -627,9 +641,9 @@
 
         <p class="sub-h">幂塔的导数公式</p>
         <p>对 y<sub>n</sub> = x ↑↑ n 求导。由 y<sub>n</sub> = x<sup>y<sub>n−1</sub></sup> = e<sup>y<sub>n−1</sub>·ln x</sup>，用链式法则：</p>
-        <div class="formula">y<sub>n</sub>' = y<sub>n</sub> · ( y<sub>n−1</sub>' · ln x + <span class="frac"><span class="num">y<sub>n−1</sub></span><span class="den">x</span></span> )</div>
+        <div class="formula">$$y_n' = y_n \cdot \left( y_{n-1}' \cdot \ln x + \frac{y_{n-1}}{x} \right)$$</div>
         <p>这是一个递推式。反复代入展开，可得显式求和公式：</p>
-        <div class="formula">y<sub>n</sub>' = <span class="frac"><span class="num">1</span><span class="den">x</span></span> · <span class="op-sum"><span class="sup">n−1</span><span class="op">∑</span><span class="lim">k=0</span></span> ( y<sub>n</sub> · y<sub>n−1</sub> · … · y<sub>n−k</sub> ) · (ln x)<sup>k</sup></div>
+        <div class="formula">$$y_n' = \frac{1}{x} \sum_{k=0}^{n-1} \left( y_n \cdot y_{n-1} \cdots y_{n-k} \right) \cdot (\ln x)^k$$</div>
         <p>即每一项是"从 y<sub>n</sub> 起连续 k+1 层的乘积"乘以 (ln x)<sup>k</sup>，再除以 x。</p>
 
         <p class="sub-h">验证：前几层</p>
@@ -670,7 +684,7 @@
 
         <p class="sub-h">无穷幂塔与朗伯 W 函数</p>
         <p>当层数趋于无穷时，幂塔 h(x) = x<sup>x<sup>x<sup>⋯</sup></sup></sup> 满足不动点方程 h = x<sup>h</sup>。两边取对数：ln h = h ln x，即 (−h ln x)·e<sup>−h ln x</sup> = −ln x。用 W 函数解得：</p>
-        <div class="formula">h(x) = <span class="frac"><span class="num">W(−ln x)</span><span class="den">−ln x</span></span></div>
+        <div class="formula">$$h(x) = \frac{W(-\ln x)}{-\ln x}$$</div>
         <p><strong>收敛域</strong>：无穷幂塔仅在 e<sup>−e</sup> ≈ 0.066 ≤ x ≤ e<sup><span class="frac"><span class="num">1</span><span class="den">e</span></span></sup> ≈ 1.444 时收敛。x = e<sup><span class="frac"><span class="num">1</span><span class="den">e</span></span></sup> 时 h = e；x = e<sup>−e</sup> 时 h = <span class="frac"><span class="num">1</span><span class="den">e</span></span>。</p>
 
         <p class="sub-h">特殊值</p>
@@ -684,7 +698,7 @@
 
         <p class="sub-h">无穷幂塔与收敛性</p>
         <p>令 y = x<sup>x<sup>x<sup>·</sup>·</sup>·</sup>（无穷层）。若收敛，则满足 y = x<sup>y</sup>。两边取对数：ln y = y ln x，即 (ln y)·e<sup>−ln y</sup> = ln x。令 u = −ln y，则 u·e<sup>u</sup> = −ln x，故 u = W(−ln x)，从而：</p>
-        <div class="formula">y = <span class="frac"><span class="num">W(−ln x)</span><span class="den">−ln x</span></span></div>
+        <div class="formula">$$y = \frac{W(-\ln x)}{-\ln x}$$</div>
         <p>欧拉 1783 年证明：无穷幂塔收敛当且仅当 <strong>e<sup>−e</sup> ≤ x ≤ e<sup>1/e</sup></strong>（约 0.066 ≤ x ≤ 1.445）。这个区间之窄令人意外——x=2 的无穷幂塔发散到无穷大，而 x=1.4 收敛到约 1.89。</p>
         <p><strong>边界值</strong>：x = e<sup>1/e</sup> 时，y = e；x = e<sup>−e</sup> 时，y = 1/e。</p>
 
@@ -728,7 +742,7 @@
       <div class="entry-body">
         <p>一条线段有 1 维，一个正方形有 2 维——这是直觉。但如果一个图形"比线粗一点，又比面薄一点"，它该有几维？分形几何给出了答案：维数可以是分数。</p>
         <p>对严格自相似的分形图形，若整体放大 k 倍后可拆成 N 个与原集合全等的子集，则豪斯多夫维数：</p>
-        <div class="formula">d = <span class="frac"><span class="num">ln N</span><span class="den">ln k</span></span></div>
+        <div class="formula">$$d = \frac{\ln N}{\ln k}$$</div>
 
         <div class="figure">
           <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
@@ -805,7 +819,7 @@
         <p>m = 2 时退化为斐波那契递推。隔板法直接给出无限制时共 2<sup>n−1</sup> 种。</p>
         <p class="sub-h">② 通项（特征方程法）</p>
         <p>以 m=2 为例：λ<sup>2</sup> = λ + 1，解得 λ<sub>1</sub> = (1+√5)/2, λ<sub>2</sub> = (1−√5)/2，</p>
-        <div class="formula">a<sub>n</sub> = <span class="frac"><span class="num">1</span><span class="den">√5</span></span> · [ <span class="frac"><span class="num">1 + √5</span><span class="den">2</span></span><sup>n+1</sup> − <span class="frac"><span class="num">1 − √5</span><span class="den">2</span></span><sup>n+1</sup> ]</div>
+        <div class="formula">$$a_n = \frac{1}{\sqrt{5}} \cdot \left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right]$$</div>
         <div class="note">递推法和特征方程法给出了更一般的框架——当各部分大小有限制时，这套方法依然适用。</div>
 
         <p class="sub-h">Composition vs Partition：顺序是否重要</p>
@@ -821,7 +835,7 @@
 
         <p class="sub-h">生成函数</p>
         <p>composition 的生成函数极其简洁。由于每部分是正整数，且顺序重要，生成函数为：</p>
-        <div class="formula">C(x) = <span class="frac"><span class="num">1</span><span class="den">1 − (x + x<sup>2</sup> + x<sup>3</sup> + …)</span></span> = <span class="frac"><span class="num">1</span><span class="den">1 − x/(1−x)</span></span> = <span class="frac"><span class="num">1 − x</span><span class="den">1 − 2x</span></span></div>
+        <div class="formula">$$C(x) = \frac{1}{1 - (x + x^2 + x^3 + \cdots)} = \frac{1}{1 - x/(1-x)} = \frac{1-x}{1-2x}$$</div>
         <p>展开得 C(x) = 1 + x + 2x<sup>2</sup> + 4x<sup>3</sup> + 8x<sup>4</sup> + …，系数 2<sup>n−1</sup> 正是 composition 数。若限制每部分 ≤ m，生成函数变为 1/(1 − x(1−x<sup>m</sup>)/(1−x))，对应前面的递推关系。</p>
 
         <p class="sub-h">有限制的 composition</p>
@@ -854,21 +868,21 @@
       <div class="entry-body">
         <p class="sub-h">伯努利数</p>
         <p>通过生成函数定义：</p>
-        <div class="formula"><span class="frac"><span class="num">x</span><span class="den">e<sup>x</sup> − 1</span></span> = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">n=0</span></span> <span class="frac"><span class="num">B<sub>n</sub></span><span class="den">n!</span></span> x<sup>n</sup></div>
+        <div class="formula">$$\frac{x}{e^x - 1} = \sum_{n=0}^{\infty} \frac{B_n}{n!} x^n$$</div>
         <p>前几个值：B<sub>0</sub> = 1，B<sub>1</sub> = −<span class="frac"><span class="num">1</span><span class="den">2</span></span>，B<sub>2</sub> = <span class="frac"><span class="num">1</span><span class="den">6</span></span>，B<sub>3</sub> = 0，B<sub>4</sub> = −<span class="frac"><span class="num">1</span><span class="den">30</span></span>，B<sub>5</sub> = 0，B<sub>6</sub> = <span class="frac"><span class="num">1</span><span class="den">42</span></span>，…</p>
         <p>重要性质：除 B<sub>1</sub> 外，所有奇数下标伯努利数为 0（B<sub>2n+1</sub> = 0, n ≥ 1）。</p>
 
         <p class="sub-h">递推公式</p>
-        <div class="formula">B<sub>n</sub> = −<span class="frac"><span class="num">1</span><span class="den">n+1</span></span> · <span class="op-sum"><span class="sup">n−1</span><span class="op">∑</span><span class="lim">k=0</span></span> <span class="binom"><span class="num">n+1</span><span class="den">k</span></span> · B<sub>k</sub></div>
+        <div class="formula">$$B_n = -\frac{1}{n+1} \sum_{k=0}^{n-1} \binom{n+1}{k} B_k$$</div>
 
         <p class="sub-h">冯·施陶特-克劳森定理</p>
         <p>B<sub>2n</sub> 的分母恰好是所有满足 p−1 | 2n 的素数 p 的乘积：</p>
-        <div class="formula">denom(B<sub>2n</sub>) = <span class="op-prod"><span class="op">∏</span><span class="lim">p−1 | 2n</span></span> p</div>
+        <div class="formula">$$\operatorname{denom}(B_{2n}) = \prod_{p-1 \mid 2n} p$$</div>
         <p>例如：denom(B<sub>2</sub>) = 6，denom(B<sub>4</sub>) = 30，denom(B<sub>6</sub>) = 42，denom(B<sub>12</sub>) = 2730。</p>
 
         <p class="sub-h">欧拉-麦克劳林公式</p>
         <p>连接离散求和与连续积分的桥梁：</p>
-        <div class="formula"><span class="op-sum"><span class="sup">b</span><span class="op">∑</span><span class="lim">k=a</span></span> f(k) = <span class="op-int"><span class="sup">b</span><span class="op">∫</span><span class="sub">a</span></span> f(x) dx + <span class="frac"><span class="num">f(a) + f(b)</span><span class="den">2</span></span> + <span class="op-sum"><span class="sup">m</span><span class="op">∑</span><span class="lim">j=1</span></span> <span class="frac"><span class="num">B<sub>2j</sub></span><span class="den">(2j)!</span></span> · [f<sup>(2j−1)</sup>(b) − f<sup>(2j−1)</sup>(a)] + R<sub>m</sub></div>
+        <div class="formula">$$\sum_{k=a}^{b} f(k) = \int_a^b f(x)\,dx + \frac{f(a)+f(b)}{2} + \sum_{j=1}^{m} \frac{B_{2j}}{(2j)!} \left[f^{(2j-1)}(b) - f^{(2j-1)}(a)\right] + R_m$$</div>
         <p class="sub-h">经典应用</p>
         <ul class="simple">
           <li>调和级数：H<sub>n</sub> = ln n + γ + <span class="frac"><span class="num">1</span><span class="den">2n</span></span> − <span class="frac"><span class="num">1</span><span class="den">12n<sup>2</sup></span></span> + …</li>
@@ -879,7 +893,7 @@
 
         <p class="sub-h">Faulhaber 公式（幂和）</p>
         <p>伯努利数最初来源于求前 n 个正整数的 k 次幂和。Faulhaber 公式：</p>
-        <div class="formula"><span class="op-sum"><span class="sup">n</span><span class="op">∑</span><span class="lim">j=1</span></span> j<sup>k</sup> = <span class="frac"><span class="num">1</span><span class="den">k+1</span></span> <span class="op-sum"><span class="sup">k</span><span class="op">∑</span><span class="lim">j=0</span></span> (−1)<sup>j</sup> <span class="binom"><span class="num">k+1</span><span class="den">j</span></span> B<sub>j</sub> n<sup>k+1−j</sup></div>
+        <div class="formula">$$\sum_{j=1}^{n} j^k = \frac{1}{k+1} \sum_{j=0}^{k} (-1)^j \binom{k+1}{j} B_j \, n^{k+1-j}$$</div>
         <p>前几个例子：</p>
         <ul class="simple">
           <li>Σ j = n(n+1)/2 = (n<sup>2</sup>+n)/2</li>
@@ -891,7 +905,7 @@
 
         <p class="sub-h">伯努利数与黎曼 zeta 函数</p>
         <p>伯努利数与黎曼 zeta 函数在偶数点的值有精确关系：</p>
-        <div class="formula">ζ(2n) = <span class="frac"><span class="num">(−1)<sup>n+1</sup> B<sub>2n</sub> (2π)<sup>2n</sup></span><span class="den">2 · (2n)!</span></span></div>
+        <div class="formula">$$\zeta(2n) = \frac{(-1)^{n+1} B_{2n} (2\pi)^{2n}}{2 \cdot (2n)!}$$</div>
         <p>前几个值：</p>
         <ul class="simple">
           <li>ζ(2) = π<sup>2</sup>/6 ≈ 1.6449（巴塞尔问题，欧拉 1735 年解决）</li>
@@ -907,7 +921,7 @@
 
         <p class="sub-h">欧拉-麦克劳林公式的余项与渐近级数</p>
         <p>欧拉-麦克劳林公式中的余项 R<sub>m</sub> 满足：</p>
-        <div class="formula">R<sub>m</sub> = (−1)<sup>m+1</sup> <span class="op-int"><span class="sup">b</span><span class="op">∫</span><span class="sub">a</span></span> <span class="frac"><span class="num">B<sub>2m</sub>({x})</span><span class="den">(2m)!</span></span> f<sup>(2m)</sup>(x) dx</div>
+        <div class="formula">$$R_m = (-1)^{m+1} \int_a^b \frac{B_{2m}(\{x\})}{(2m)!} f^{(2m)}(x)\,dx$$</div>
         <p>其中 B<sub>2m</sub>({x}) 是周期化的伯努利多项式。一个重要现象：当 m → ∞ 时，欧拉-麦克劳林级数通常<strong>发散</strong>，但前几项的截断误差极小——这是<strong>渐近级数</strong>的典型例子。对于调和级数，取前几项就能得到极高精度的 H<sub>n</sub> 近似。</p>
 
         <div class="keypoint">
@@ -931,34 +945,34 @@
       </div>
       <div class="entry-body">
         <p class="sub-h">Gamma 函数</p>
-        <div class="formula">Γ(z) = ∫<sub>0</sub><sup>+∞</sup> t<sup>z−1</sup> e<sup>−t</sup> dt &nbsp; (Re z &gt; 0)</div>
+        <div class="formula">$$\Gamma(z) = \int_0^{+\infty} t^{z-1} e^{-t}\,dt \quad (\operatorname{Re} z > 0)$$</div>
         <ul class="simple">
           <li>递推：Γ(z+1) = z Γ(z)；正整数：Γ(n+1) = n!</li>
           <li>特殊值：Γ(<span class="frac"><span class="num">1</span><span class="den">2</span></span>) = √π</li>
         </ul>
 
         <p class="sub-h">Beta 函数</p>
-        <div class="formula">B(p, q) = <span class="op-int"><span class="sup">1</span><span class="op">∫</span><span class="sub">0</span></span> t<sup>p−1</sup>(1−t)<sup>q−1</sup> dt = <span class="frac"><span class="num">Γ(p) Γ(q)</span><span class="den">Γ(p+q)</span></span></div>
+        <div class="formula">$$B(p, q) = \int_0^1 t^{p-1}(1-t)^{q-1}\,dt = \frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}$$</div>
         <p>与组合数的联系：B(k+1, n−k+1) = <span class="frac"><span class="num">1</span><span class="den">(n+1) <span class="binom"><span class="num">n</span><span class="den">k</span></span></span></span>。</p>
         <p>三角函数积分的一般公式（华里士公式的推广）：</p>
-        <div class="formula"><span class="op-int"><span class="sup">π/2</span><span class="op">∫</span><span class="sub">0</span></span> sin<sup>m</sup>x cos<sup>n</sup>x dx = <span class="frac"><span class="num">1</span><span class="den">2</span></span> · <span class="frac"><span class="num">Γ(<span class="frac"><span class="num">m+1</span><span class="den">2</span></span>) Γ(<span class="frac"><span class="num">n+1</span><span class="den">2</span></span>)</span><span class="den">Γ(<span class="frac"><span class="num">m+n+2</span><span class="den">2</span></span>)</span></span></div>
+        <div class="formula">$$\int_0^{\pi/2} \sin^m x \cos^n x\,dx = \frac{1}{2} \cdot \frac{\Gamma\left(\frac{m+1}{2}\right) \Gamma\left(\frac{n+1}{2}\right)}{\Gamma\left(\frac{m+n+2}{2}\right)}$$</div>
 
         <p class="sub-h">余元公式（Euler 反射公式）</p>
-        <div class="formula">Γ(z) Γ(1−z) = <span class="frac"><span class="num">π</span><span class="den">sin(π z)</span></span></div>
+        <div class="formula">$$\Gamma(z) \Gamma(1-z) = \frac{\pi}{\sin(\pi z)}$$</div>
         <p>令 z = <span class="frac"><span class="num">1</span><span class="den">2</span></span> 即得 Γ(<span class="frac"><span class="num">1</span><span class="den">2</span></span>) = √π。揭示了 Gamma 函数与三角函数的深刻联系。</p>
 
         <p class="sub-h">勒让德加倍公式</p>
-        <div class="formula">Γ(2z) = <span class="frac"><span class="num">2<sup>2z−1</sup></span><span class="den">√π</span></span> · Γ(z) · Γ(z + <span class="frac"><span class="num">1</span><span class="den">2</span></span>)</div>
+        <div class="formula">$$\Gamma(2z) = \frac{2^{2z-1}}{\sqrt{\pi}} \cdot \Gamma(z) \cdot \Gamma\left(z + \frac{1}{2}\right)$$</div>
 
         <p class="sub-h">华里士公式（Wallis 公式）</p>
         <p>记 I<sub>n</sub> = ∫<sub>0</sub><sup>π/2</sup> sin<sup>n</sup>x dx，分部积分得递推：</p>
-        <div class="formula">I<sub>2k</sub> = <span class="frac"><span class="num">π</span><span class="den">2</span></span> · <span class="frac"><span class="num">(2k−1)!!</span><span class="den">(2k)!!</span></span>，&nbsp; I<sub>2k+1</sub> = <span class="frac"><span class="num">(2k)!!</span><span class="den">(2k+1)!!</span></span></div>
+        <div class="formula">$$I_{2k} = \frac{\pi}{2} \cdot \frac{(2k-1)!!}{(2k)!!}, \quad I_{2k+1} = \frac{(2k)!!}{(2k+1)!!}$$</div>
         <p class="sub-h">华里士乘积</p>
-        <div class="formula"><span class="frac"><span class="num">π</span><span class="den">2</span></span> = <span class="op-prod"><span class="sup">∞</span><span class="op">∏</span><span class="lim">n=1</span></span> <span class="frac"><span class="num">2n</span><span class="den">2n−1</span></span> · <span class="frac"><span class="num">2n</span><span class="den">2n+1</span></span></div>
+        <div class="formula">$$\frac{\pi}{2} = \prod_{n=1}^{\infty} \frac{2n}{2n-1} \cdot \frac{2n}{2n+1}$$</div>
         <p>历史上第一个把 π 表示为有理数无穷乘积的公式。核心技巧：夹逼 sin<sup>2k+1</sup>x ≤ sin<sup>2k</sup>x ≤ sin<sup>2k−1</sup>x 积分后取极限。</p>
 
         <p class="sub-h">斯特林公式（渐近展开）</p>
-        <div class="formula">Γ(z+1) ≈ z<sup>z</sup> e<sup>−z</sup> √(2π z)</div>
+        <div class="formula">$$\Gamma(z+1) \approx z^z e^{-z} \sqrt{2\pi z}$$</div>
         <p>正整数时即 n! ≈ n<sup>n</sup> e<sup>−n</sup> √(2π n)。华里士乘积可由此导出，反之华里士公式也可确定斯特林公式中的系数 √(2π)。</p>
         <div class="note">这几个公式构成了一个紧密网络：余元公式连接三角/复分析，加倍公式展示缩放性质，华里士公式把 π 表示为有理数无穷乘积，斯特林公式描述无穷远行为。Gamma 函数把"阶乘"从整数推广到全体实数，Beta 函数则是桥梁——许多含三角函数、幂函数的积分都能通过换元变成 Beta 积分再求值。</div>
 
@@ -969,7 +983,7 @@
 
         <p class="sub-h">Weierstrass 乘积表示</p>
         <p>Gamma 函数有无穷乘积形式：</p>
-        <div class="formula"><span class="frac"><span class="num">1</span><span class="den">Γ(z)</span></span> = z·e<sup>γz</sup> · <span class="op-prod"><span class="sup">∞</span><span class="op">∏</span><span class="lim">n=1</span></span> (1 + <span class="frac"><span class="num">z</span><span class="den">n</span></span>) · e<sup>−z/n</sup></div>
+        <div class="formula">$$\frac{1}{\Gamma(z)} = z\,e^{\gamma z} \prod_{n=1}^{\infty} \left(1 + \frac{z}{n}\right) e^{-z/n}$$</div>
         <p>其中 γ 是欧拉-马斯刻若尼常数。这个形式清楚地展示了 Gamma 函数的极点：在 z = 0, −1, −2, … 处有一阶极点。收敛因子 e<sup>−z/n</sup> 保证了无穷乘积的收敛性（类似正弦函数的 Euler 乘积）。</p>
 
         <p class="sub-h">更多特殊值</p>
@@ -993,7 +1007,7 @@
 
         <p class="sub-h">余元公式的证明思路</p>
         <p>Γ(z)Γ(1−z) = π/sin(πz) 可用多种方法证明。一种优雅的方法是利用 Weierstrass 乘积和正弦的 Euler 乘积：</p>
-        <div class="formula">sin(πz) = πz · <span class="op-prod"><span class="sup">∞</span><span class="op">∏</span><span class="lim">n=1</span></span> (1 − <span class="frac"><span class="num">z<sup>2</sup></span><span class="den">n<sup>2</sup></span>)</div>
+        <div class="formula">$$\sin(\pi z) = \pi z \prod_{n=1}^{\infty} \left(1 - \frac{z^2}{n^2}\right)$$</div>
         <p>将 1/Γ(z) 和 1/Γ(1−z) 的 Weierstrass 乘积相乘，恰好得到 sin(πz)/(πz) 的倒数，故 Γ(z)Γ(1−z) = π/sin(πz)。另一个证明用 Beta 函数的积分表示和留数计算。</p>
 
         <div class="keypoint">
@@ -1041,7 +1055,7 @@
 
         <p class="sub-h">④ 费根鲍姆常数（Feigenbaum constant）</p>
         <p>混沌理论中的普适常数，由 Mitchell Feigenbaum 1975 年发现。考虑逻辑斯蒂映射 x<sub>n+1</sub> = r·x<sub>n</sub>(1−x<sub>n</sub>)，当参数 r 增大时，系统经历倍周期分岔（1 周期 → 2 周期 → 4 周期 → 8 周期 → … → 混沌）。设分岔点参数为 r<sub>1</sub>, r<sub>2</sub>, r<sub>3</sub>, …，则相邻分岔间距之比收敛到：</p>
-        <div class="formula">δ = <span class="op-lim">lim<span class="sub">n→∞</span></span> <span class="frac"><span class="num">r<sub>n</sub> − r<sub>n−1</sub></span><span class="den">r<sub>n+1</sub> − r<sub>n</sub></span></span> ≈ 4.6692016091…</div>
+        <div class="formula">$$\delta = \lim_{n\to\infty} \frac{r_n - r_{n-1}}{r_{n+1} - r_n} \approx 4.6692016091\ldots$$</div>
         <p>最震撼的是<strong>普适性</strong>：这个常数不只出现在逻辑斯蒂映射中，而是出现在<strong>所有</strong>具有单峰最大值的一维映射的倍周期分岔中。正弦映射、二次映射、任何"单峰"映射——分岔间距之比都收敛到同一个 δ。这意味着混沌的产生方式有普适规律，与具体系统细节无关。</p>
         <p>另一个相关常数是 α ≈ 2.502907875，描述分岔图中相邻周期窗口的横向缩放比。δ 和 α 都是超越数（猜测，未证明），且没有已知的闭式表达式——只能通过数值计算得到。</p>
         <p>费根鲍姆常数的发现是混沌理论的里程碑：它证明了看似随机的混沌行为背后存在精确的普适数学结构，开创了"重正化群"方法在混沌中的应用。</p>
@@ -1131,7 +1145,7 @@
         <p class="sub-h" style="font-size:0.95rem;">垂直轴简化</p>
         <p>k·v = 0 时第三项消失：v' = v cosθ + (k × v) sinθ。旋转完全在垂直平面内，与二维旋转一致。</p>
         <p>坐标展开（轴 k = (<span class="frac"><span class="num">−y</span><span class="den">r</span></span>, <span class="frac"><span class="num">x</span><span class="den">r</span></span>, 0)，r = √(x<sup>2</sup>+y<sup>2</sup>)）：</p>
-        <div class="formula">x' = x cosθ + <span class="frac"><span class="num">xz</span><span class="den">r</span></span> sinθ，&nbsp; y' = y cosθ + <span class="frac"><span class="num">yz</span><span class="den">r</span></span> sinθ，&nbsp; z' = z cosθ − r sinθ</div>
+        <div class="formula">$$x' = x\cos\theta + \frac{xz}{r}\sin\theta, \quad y' = y\cos\theta + \frac{yz}{r}\sin\theta, \quad z' = z\cos\theta - r\sin\theta$$</div>
         <p class="sub-h" style="font-size:0.95rem;">优势</p>
         <ul class="simple">
           <li>通用：适用于任意过原点旋转轴</li>
@@ -1272,7 +1286,7 @@
         <p class="sub-h">高维欧拉公式</p>
         <p>经典 V − E + F = 2 在高维凸多胞体上的推广。</p>
         <p><strong>定理</strong>：对 n 维凸多胞体，设 N<sub>k</sub> 为 k 维面数量（k=0 顶点，k=1 棱，k=2 面，…），则：</p>
-        <div class="formula"><span class="op-sum"><span class="sup">n−1</span><span class="op">∑</span><span class="lim">k=0</span></span> (−1)<sup>k</sup> N<sub>k</sub> = 1 − (−1)<sup>n</sup></div>
+        <div class="formula">$$\sum_{k=0}^{n-1} (-1)^k N_k = 1 - (-1)^n$$</div>
         <p class="sub-h">特例</p>
         <ul class="simple">
           <li>三维（n=3）：V − E + F = 2</li>
@@ -1413,7 +1427,7 @@
         </div>
 
         <p class="sub-h">特例：双心四边形</p>
-        <div class="formula"><span class="frac"><span class="num">1</span><span class="den">(R−d)<sup>2</sup></span></span> + <span class="frac"><span class="num">1</span><span class="den">(R+d)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">r<sup>2</sup></span></span></div>
+        <div class="formula">$$\frac{1}{(R-d)^2} + \frac{1}{(R+d)^2} = \frac{1}{r^2}$$</div>
         <p>其中 R 为外接圆半径，r 为内切圆半径，d 为圆心距。</p>
         <div class="note">把"几何闭合"问题转化为纯粹"存在性"问题——只要找到一个闭合的，就有无穷多个。与椭圆光学性质、二次曲线配极理论紧密相关。</div>
 
@@ -1428,7 +1442,7 @@
         <p class="sub-h">Cayley 闭合条件</p>
         <p>凯莱（Cayley）给出了判断两条二次曲线是否存在彭赛列 n 边形的代数条件。设两条二次曲线的方程为 C(x,y)=0 和 D(x,y)=0，考虑行列式 det(C + λD) 作为 λ 的多项式。Cayley 条件是这个多项式的某些系数满足特定的代数关系（涉及不变量）。</p>
         <p>对于双心四边形（外接圆 + 内切圆），Cayley 条件简化为前面的公式：</p>
-        <div class="formula"><span class="frac"><span class="num">1</span><span class="den">(R−d)<sup>2</sup></span></span> + <span class="frac"><span class="num">1</span><span class="den">(R+d)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">r<sup>2</sup></span></span></div>
+        <div class="formula">$$\frac{1}{(R-d)^2} + \frac{1}{(R+d)^2} = \frac{1}{r^2}$$</div>
         <p>这个公式是欧拉 1765 年发现的，称为欧拉双心四边形公式。</p>
 
         <p class="sub-h">光学解释</p>
@@ -1494,7 +1508,7 @@
 
         <p class="sub-h">证明思路</p>
         <p>用格林公式和参数化。设弦两端点为 A(t)、B(t)（t 为参数），P = A + (p/(p+q))(B−A)。P 轨迹围成的面积：</p>
-        <div class="formula">S(C') = <span class="frac"><span class="num">1</span><span class="den">2</span></span> ∮ (x dy − y dx)</div>
+        <div class="formula">$$S(C') = \frac{1}{2} \oint (x\,dy - y\,dx)$$</div>
         <p>将 P 的坐标代入展开，可以将 S(C') 表示为 S(C)、弦长 L、以及一个与曲线形状有关的积分项的组合。关键是那个"形状有关"的积分项在滑动一周后恰好抵消，只剩下 πpq 的差。</p>
         <p>更深刻的证明利用<strong>克罗夫顿公式</strong>（Cauchy-Crofton formula）：平面上一条曲线的长度等于它与所有直线相交次数的积分（除以适当常数）。霍迪奇定理是这个公式在"弦滑动"场景下的推论。</p>
 
@@ -1512,7 +1526,7 @@
 
         <p class="sub-h">与克罗夫顿公式的联系</p>
         <p>克罗夫顿公式：设 L(γ) 为曲线 γ 的长度，则</p>
-        <div class="formula">L(γ) = <span class="frac"><span class="num">1</span><span class="den">4</span></span> ∬ n(γ, ℓ) dℓ</div>
+        <div class="formula">$$L(\gamma) = \frac{1}{4} \iint n(\gamma, \ell)\,d\ell$$</div>
         <p>其中 n(γ, ℓ) 是 γ 与直线 ℓ 的交点数，dℓ 是直线空间上的自然测度。霍迪奇定理中的弦恰好是"与 C 相交于两点的直线"，而 P 的轨迹与这些直线的交点数决定了面积差。这揭示了霍迪奇定理本质上是一个<strong>积分几何</strong>结果——它不关心曲线的具体形状，只关心直线与曲线的相交统计。</p>
 
         <div class="keypoint">
@@ -1566,9 +1580,9 @@
 
         <p class="sub-h">切比雪夫证明的核心</p>
         <p>组合数 C(2n, n) = (2n)!/(n!)² 满足：</p>
-        <div class="formula"><span class="frac"><span class="num">4<sup>n</sup></span><span class="den">2n+1</span></span> ≤ C(2n, n) ≤ 4<sup>n</sup></div>
+        <div class="formula">$$\frac{4^n}{2n+1} \le \binom{2n}{n} \le 4^n$$</div>
         <p>如果 (n, 2n] 内没有素数，那么 C(2n, n) 的所有素因子 p ≤ n。对每个素数 p，它在 C(2n, n) 中的指数 v<sub>p</sub>(C(2n,n)) = Σ(⌊2n/p<sup>k</sup>⌋ − 2⌊n/p<sup>k</sup>⌋) ≤ log<sub>p</sub>(2n)。因此：</p>
-        <div class="formula">C(2n, n) = <span class="op-prod"><span class="op">∏</span><span class="lim">p ≤ n</span></span> p<sup>v<sub>p</sub></sup> ≤ (2n)<sup>π(n)</sup></div>
+        <div class="formula">$$\binom{2n}{n} = \prod_{p \le n} p^{v_p} \le (2n)^{\pi(n)}$$</div>
         <p>其中 π(n) 是不超过 n 的素数个数。另一方面，C(2n, n) ≥ 4<sup>n</sup>/(2n+1)。如果 (n, 2n] 无素数，这两个不等式结合会给出矛盾（对足够大的 n）。</p>
 
         <p class="sub-h">应用：n! 不是完全平方数</p>
@@ -1611,8 +1625,8 @@
       </div>
       <div class="entry-body">
         <p class="sub-h">勒让德公式</p>
-        <p>v<sub>p</sub>(n!) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">k=1</span></span> ⌊<span class="frac"><span class="num">n</span><span class="den">p<sup>k</sup></span></span>⌋ = <span class="frac"><span class="num">n − S<sub>p</sub>(n)</span><span class="den">p − 1</span></span></p>
-        <p>其中 S<sub>p</sub>(n) 为 n 在 p 进制下各位数字和。组合数推广：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) = <span class="frac"><span class="num">S<sub>p</sub>(m) + S<sub>p</sub>(n−m) − S<sub>p</sub>(n)</span><span class="den">p − 1</span></span>。</p>
+        <p>$$v_p(n!) = \sum_{k=1}^{\infty} \left\lfloor \frac{n}{p^k} \right\rfloor = \frac{n - S_p(n)}{p - 1}$$</p>
+        <p>其中 $S_p(n)$ 为 $n$ 在 $p$ 进制下各位数字和。组合数推广：$$v_p\binom{n}{m} = \frac{S_p(m) + S_p(n-m) - S_p(n)}{p - 1}$$</p>
 
         <p class="sub-h">勒让德公式的等价形式证明</p>
         <p>为什么 v<sub>p</sub>(n!) = (n − S<sub>p</sub>(n))/(p−1)？</p>
@@ -1621,7 +1635,7 @@
         <div class="formula">⌊n/p²⌋ = n<sub>2</sub> + n<sub>3</sub>p + …</div>
         <p>将所有项相加：v<sub>p</sub>(n!) = Σ⌊n/p<sup>k</sup>⌋ = n<sub>1</sub> + n<sub>2</sub>(p+1) + n<sub>3</sub>(p²+p+1) + …</p>
         <p>注意 (p<sup>k</sup>−1)/(p−1) = 1 + p + p² + … + p<sup>k−1</sup>，所以：</p>
-        <div class="formula">v<sub>p</sub>(n!) = <span class="op-sum"><span class="op">∑</span><span class="lim">i≥1</span></span> n<sub>i</sub> · <span class="frac"><span class="num">p<sup>i</sup>−1</span><span class="den">p−1</span></span> = <span class="frac"><span class="num">(n−n<sub>0</sub>) − (S<sub>p</sub>(n)−n<sub>0</sub>)</span><span class="den">p−1</span></span> = <span class="frac"><span class="num">n−S<sub>p</sub>(n)</span><span class="den">p−1</span></span></div>
+        <div class="formula">$$v_p(n!) = \sum_{i \ge 1} n_i \cdot \frac{p^i - 1}{p - 1} = \frac{(n - n_0) - (S_p(n) - n_0)}{p - 1} = \frac{n - S_p(n)}{p - 1}$$</div>
 
         <p class="sub-h">库默尔定理</p>
         <p><strong>定理</strong>：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) 等于 p 进制下 m + (n−m) = n 时的<strong>进位次数</strong>。</p>
@@ -1630,7 +1644,7 @@
         <p>在 p 进制加法中，每发生一次进位，数字和减少 p−1（两个数字 a+b ≥ p，进位后变成 (a+b−p)，数字和从 a+b 变为 a+b−p+1，净减少 p−1）。设进位次数为 c，则：</p>
         <div class="formula">S<sub>p</sub>(m) + S<sub>p</sub>(n−m) = S<sub>p</sub>(n) + c(p−1)</div>
         <p>代入勒让德公式的组合数版本：</p>
-        <div class="formula">v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) = <span class="frac"><span class="num">S<sub>p</sub>(m)+S<sub>p</sub>(n−m)−S<sub>p</sub>(n)</span><span class="den">p−1</span></span> = <span class="frac"><span class="num">c(p−1)</span><span class="den">p−1</span></span> = c</div>
+        <div class="formula">$$v_p\binom{n}{m} = \frac{S_p(m) + S_p(n-m) - S_p(n)}{p-1} = \frac{c(p-1)}{p-1} = c$$</div>
         <p>这就证明了库默尔定理：v<sub>p</sub>(C(n,m)) 恰好等于进位次数 c。</p>
 
         <p class="sub-h">计算示例</p>
@@ -1663,13 +1677,13 @@
         <span class="entry-title">卢卡斯定理</span>
       </div>
       <div class="entry-body">
-        <p><strong>定理</strong>：设 p 为素数，n, m 的 p 进制展开为 n = <span class="op-sum"><span class="op">∑</span><span class="lim">i</span></span> n<sub>i</sub>p<sup>i</sup>，m = <span class="op-sum"><span class="op">∑</span><span class="lim">i</span></span> m<sub>i</sub>p<sup>i</sup>，则</p>
-        <div class="formula"><span class="binom"><span class="num">n</span><span class="den">m</span></span> ≡ <span class="op-prod"><span class="op">∏</span><span class="lim">i</span></span> <span class="binom"><span class="num">n<sub>i</sub></span><span class="den">m<sub>i</sub></span></span> &nbsp; (mod p)</div>
-        <p>若某位 m<sub>i</sub> &gt; n<sub>i</sub>，则 <span class="binom"><span class="num">n<sub>i</sub></span><span class="den">m<sub>i</sub></span> = 0，原式模 p 为 0。</p>
+        <p><strong>定理</strong>：设 p 为素数，n, m 的 p 进制展开为 $n = \sum_i n_i p^i$，$m = \sum_i m_i p^i$，则</p>
+        <div class="formula">$$\binom{n}{m} \equiv \prod_i \binom{n_i}{m_i} \pmod{p}$$</div>
+        <p>若某位 $m_i > n_i$，则 $\binom{n_i}{m_i} = 0$，原式模 p 为 0。</p>
 
         <p class="sub-h">卢卡斯定理的证明</p>
-        <p>利用多项式同余。在模 p 下，费马小定理给出 (1+x)<sup>p</sup> ≡ 1+x<sup>p</sup> (mod p)，更一般地 (1+x)<sup>p<sup>k</sup></sup> ≡ 1+x<sup>p<sup>k</sup></sup> (mod p)。因此：</p>
-        <div class="formula">(1+x)<sup>n</sup> = (1+x)<sup>n<sub>0</sub>+n<sub>1</sub>p+n<sub>2</sub>p²+…</sup> ≡ <span class="op-prod"><span class="op">∏</span><span class="lim">i</span></span> (1+x<sup>p<sup>i</sup></sup>)<sup>n<sub>i</sub></sup> (mod p)</div>
+        <p>利用多项式同余。在模 p 下，费马小定理给出 $(1+x)^p \equiv 1+x^p \pmod{p}$，更一般地 $(1+x)^{p^k} \equiv 1+x^{p^k} \pmod{p}$。因此：</p>
+        <div class="formula">$$(1+x)^n = (1+x)^{n_0 + n_1 p + n_2 p^2 + \cdots} \equiv \prod_i (1+x^{p^i})^{n_i} \pmod{p}$$</div>
         <p>左边 x<sup>m</sup> 的系数是 C(n, m)。右边 x<sup>m</sup> = x<sup>m<sub>0</sub>+m<sub>1</sub>p+…</sup> 的系数是各因子中 x<sup>m<sub>i</sub>p<sup>i</sup></sup> 的系数之积，即 ∏C(n<sub>i</sub>, m<sub>i</sub>)。比较两边 x<sup>m</sup> 系数即得卢卡斯定理。</p>
 
         <p class="sub-h">计算示例</p>
@@ -1753,7 +1767,7 @@
       </div>
       <div class="entry-body">
         <p class="sub-h">n 次多项式消次</p>
-        <div class="formula">令 x = t − <span class="frac"><span class="num">a<sub>1</sub></span><span class="den">n a<sub>0</sub></span></span>，消去 x<sup>n−1</sup> 项</div>
+        <div class="formula">令 $x = t - \dfrac{a_1}{n a_0}$，消去 $x^{n-1}$ 项</div>
         <p>这是 Tschirnhaus 变换的最简形式。对首一多项式 x<sup>n</sup> + a<sub>n−1</sub>x<sup>n−1</sup> + …，令 x = t − a<sub>n−1</sub>/n，可消去 t<sup>n−1</sup> 项。其原理是：多项式根的和为 −a<sub>n−1</sub>，平移后根的和变为 0。</p>
 
         <p class="sub-h">三次方程的历史</p>
@@ -1781,7 +1795,7 @@
         <p>当 Δ &lt; 0 时，三次方程有三个互异实根，但卡尔达诺公式中 A 和 B 是共轭复数，必须对复数开立方才能得到实根。这就是著名的"不可约情形"——实根不能用实数的根式表示，必须借助复数。</p>
         <p>这是数学史上<strong>虚数被认真对待的起因之一</strong>。在此之前，负数的平方根被视为"不可能的数"，但三次方程的解法表明，即使最终答案是实数，中间步骤也必须经过复数。Cardano 本人对此感到困惑，称之为"诡辩的量"（sophistic quantities）。</p>
         <p>不可约情形的三角解法：当 Δ &lt; 0 时，设 p = −3r²，q = −2r³cos θ，则三根为：</p>
-        <div class="formula">y<sub>k</sub> = 2r cos(<span class="frac"><span class="num">θ + 2πk</span><span class="den">3</span></span>), &nbsp; k = 0, 1, 2</div>
+        <div class="formula">$$y_k = 2r\cos\left(\frac{\theta + 2\pi k}{3}\right), \quad k = 0, 1, 2$$</div>
         <p>这个解法用三角函数绕过了复数，但本质上三次单位根与三等分角密切相关。</p>
 
         <p class="sub-h">四次方程简述</p>
@@ -1790,7 +1804,7 @@
 
         <p class="sub-h">判别式的一般理论</p>
         <p>n 次多项式 f(x) = a<sub>0</sub>∏(x−r<sub>i</sub>) 的判别式定义为：</p>
-        <div class="formula">Δ = a<sub>0</sub><sup>2n−2</sup> <span class="op-prod"><span class="op">∏</span><span class="lim">i&lt;j</span></span> (r<sub>i</sub> − r<sub>j</sub>)<sup>2</sup></div>
+        <div class="formula">$$\Delta = a_0^{2n-2} \prod_{i<j} (r_i - r_j)^2$$</div>
         <p>Δ = 0 ⟺ 有重根。对二次方程 Δ = b²−4ac，对三次方程 Δ = −4p³−27q²（注意符号约定可能不同）。判别式是多项式系数的对称多项式，可以用结式（resultant）计算：Δ = (−1)<sup>n(n−1)/2</sup> a<sub>0</sub><sup>−1</sup> Res(f, f')。</p>
 
         <div class="keypoint">
@@ -1814,31 +1828,31 @@
       </div>
       <div class="entry-body">
         <p>令 z = e<sup>ix</sup>，由等比级数及其导数分离实虚部：</p>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k sin(kx) = <span class="frac"><span class="num">(n+1) sin(nx) − n sin((n+1)x)</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="op">∑</span><span class="lim">k=1</span></span> k cos(kx) = <span class="frac"><span class="num">(n+1) cos(nx) − n cos((n+1)x) − 1</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
+        <div class="formula">$$\sum_{k=1}^{n} k \sin(kx) = \frac{(n+1)\sin(nx) - n\sin((n+1)x)}{4\sin^2(x/2)}$$</div>
+        <div class="formula">$$\sum_{k=1}^{n} k \cos(kx) = \frac{(n+1)\cos(nx) - n\cos((n+1)x) - 1}{4\sin^2(x/2)}$$</div>
 
         <p class="sub-h">更一般的三角级数</p>
         <p>除了 k sin(kx) 和 k cos(kx)，还有几个常用的求和公式：</p>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> sin(kx) = <span class="frac"><span class="num">sin(nx/2) sin((n+1)x/2)</span><span class="den">sin(x/2)</span></span></div>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> cos(kx) = <span class="frac"><span class="num">sin(nx/2) cos((n+1)x/2)</span><span class="den">sin(x/2)</span></span></div>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> sin²(kx) = <span class="frac"><span class="num">n</span><span class="den">2</span></span> − <span class="frac"><span class="num">sin(nx) cos((n+1)x)</span><span class="den">2 sin(x)</span></span></div>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> cos²(kx) = <span class="frac"><span class="num">n</span><span class="den">2</span></span> + <span class="frac"><span class="num">sin(nx) cos((n+1)x)</span><span class="den">2 sin(x)</span></span></div>
+        <div class="formula">$$\sum_{k=1}^{n} \sin(kx) = \frac{\sin(nx/2)\sin((n+1)x/2)}{\sin(x/2)}$$</div>
+        <div class="formula">$$\sum_{k=1}^{n} \cos(kx) = \frac{\sin(nx/2)\cos((n+1)x/2)}{\sin(x/2)}$$</div>
+        <div class="formula">$$\sum_{k=1}^{n} \sin^2(kx) = \frac{n}{2} - \frac{\sin(nx)\cos((n+1)x)}{2\sin(x)}$$</div>
+        <div class="formula">$$\sum_{k=1}^{n} \cos^2(kx) = \frac{n}{2} + \frac{\sin(nx)\cos((n+1)x)}{2\sin(x)}$$</div>
 
         <p class="sub-h">复数方法的统一推导</p>
         <p>所有这些公式都可以用一个统一的方法推导：等比级数 + 欧拉公式。</p>
-        <p>设 S = <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> z<sup>k</sup>，其中 z = e<sup>ix</sup>。等比级数求和：</p>
-        <div class="formula">S = <span class="frac"><span class="num">z(1−z<sup>n</sup>)</span><span class="den">1−z</span></span></div>
+        <p>设 $S = \sum_{k=1}^{n} z^k$，其中 $z = e^{ix}$。等比级数求和：</p>
+        <div class="formula">$$S = \frac{z(1-z^n)}{1-z}$$</div>
         <p>分离实部和虚部即得 Σcos(kx) 和 Σsin(kx)。对 S 求导可得 Σk z<sup>k</sup>，再分离实虚部得 Σk cos(kx) 和 Σk sin(kx)。求导两次可得 Σk² z<sup>k</sup>，依此类推。</p>
         <p>关键技巧：1 − e<sup>ix</sup> = −2i e<sup>ix/2</sup> sin(x/2)，这个恒等式可以将分母化为简洁形式。</p>
 
         <p class="sub-h">特例 x = 2π/n（用单位根推导）</p>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k sin(2πk/n) = −<span class="frac"><span class="num">n</span><span class="den">2 tan(π/n)</span></span>，&nbsp; <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k cos(2πk/n) = <span class="frac"><span class="num">n</span><span class="den">2</span></span></div>
-        <p>设 ω = e<sup>2πi/n</sup>，T = <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> kω<sup>k</sup>，则 T(1−ω) = −nω，故 T = <span class="frac"><span class="num">n</span><span class="den">2</span></span> − i · <span class="frac"><span class="num">n</span><span class="den">2</span></span> · cot(π/n)。</p>
+        <div class="formula">$$\sum_{k=1}^{n} k \sin(2\pi k/n) = -\frac{n}{2\tan(\pi/n)}, \quad \sum_{k=1}^{n} k \cos(2\pi k/n) = \frac{n}{2}$$</div>
+        <p>设 $\omega = e^{2\pi i/n}$，$T = \sum_{k=1}^{n} k\omega^k$，则 $T(1-\omega) = -n\omega$，故 $T = \dfrac{n}{2} - i \cdot \dfrac{n}{2} \cdot \cot(\pi/n)$。</p>
 
         <p class="sub-h">另一个特例：x = π/n</p>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">1</span><span class="den">sin(kπ/n)</span></span> · sin(kx) = <span class="frac"><span class="num">π − x</span><span class="den">2</span></span> &nbsp; (0 &lt; x &lt; 2π)</div>
+        <div class="formula">$$\sum_{k=1}^{\infty} \frac{1}{\sin(k\pi/n)} \cdot \sin(kx) = \frac{\pi - x}{2} \quad (0 < x < 2\pi)$$</div>
         <p>这是傅里叶级数中的经典结果。更一般地，函数 f(x) = x 在 [0, π] 上的正弦级数展开为：</p>
-        <div class="formula">x = 2 <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">(−1)<sup>k+1</sup></span><span class="den">k</span></span> sin(kx) &nbsp; (−π &lt; x &lt; π)</div>
+        <div class="formula">$$x = 2 \sum_{k=1}^{\infty} \frac{(-1)^{k+1}}{k} \sin(kx) \quad (-\pi < x < \pi)$$</div>
 
         <p class="sub-h">应用：正 n 边形顶点电荷的电场</p>
         <p>考虑正 n 边形的 n 个顶点上各放置等量电荷 q，求中心处的电场。由于对称性，径向分量抵消，只需要计算切向分量（如果电荷不都相同）。对于均匀分布，电场为零。但如果电荷交替正负，则电场不为零，需要用 Σk sin(kx) 或类似公式计算。</p>
@@ -1846,7 +1860,7 @@
 
         <p class="sub-h">应用：离散傅里叶变换</p>
         <p>三角级数求和与离散傅里叶变换（DFT）密切相关。DFT 本质上是在单位根处计算多项式值：</p>
-        <div class="formula">X<sub>k</sub> = <span class="op-sum"><span class="op">∑</span><span class="lim">n=0</span></span><sup>N−1</sup> x<sub>n</sub> · e<sup>−2πikn/N</sup></div>
+        <div class="formula">$$X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-2\pi i k n / N}$$</div>
         <p>上述三角级数公式可以看作 DFT 的特例，当 x<sub>n</sub> = n（线性序列）时。</p>
 
         <div class="keypoint">
@@ -1870,8 +1884,8 @@
       </div>
       <div class="entry-body">
         <p>(a+b)<sup>2</sup> = a<sup>2</sup>+2ab+b<sup>2</sup>，(a+b+c)<sup>2</sup> = a<sup>2</sup>+b<sup>2</sup>+c<sup>2</sup>+2ab+2ac+2bc——那么 (a+b+c+d+…)<sup>n</sup> 怎么展开？多项式定理给出答案。</p>
-        <div class="formula">(x<sub>1</sub> + x<sub>2</sub> + … + x<sub>m</sub>)<sup>n</sup> = <span class="op-sum"><span class="op">∑</span><span class="lim">n<sub>1</sub>+…+n<sub>m</sub>=n</span></span> <span class="frac"><span class="num">n!</span><span class="den">n<sub>1</sub>! n<sub>2</sub>! … n<sub>m</sub>!</span></span> · x<sub>1</sub><sup>n<sub>1</sub></sup> x<sub>2</sub><sup>n<sub>2</sub></sup> … x<sub>m</sub><sup>n<sub>m</sub></sup></div>
-        <p>求和遍历所有满足 n<sub>1</sub>+n<sub>2</sub>+…+n<sub>m</sub>=n 的非负整数组。系数 <span class="frac"><span class="num">n!</span><span class="den">n<sub>1</sub>! n<sub>2</sub>! … n<sub>m</sub>!</span></span> 称为<strong>多项式系数</strong>，记作 <span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span>。</p>
+        <div class="formula">$$(x_1 + x_2 + \cdots + x_m)^n = \sum_{n_1+\cdots+n_m=n} \frac{n!}{n_1!\, n_2! \cdots n_m!} \cdot x_1^{n_1} x_2^{n_2} \cdots x_m^{n_m}$$</div>
+        <p>求和遍历所有满足 $n_1+n_2+\cdots+n_m=n$ 的非负整数组。系数 $\dfrac{n!}{n_1!\, n_2! \cdots n_m!}$ 称为<strong>多项式系数</strong>，记作 $\dbinom{n}{n_1, n_2, \ldots, n_m}$。</p>
 
         <div class="keypoint">
           <div class="keypoint-title">层级关系</div>
@@ -1884,8 +1898,8 @@
 
         <p class="sub-h">特例</p>
         <ul class="simple">
-          <li><strong>m=2（二项式定理）</strong>：系数 <span class="binom"><span class="num">n</span><span class="den">k, n−k</span></span> = <span class="binom"><span class="num">n</span><span class="den">k</span></span></li>
-          <li><strong>m=3（三项式定理）</strong>：(x+y+z)<sup>n</sup> = <span class="op-sum"><span class="op">∑</span><span class="lim">a+b+c=n</span></span> <span class="frac"><span class="num">n!</span><span class="den">a! b! c!</span></span> x<sup>a</sup>y<sup>b</sup>z<sup>c</sup></li>
+          <li><strong>m=2（二项式定理）</strong>：系数 $\dbinom{n}{k, n-k} = \dbinom{n}{k}$</li>
+          <li><strong>m=3（三项式定理）</strong>：$(x+y+z)^n = \displaystyle\sum_{a+b+c=n} \frac{n!}{a!\,b!\,c!} x^a y^b z^c$</li>
         </ul>
 
         <p class="sub-h">完整展开示例（视觉震撼）</p>
@@ -1919,26 +1933,26 @@
 
         <p class="sub-h">系数和</p>
         <p>令全部变量取 1：</p>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">n<sub>1</sub>+…+n<sub>m</sub>=n</span></span> <span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span> = m<sup>n</sup></div>
+        <div class="formula">$$\sum_{n_1+\cdots+n_m=n} \binom{n}{n_1, n_2, \ldots, n_m} = m^n$$</div>
         <p>m=2 时即二项式系数和 2<sup>n</sup>。</p>
 
         <p class="sub-h">带系数的展开</p>
         <p>若括号内带系数，如 (2a − b + 3c)<sup>5</sup> 中 a<sup>2</sup>b<sup>2</sup>c<sup>1</sup> 的系数：</p>
-        <div class="formula"><span class="binom"><span class="num">5</span><span class="den">2, 2, 1</span></span> · 2<sup>2</sup> · (−1)<sup>2</sup> · 3<sup>1</sup> = <span class="frac"><span class="num">5!</span><span class="den">2! 2! 1!</span></span> · 4 · 1 · 3 = 360</div>
+        <div class="formula">$$\binom{5}{2, 2, 1} \cdot 2^2 \cdot (-1)^2 \cdot 3^1 = \frac{5!}{2!\,2!\,1!} \cdot 4 \cdot 1 \cdot 3 = 360$$</div>
 
         <p class="sub-h">推导思路</p>
         <p>把前 m−1 个变量打包：[(x<sub>1</sub>+…+x<sub>m−1</sub>) + x<sub>m</sub>]<sup>n</sup>，先用二项式定理展开，再对 (x<sub>1</sub>+…+x<sub>m−1</sub>)<sup>n−n<sub>m</sub></sup> 递归套用多项式定理——本质上是反复使用二项式定理。</p>
 
         <p class="sub-h">概率论中的多项分布</p>
         <p>多项式定理最直接的应用是<strong>多项分布</strong>（multinomial distribution）。设一次试验有 m 种可能结果，概率分别为 p<sub>1</sub>, p<sub>2</sub>, …, p<sub>m</sub>（Σp<sub>i</sub> = 1）。独立重复 n 次试验，第 i 种结果出现 n<sub>i</sub> 次的概率为：</p>
-        <div class="formula">P(n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub>) = <span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span> p<sub>1</sub><sup>n<sub>1</sub></sup> p<sub>2</sub><sup>n<sub>2</sub></sup> … p<sub>m</sub><sup>n<sub>m</sub></sup></div>
+        <div class="formula">$$P(n_1, n_2, \ldots, n_m) = \binom{n}{n_1, n_2, \ldots, n_m} p_1^{n_1} p_2^{n_2} \cdots p_m^{n_m}$$</div>
         <p>这正是 (p<sub>1</sub>+p<sub>2</sub>+…+p<sub>m</sub>)<sup>n</sup> = 1<sup>n</sup> = 1 展开式中的一项。多项式系数给出了将 n 次试验分成 m 组的方式数。</p>
         <p>当 m=2 时，多项分布退化为二项分布。当 m=6 且 p<sub>i</sub>=1/6 时，就是掷 n 次骰子的分布。</p>
 
         <p class="sub-h">生成函数视角</p>
         <p>从生成函数的角度看，(x<sub>1</sub>+…+x<sub>m</sub>)<sup>n</sup> 中 x<sub>1</sub><sup>n<sub>1</sub></sup>…x<sub>m</sub><sup>n<sub>m</sub></sup> 的系数就是"从 n 个因子中各选一个变量，使得 x<sub>i</sub> 被选 n<sub>i</sub> 次"的方式数。</p>
         <p>更一般地，指数生成函数与多项式系数的关系：</p>
-        <div class="formula">(x<sub>1</sub>+x<sub>2</sub>+…+x<sub>m</sub>)<sup>n</sup> = n! · [t<sup>n</sup>] <span class="op-prod"><span class="op">∏</span><span class="lim">i=1</span></span><sup>m</sup> e<sup>tx<sub>i</sub></sup></div>
+        <div class="formula">$$(x_1 + x_2 + \cdots + x_m)^n = n! \cdot [t^n] \prod_{i=1}^{m} e^{t x_i}$$</div>
         <p>其中 [t<sup>n</sup>] 表示取 t<sup>n</sup> 的系数。这揭示了多项式定理与指数型生成函数的内在联系。</p>
 
         <p class="sub-h">与有序分拆（Composition）的关系</p>
@@ -1952,12 +1966,12 @@
 
         <p class="sub-h">多项式系数的递推关系</p>
         <p>类似二项式系数的帕斯卡递推，多项式系数满足：</p>
-        <div class="formula"><span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span> = <span class="binom"><span class="num">n−1</span><span class="den">n<sub>1</sub>−1, n<sub>2</sub>, …, n<sub>m</sub></span></span> + <span class="binom"><span class="num">n−1</span><span class="den">n<sub>1</sub>, n<sub>2</sub>−1, …, n<sub>m</sub></span></span> + … + <span class="binom"><span class="num">n−1</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub>−1</span></span></div>
+        <div class="formula">$$\binom{n}{n_1, n_2, \ldots, n_m} = \binom{n-1}{n_1-1, n_2, \ldots, n_m} + \binom{n-1}{n_1, n_2-1, \ldots, n_m} + \cdots + \binom{n-1}{n_1, n_2, \ldots, n_m-1}$$</div>
         <p>组合意义：考虑最后一个位置分给哪个变量——分给 x<sub>1</sub> 则第一项，分给 x<sub>2</sub> 则第二项，依此类推。</p>
 
         <p class="sub-h">恒等式：范德蒙德卷积的推广</p>
         <p>二项式的范德蒙德卷积 ΣC(a,k)C(b,n−k) = C(a+b, n) 可以推广到多项式：</p>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k<sub>1</sub>+…+k<sub>m</sub>=n</span></span> <span class="binom"><span class="num">a<sub>1</sub></span><span class="den">k<sub>1</sub></span></span><span class="binom"><span class="num">a<sub>2</sub></span><span class="den">k<sub>2</sub></span></span>…<span class="binom"><span class="num">a<sub>m</sub></span><span class="den">k<sub>m</sub></span></span> = <span class="binom"><span class="num">a<sub>1</sub>+a<sub>2</sub>+…+a<sub>m</sub></span><span class="den">n</span></span></div>
+        <div class="formula">$$\sum_{k_1+\cdots+k_m=n} \binom{a_1}{k_1}\binom{a_2}{k_2}\cdots\binom{a_m}{k_m} = \binom{a_1+a_2+\cdots+a_m}{n}$$</div>
         <p>这是 (1+x)<sup>a<sub>1</sub></sup>(1+x)<sup>a<sub>2</sub></sup>…(1+x)<sup>a<sub>m</sub></sup> = (1+x)<sup>a<sub>1</sub>+…+a<sub>m</sub></sup> 两边 x<sup>n</sup> 系数相等的结果。</p>
 
         <div class="note">多项式定理是二项式、三项式的终极推广。多项式系数在组合数学、概率论（多项分布）、统计力学中频繁出现。与"有序整数分拆"不同：多项式系数是把 n 个不同位置分成指定大小的组，而 composition 是把 n 拆成有序的正整数之和。</div>
@@ -2115,7 +2129,7 @@
 
         <p class="sub-h">渐近尺度</p>
         <p>N ≈ 10<sup>m</sup> ⟹ ln N = m ln 10。中文按 4 位分块，共 ⌈<span class="frac"><span class="num">m</span><span class="den">4</span></span>⌉ 块。每块最多 4 个数字 + 3 个权（千、百、十）= 7 字，再加块尾大单位 1 字。故每块字数为常数，不随 m 增长：</p>
-        <div class="formula">f(N) = Θ(<span class="frac"><span class="num">m</span><span class="den">4</span></span>) = Θ(<span class="frac"><span class="num">ln N</span><span class="den">ln 10</span></span>)</div>
+        <div class="formula">$$f(N) = \Theta\left(\frac{m}{4}\right) = \Theta\left(\frac{\ln N}{\ln 10}\right)$$</div>
         <p>比值 <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> 是有界量，但普通极限<strong>不存在</strong>——在两个常数之间震荡。</p>
 
         <div class="keypoint">
@@ -2130,11 +2144,11 @@
 
         <p class="sub-h">上极限（全为 9，如 9999…9999）</p>
         <p>N = 10<sup>4k</sup> − 1，即 4k 个 9。每块"九千九百九十九"= 7 字，k 块共 7k 字；块尾单位"万、亿…"共 k−1 个（末尾无单位）。总字数 f ≈ 8k：</p>
-        <div class="formula"><span class="op-lim">limsup<span class="sub">N→∞</span></span> <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> = <span class="frac"><span class="num">8k</span><span class="den">4k ln 10</span></span> = <strong><span class="frac"><span class="num">2</span><span class="den">ln 10</span></span> ≈ 0.869</strong></div>
+        <div class="formula">$$\limsup_{N\to\infty} \frac{f(N)}{\ln N} = \frac{8k}{4k\ln 10} = \mathbf{\frac{2}{\ln 10} \approx 0.869}$$</div>
 
         <p class="sub-h">下极限（1 后面全 0，如一亿、一兆）</p>
         <p>N = 10<sup>4k</sup>，读作"一兆…亿万"，仅 k+1 字（1 个数字 + k 个大单位）：</p>
-        <div class="formula"><span class="op-lim">liminf<span class="sub">N→∞</span></span> <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> = <span class="frac"><span class="num">k</span><span class="den">4k ln 10</span></span> = <strong><span class="frac"><span class="num">1</span><span class="den">4 ln 10</span></span> ≈ 0.109</strong></div>
+        <div class="formula">$$\liminf_{N\to\infty} \frac{f(N)}{\ln N} = \frac{k}{4k\ln 10} = \mathbf{\frac{1}{4\ln 10} \approx 0.109}$$</div>
 
         <p class="sub-h">含"零"的情形</p>
         <p>数字中间出现 0 时插入"零"字，但每块内部最多插 3 个零，每块总字数仍为常数。量级不变，f(N) = O(log N)，上下极限只略增大，仍无单一极限。</p>
@@ -2570,12 +2584,12 @@
 
       <p class="sub-h">步骤 1：明确展开式与奇点</p>
       <p>tan x = sin x / cos x 是奇函数，麦克劳林展开仅含奇次幂：</p>
-      <div class="formula">tan x = <span class="op-sum"><span class="op">∑</span><span class="lim">n=1</span></span><sup>∞</sup> a<sub>n</sub> x<sup>2n−1</sup></div>
+      <div class="formula">$$\tan x = \sum_{n=1}^{\infty} a_n x^{2n-1}$$</div>
       <p>奇点满足 cos x = 0，即 x = π/2 + kπ (k ∈ ℤ)。离原点最近的奇点为 x = ±π/2，模长为 π/2，均为<strong>一阶极点</strong>；更远的奇点模长更大，对系数渐近行为的贡献可忽略。</p>
 
       <p class="sub-h">步骤 2：计算最近极点的主部（留数）</p>
       <p>对一阶极点 x = π/2，用洛必达法则求留数：</p>
-      <div class="formula">lim<sub>x→π/2</sub> (x − π/2)·tan x = lim<sub>x→π/2</sub> <span class="frac"><span class="num">(x−π/2)sin x</span><span class="den">cos x</span></span> = lim<sub>x→π/2</sub> <span class="frac"><span class="num">sin x + (x−π/2)cos x</span><span class="den">−sin x</span></span> = −1</div>
+      <div class="formula">$$\lim_{x\to\pi/2} (x-\pi/2)\tan x = \lim_{x\to\pi/2} \frac{(x-\pi/2)\sin x}{\cos x} = \lim_{x\to\pi/2} \frac{\sin x + (x-\pi/2)\cos x}{-\sin x} = -1$$</div>
       <p>因此 tan x 在 x = π/2 处的留数为 −1，主部为 −1/(x−π/2) = 1/(π/2−x)。同理 x = −π/2 处留数也为 −1。</p>
 
       <p class="sub-h">步骤 3：达布渐近定理求系数主项</p>
@@ -2593,9 +2607,9 @@
 
       <p class="sub-h">补充验证：伯努利数途径</p>
       <p>tan x 的展开式可由伯努利数表示：</p>
-      <div class="formula">tan x = <span class="op-sum"><span class="op">∑</span><span class="lim">n≥1</span></span> <span class="frac"><span class="num">2<sup>2n</sup>(2<sup>2n</sup>−1)|B<sub>2n</sub>|</span><span class="den">(2n)!</span></span> x<sup>2n−1</sup></div>
-      <p>由伯努利数渐近公式 |B<sub>2n</sub>| ~ 2(2n)!/(2π)<sup>2n</sup>，代入得：</p>
-      <div class="formula">a<sub>n</sub> ~ <span class="frac"><span class="num">2<sup>2n</sup> · 2 · (2n)! / (2π)<sup>2n</sup></span><span class="den">(2n)!</span></span> = 2 · (4/π²)<sup>n</sup></div>
+      <div class="formula">$$\tan x = \sum_{n \ge 1} \frac{2^{2n}(2^{2n}-1)|B_{2n}|}{(2n)!} x^{2n-1}$$</div>
+      <p>由伯努利数渐近公式 $|B_{2n}| \sim 2(2n)!/(2\pi)^{2n}$，代入得：</p>
+      <div class="formula">$$a_n \sim \frac{2^{2n} \cdot 2 \cdot (2n)! / (2\pi)^{2n}}{(2n)!} = 2 \cdot \left(\frac{4}{\pi^2}\right)^n$$</div>
       <p>与达布定理的结论完全一致，两种独立方法交叉验证。</p>
 
       <p class="sub-h">方法总结</p>
