@@ -421,6 +421,28 @@
         <div class="formula">α<sub>b,c</sub> = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">1</span><span class="den">c<sup>k</sup> · b<sup>c<sup>k</sup></sup></span></span></div>
         <p>在 b 进制下正规，但在 bc 进制下不正规——正规性是依赖于进制的性质。</p>
         <div class="note">几乎所有实数都是正规数（测度为 1），但具体证明某个常见常数（如 π、√2、e）是正规数却极其困难——至今无人能证。几乎所有数都满足，但你一个也举不出来。能构造出的正规数不多，大多"人为拼出来"。Stoneham 常数揭示了进制依赖性：一个数可以在二进制下正规，在六进制下却不正规。</div>
+
+        <p class="sub-h">波莱尔定理与"几乎所有"</p>
+        <p>1909 年，埃米尔·波莱尔证明：<strong>几乎所有实数在任何进制下都是正规数</strong>。这里"几乎所有"是勒贝格测度意义下的——不正规的实数构成一个零测集。证明思路用了强大数定律：把十进制展开看成独立同分布的随机变量序列，每位数字取 0~9 的概率均等，由强大数定律，频率几乎必然收敛到 1/10。</p>
+        <p>这个定理的反直觉之处在于：它保证了正规数"遍地都是"，但我们却连一个自然出现的常数（π、e、√2）的正规性都证明不了。这是"存在性证明 vs 构造性证明"差距的经典案例。</p>
+
+        <p class="sub-h">外尔等分布准则</p>
+        <p>正规性与等分布密切相关。赫尔曼·外尔 1916 年证明：序列 {a<sub>n</sub>} 在 [0,1) 上等分布 ⟺ 对任意非零整数 k，<span class="op-lim">lim<span class="sub">N→∞</span></span> <span class="frac"><span class="num">1</span><span class="den">N</span></span> <span class="op-sum"><span class="sup">N</span><span class="op">∑</span><span class="lim">n=1</span></span> e<sup>2πik·a<sub>n</sub></sup> = 0。</p>
+        <p>对正规数 x，序列 {10<sup>n</sup>x mod 1} 在 [0,1) 上等分布。这给出了检验正规性的解析工具：计算指数和的极限。例如 {nα mod 1} 对无理数 α 等分布（外尔定理），但这只说明 x = 0.α2α3α… 形式的数在某种意义下"均匀"，不等于十进制正规。</p>
+
+        <p class="sub-h">进制依赖性：Stoneham 常数的震撼</p>
+        <p>Stoneham 常数 α<sub>b,c</sub> 在 b 进制下正规，但在 bc 进制下不正规。这意味着<strong>正规性不是数的内禀性质，而是依赖于进制的</strong>。一个数可以在二进制下"完全随机"，在六进制下却有规律。</p>
+        <p>这打破了"正规数 = 随机数"的直觉。真正"绝对正规"（在所有进制下都正规）的数几乎所有实数都是，但构造一个具体的绝对正规数非常困难。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">已知与未知</div>
+          <ol>
+            <li><strong>已知正规</strong>：科普兰-厄尔多斯常数（素数拼接）、达文波特-厄尔多斯多项式族、Stoneham 常数族（特定进制下）</li>
+            <li><strong>未知（猜测正规但未证明）</strong>：π, e, √2, ln 2, ζ(3)……几乎所有你叫得出名字的常数</li>
+            <li><strong>已知不正规</strong>：有理数（有限循环小数）、Liouville 数 ∑10<sup>−n!</sup>（在十进制下有大量 0）</li>
+            <li><strong>开放问题</strong>：π 是否十进制正规？这是数论中最著名的开放问题之一，数值计算到万亿位仍未发现异常，但证明遥遥无期</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -441,6 +463,43 @@
         <p><strong>存在性</strong>（归纳法）：取满足 F<sub>m</sub> ≤ n &lt; F<sub>m+1</sub> 的最大下标 m，记 r = n − F<sub>m</sub>。则 r &lt; F<sub>m−1</sub>，由归纳假设 r 有合法表示且最大项 &lt; F<sub>m−1</sub>，不与 F<sub>m</sub> 相邻。</p>
         <p><strong>唯一性</strong>：设两种表示最大下标不同，不含 F<sub>m</sub> 的一边最大值为 F<sub>m−1</sub> + F<sub>m−3</sub> + … &lt; F<sub>m</sub>（隔项和严格小于下一项），矛盾。</p>
         <div class="note">二进制的唯一性几乎显然（每位取 0 或 1），但斐波那契进制加上"不相邻"约束后唯一性反而需要证明——证明本身揭示了斐波那契数列"隔项和小于下一项"这个优雅性质。长度为 n 的 0/1 串中不出现相邻 1 的方案数恰好是斐波那契数，这正是该进制的计数基础。</div>
+
+        <p class="sub-h">为什么"不相邻"是关键约束</p>
+        <p>如果允许相邻的 1，同一个数会有多种表示。例如 4 = 101<sub>Fib</sub>（F<sub>3</sub>+F<sub>1</sub>=3+1）也 = 11<sub>Fib</sub>（F<sub>2</sub>+F<sub>1</sub>=2+2）。加上"不相邻"约束后，每种表示唯一。这类似于二进制中每位只能 0 或 1，而斐波那契进制中"相邻位不能同时为 1"。</p>
+
+        <p class="sub-h">泽肯多夫表示的算法</p>
+        <p>给定正整数 N，求其泽肯多夫表示：</p>
+        <ol>
+          <li>找到最大的 F<sub>m</sub> ≤ N</li>
+          <li>记下 F<sub>m</sub>，令 N = N − F<sub>m</sub></li>
+          <li>对新的 N 重复，直到 N = 0</li>
+        </ol>
+        <p>由于 F<sub>m</sub> − F<sub>m−1</sub> = F<sub>m−2</sub> &lt; F<sub>m−1</sub>，每次减去 F<sub>m</sub> 后余数 &lt; F<sub>m−1</sub>，所以下一个选的斐波那契数至多是 F<sub>m−2</sub>，自动保证"不相邻"。</p>
+        <p><strong>示例</strong>：N = 100。最大 F<sub>m</sub> ≤ 100 是 F<sub>10</sub> = 89。100−89 = 11。最大 F ≤ 11 是 F<sub>5</sub> = 8。11−8 = 3 = F<sub>3</sub>。所以 100 = 89+8+3 = F<sub>10</sub>+F<sub>5</sub>+F<sub>3</sub> = 100010100<sub>Fib</sub>。</p>
+
+        <p class="sub-h">与黄金比例的联系</p>
+        <p>斐波那契数列的增长由黄金比例 φ = (1+√5)/2 ≈ 1.618 控制：F<sub>n</sub> ≈ φ<sup>n</sup>/√5。因此泽肯多夫表示的位数约为 log<sub>φ</sub> N ≈ 1.44 log<sub>2</sub> N，比二进制多约 44% 的位数。</p>
+        <p>这看似不经济，但"不相邻"约束带来了特殊优势——在数据压缩中，斐波那契编码（Fibonacci coding）利用这一性质实现了<strong>无前缀码</strong>：任何码字都不以"11"结尾（除了终止符），因此可以在比特流中唯一分割。</p>
+
+        <p class="sub-h">斐波那契编码（数据压缩应用）</p>
+        <p>泽肯多夫表示在编码理论中有实际应用。将正整数 n 的泽肯多夫表示末尾加一个"1"作为终止符，就得到斐波那契码。例如：</p>
+        <ul class="simple">
+          <li>1 = F<sub>1</sub> → 11</li>
+          <li>2 = F<sub>2</sub> → 011</li>
+          <li>3 = F<sub>3</sub> → 0011</li>
+          <li>4 = F<sub>3</sub>+F<sub>1</sub> → 1011</li>
+          <li>5 = F<sub>4</sub> → 00011</li>
+        </ul>
+        <p>由于泽肯多夫表示中没有相邻的 1，末尾加"1"后唯一的"11"出现在结尾，解码器扫描到"11"就知道一个码字结束了。这种编码对小整数高效，广泛用于通用压缩算法。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">三种进制对比</div>
+          <ol>
+            <li><strong>二进制</strong>：每位 0/1，唯一性显然，位数 ⌊log₂n⌋+1</li>
+            <li><strong>斐波那契进制</strong>：每位 0/1 且不相邻，唯一性需证明，位数约 1.44·log₂n，无前缀编码优势</li>
+            <li><strong>十进制</strong>：每位 0~9，唯一性显然，位数约 log₁₀n</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -466,6 +525,41 @@
         <p class="sub-h">Ω 常数</p>
         <p>Ω = W<sub>0</sub>(1) ≈ 0.567，满足 e<sup>−Ω</sup> = Ω。Ω 是超越数。其他数值：W<sub>0</sub>(2) ≈ 0.853，W<sub>0</sub>(3) ≈ 1.05。</p>
         <div class="note">初次遇到 x·e<sup>x</sup> = t 或 x + ln x = t 时，W 函数就像"开方"——它不是初等函数，但一旦认识了它，一大类超越方程就有了"闭式解"。</div>
+
+        <p class="sub-h">用 W 函数解方程的典型套路</p>
+        <p>核心技巧：把方程整理成 "某个式子 · e<sup>某个式子</sup> = 常数" 的形式，然后两边取 W。</p>
+        <p><strong>例 1</strong>：x·2<sup>x</sup> = 1。两边除以 2<sup>x</sup> 的底数相关项：x·e<sup>x ln 2</sup> = 1。令 u = x ln 2，则 x = u/ln 2，代入得 (u/ln 2)·e<sup>u</sup> = 1，即 u·e<sup>u</sup> = ln 2。故 u = W(ln 2)，x = W(ln 2)/ln 2。</p>
+        <p><strong>例 2</strong>：x + ln x = 5。两边取指数：x·e<sup>x</sup> = e<sup>5</sup>，故 x = W(e<sup>5</sup>)。</p>
+        <p><strong>例 3</strong>：x<sup>x</sup> = 100。取对数：x ln x = ln 100。令 u = ln x，则 x = e<sup>u</sup>，代入得 e<sup>u</sup>·u = ln 100，即 u·e<sup>u</sup> = ln 100。故 u = W(ln 100)，x = e<sup>W(ln 100)</sup>。又由 W(z)·e<sup>W(z)</sup> = z 得 e<sup>W(z)</sup> = z/W(z)，所以 x = ln 100 / W(ln 100)。</p>
+
+        <p class="sub-h">W 函数与树计数（Cayley 公式）</p>
+        <p>W 函数的泰勒展开系数与<strong>有根标号树</strong>的计数密切相关。Cayley 公式：n 个顶点的有根标号树有 n<sup>n−1</sup> 棵。W 函数的展开：</p>
+        <div class="formula">W<sub>0</sub>(z) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">n=1</span></span> <span class="frac"><span class="num">(−n)<sup>n−1</sup></span><span class="den">n!</span></span> z<sup>n</sup> = z − z<sup>2</sup> + <span class="frac"><span class="num">3</span><span class="den">2</span></span>z<sup>3</sup> − <span class="frac"><span class="num">8</span><span class="den">3</span></span>z<sup>4</sup> + …</div>
+        <p>系数 (−n)<sup>n−1</sup>/n! 的绝对值正是 n<sup>n−1</sup>/n!，即 n 个顶点有根树数除以 n!。这是组合数学中"生成函数 ↔ 计数"的漂亮联系。</p>
+
+        <p class="sub-h">应用场景</p>
+        <ul class="simple">
+          <li><strong>延迟微分方程</strong>：y'(t) = a·y(t−τ) 的特征方程 λ = a·e<sup>−λτ</sup>，解为 λ = W(aτ)/τ</li>
+          <li><strong>种群增长</strong>：逻辑斯蒂映射的不动点、SIR 模型的最终规模</li>
+          <li><strong>统计力学</strong>：玻色-爱因斯坦分布的反函数</li>
+          <li><strong>电路</strong>：二极管 I-V 特性的反解</li>
+          <li><strong>算法分析</strong>：随机快速排序的某些渐近分析中出现</li>
+        </ul>
+
+        <p class="sub-h">数值计算</p>
+        <p>W 函数没有初等表达式，数值计算常用迭代法。由 W(z)e<sup>W(z)</sup> = z，取对数得 W = ln z − ln W，可用不动点迭代：W<sub>n+1</sub> = ln z − ln W<sub>n</sub>。对大 z，初值取 ln z − ln ln z 收敛很快。更高效的方法是用 Halley 迭代（三阶收敛）。</p>
+        <p>在分支点 z = −1/e 附近，W 有平方根型奇点：W(z) ≈ −1 + √(2(ez+1))，这解释了两支 W<sub>0</sub> 和 W₋₁ 在此汇合。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">W 函数速查</div>
+          <ol>
+            <li>定义：W(z)e<sup>W(z)</sup> = z</li>
+            <li>定义域：W<sub>0</sub> 在 [−1/e, ∞)，W₋₁ 在 [−1/e, 0)</li>
+            <li>特殊值：W(0)=0, W(1/2)≈0.352, W(1)=Ω≈0.567, W(e)=1, W(2e²)=2</li>
+            <li>渐近：W(z) ~ ln z − ln ln z（z→∞）</li>
+            <li>恒等式：W(z·e<sup>z</sup>) = z；e<sup>W(z)</sup> = z/W(z)</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -548,6 +642,41 @@
           <li><sup>n</sup>2：1, 2, 4, 16, 65536, 2<sup>65536</sup>, … 增长极其恐怖</li>
         </ul>
         <div class="note">迭代幂运算展示了"运算层级"的威力：每升一级，增长速度发生质变。幂塔的导数公式揭示了一个优雅结构——每层的贡献是"前面所有层的乘积"乘以 (ln x) 的幂次。无穷幂塔恰好是朗伯 W 函数的一个应用，收敛域 e<sup>−e</sup> ≤ x ≤ e<sup>1/e</sup> 是一个经典且反直觉的结果——x 不能太大也不能太小。</div>
+
+        <p class="sub-h">无穷幂塔与收敛性</p>
+        <p>令 y = x<sup>x<sup>x<sup>·</sup>·</sup>·</sup>（无穷层）。若收敛，则满足 y = x<sup>y</sup>。两边取对数：ln y = y ln x，即 (ln y)·e<sup>−ln y</sup> = ln x。令 u = −ln y，则 u·e<sup>u</sup> = −ln x，故 u = W(−ln x)，从而：</p>
+        <div class="formula">y = <span class="frac"><span class="num">W(−ln x)</span><span class="den">−ln x</span></span></div>
+        <p>欧拉 1783 年证明：无穷幂塔收敛当且仅当 <strong>e<sup>−e</sup> ≤ x ≤ e<sup>1/e</sup></strong>（约 0.066 ≤ x ≤ 1.445）。这个区间之窄令人意外——x=2 的无穷幂塔发散到无穷大，而 x=1.4 收敛到约 1.89。</p>
+        <p><strong>边界值</strong>：x = e<sup>1/e</sup> 时，y = e；x = e<sup>−e</sup> 时，y = 1/e。</p>
+
+        <p class="sub-h">用 W 函数解幂塔方程</p>
+        <p>若已知无穷幂塔的值 y，求 x。由 y = x<sup>y</sup>，得 ln x = (ln y)/y，故 x = e<sup>(ln y)/y</sup> = y<sup>1/y</sup>。</p>
+        <p><strong>经典问题</strong>：若 x<sup>x<sup>x<sup>·</sup>·</sup>·</sup> = 2，求 x。由 y = 2，x = 2<sup>1/2</sup> = √2。验证：√2 的无穷幂塔确实等于 2（因为 (√2)<sup>2</sup> = 2）。</p>
+        <p><strong>陷阱</strong>：若令无穷幂塔 = 4，则 x = 4<sup>1/4</sup> = √2。但 √2 的无穷幂塔等于 2，不等于 4！这说明方程 y = x<sup>y</sup> 对同一个 x 可能有多个 y 解，只有落在收敛域内的解才有效。√2 的无穷幂塔收敛到 2（较小的解），而 4 是不稳定解。</p>
+
+        <p class="sub-h">超运算序列</p>
+        <p>迭代幂是超运算序列的第 4 级。完整序列（由 Goodstein 1947 年命名）：</p>
+        <table class="data">
+          <tr><th>级别</th><th>名称</th><th>运算</th><th>示例</th></tr>
+          <tr><td>0</td><td>后继</td><td>a+1</td><td>3→4</td></tr>
+          <tr><td>1</td><td>加法</td><td>a+b</td><td>重复后继 b 次</td></tr>
+          <tr><td>2</td><td>乘法</td><td>a×b</td><td>重复加 b 次</td></tr>
+          <tr><td>3</td><td>幂运算</td><td>a<sup>b</sup></td><td>重复乘 b 次</td></tr>
+          <tr><td>4</td><td>迭代幂</td><td><sup>b</sup>a</td><td>重复取幂 b 次</td></tr>
+          <tr><td>5</td><td>Pentation</td><td>a ↑↑↑ b</td><td>重复迭代幂 b 次</td></tr>
+          <tr><td>6</td><td>Hexation</td><td>a ↑↑↑↑ b</td><td>重复 Pentation b 次</td></tr>
+        </table>
+        <p>箭头记号 ↑ 由 Knuth 引入：a↑b = a<sup>b</sup>，a↑↑b = <sup>b</sup>a（迭代幂），a↑↑↑b = 重复迭代幂。每升一级增长速度暴增——3↑↑3 = 3<sup>3<sup>3</sup></sup> = 7,625,597,484,987，而 3↑↑↑3 是一个难以想象的巨大数字（远超可观测宇宙的原子数）。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">关键结论</div>
+          <ol>
+            <li>无穷幂塔 x<sup>x<sup>x<sup>·</sup>·</sup>·</sup> 收敛 ⟺ e<sup>−e</sup> ≤ x ≤ e<sup>1/e</sup></li>
+            <li>收敛值 y = W(−ln x)/(−ln x)，与朗伯 W 函数直接相关</li>
+            <li>幂塔导数递推：y<sub>n</sub>' = y<sub>n</sub>(y<sub>n−1</sub>'·ln x + y<sub>n−1</sub>/x)</li>
+            <li>超运算每升一级，增长速度发生质变，远超指数增长</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -639,6 +768,41 @@
         <p>以 m=2 为例：λ<sup>2</sup> = λ + 1，解得 λ<sub>1</sub> = (1+√5)/2, λ<sub>2</sub> = (1−√5)/2，</p>
         <div class="formula">a<sub>n</sub> = <span class="frac"><span class="num">1</span><span class="den">√5</span></span> · [ <span class="frac"><span class="num">1 + √5</span><span class="den">2</span></span><sup>n+1</sup> − <span class="frac"><span class="num">1 − √5</span><span class="den">2</span></span><sup>n+1</sup> ]</div>
         <div class="note">递推法和特征方程法给出了更一般的框架——当各部分大小有限制时，这套方法依然适用。</div>
+
+        <p class="sub-h">Composition vs Partition：顺序是否重要</p>
+        <p>有序分拆（Composition）与无序分拆（Partition）的核心区别在于<strong>顺序是否计入</strong>：</p>
+        <ul class="simple">
+          <li><strong>Composition（有序）</strong>：1+2 和 2+1 是两种不同分拆。n=3 的 composition 有 4 种：1+1+1, 1+2, 2+1, 3</li>
+          <li><strong>Partition（无序）</strong>：1+2 和 2+1 视为同一种。n=3 的 partition 有 3 种：3, 2+1, 1+1+1</li>
+        </ul>
+        <p>Composition 总数是 2<sup>n−1</sup>，Partition 总数 p(n) 增长更慢但没有简单闭式（渐近 p(n) ~ e<sup>π√(2n/3)</sup>/(4n√3)，由 Hardy-Ramanujan 给出）。</p>
+
+        <p class="sub-h">隔板法的直观理解</p>
+        <p>把 n 写成 n 个 1 排成一排：1 1 1 … 1（共 n 个）。中间有 n−1 个空隙。在每个空隙可以选择"切"或"不切"，共 2<sup>n−1</sup> 种选择，每种选择对应一种 composition。例如 n=4：空隙 1__1__1__1，在第 1、3 个空隙切 → 1 | 1 1 | 1 → 1+2+1。</p>
+
+        <p class="sub-h">生成函数</p>
+        <p>composition 的生成函数极其简洁。由于每部分是正整数，且顺序重要，生成函数为：</p>
+        <div class="formula">C(x) = <span class="frac"><span class="num">1</span><span class="den">1 − (x + x<sup>2</sup> + x<sup>3</sup> + …)</span></span> = <span class="frac"><span class="num">1</span><span class="den">1 − x/(1−x)</span></span> = <span class="frac"><span class="num">1 − x</span><span class="den">1 − 2x</span></span></div>
+        <p>展开得 C(x) = 1 + x + 2x<sup>2</sup> + 4x<sup>3</sup> + 8x<sup>4</sup> + …，系数 2<sup>n−1</sup> 正是 composition 数。若限制每部分 ≤ m，生成函数变为 1/(1 − x(1−x<sup>m</sup>)/(1−x))，对应前面的递推关系。</p>
+
+        <p class="sub-h">有限制的 composition</p>
+        <p><strong>限制每部分 ≤ m</strong>：递推 a<sub>n</sub> = a<sub>n−1</sub> + a<sub>n−2</sub> + … + a<sub>n−m</sub>（n > m），特征方程 λ<sup>m</sup> = λ<sup>m−1</sup> + λ<sup>m−2</sup> + … + 1。m=2 时退化为斐波那契，m→∞ 时退化为 2<sup>n−1</sup>。</p>
+        <p><strong>限制每部分为奇数</strong>：生成函数 1/(1 − (x + x<sup>3</sup> + x<sup>5</sup> + …)) = 1/(1 − x/(1−x<sup>2</sup>))，解得递推 a<sub>n</sub> = a<sub>n−1</sub> + a<sub>n−2</sub>，又是斐波那契！</p>
+        <p><strong>限制每部分为素数</strong>：生成函数 1/(1 − ∑<sub>p prime</sub> x<sup>p</sup>)，与哥德巴赫猜想相关——每个偶数能否写成两个素数之和，等价于素数 composition 的计数问题。</p>
+
+        <p class="sub-h">应用：概率与随机过程</p>
+        <p>composition 在概率论中自然出现。若 X<sub>1</sub>, X<sub>2</sub>, … 独立同分布取正整数值，则 P(X<sub>1</sub> + … + X<sub>k</sub> = n) 是将 n 分成 k 部分的某种加权 composition 数。几何分布的更新过程、骰子点数和的分布都与此相关。</p>
+        <p>例如：掷骰子直到点数和 ≥ 100，最后一次掷出的点数期望是多少？这个经典问题的答案是 7/2 ≈ 3.5，与直觉相反（不是 3），其分析用到了 composition 的对称性。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">速查</div>
+          <ol>
+            <li>无限制 composition 数：2<sup>n−1</sup></li>
+            <li>分成 k 部分：C(n−1, k−1)（隔板法）</li>
+            <li>每部分 ≤ m：递推 a<sub>n</sub> = Σ<sub>i=1</sub><sup>m</sup> a<sub>n−i</sub></li>
+            <li>生成函数：1/(1 − Σ<sub>允许值</sub> x<sup>d</sup>)</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -673,6 +837,50 @@
           <li>ζ(2n) = <span class="frac"><span class="num">(−1)<sup>n+1</sup> B<sub>2n</sub> (2π)<sup>2n</sup></span><span class="den">2·(2n)!</span></span></li>
         </ul>
         <div class="note">伯努利数把幂和求和、欧拉-麦克劳林公式、黎曼 zeta 函数偶数值、费马大定理的正则素数等看似无关的领域串联在一起。分母的素数结构是数论中非常漂亮的结果。欧拉-麦克劳林公式是"求和 ≈ 积分 + 修正项"的精确化，修正项系数恰好是伯努利数——这也是伯努利数出现在那么多看似不相关公式里的原因。</div>
+
+        <p class="sub-h">Faulhaber 公式（幂和）</p>
+        <p>伯努利数最初来源于求前 n 个正整数的 k 次幂和。Faulhaber 公式：</p>
+        <div class="formula"><span class="op-sum"><span class="sup">n</span><span class="op">∑</span><span class="lim">j=1</span></span> j<sup>k</sup> = <span class="frac"><span class="num">1</span><span class="den">k+1</span></span> <span class="op-sum"><span class="sup">k</span><span class="op">∑</span><span class="lim">j=0</span></span> (−1)<sup>j</sup> <span class="binom"><span class="num">k+1</span><span class="den">j</span></span> B<sub>j</sub> n<sup>k+1−j</sup></div>
+        <p>前几个例子：</p>
+        <ul class="simple">
+          <li>Σ j = n(n+1)/2 = (n<sup>2</sup>+n)/2</li>
+          <li>Σ j<sup>2</sup> = n(n+1)(2n+1)/6 = (2n<sup>3</sup>+3n<sup>2</sup>+n)/6</li>
+          <li>Σ j<sup>3</sup> = [n(n+1)/2]<sup>2</sup> = (n<sup>4</sup>+2n<sup>3</sup>+n<sup>2</sup>)/4</li>
+          <li>Σ j<sup>4</sup> = n(n+1)(2n+1)(3n<sup>2</sup>+3n−1)/30</li>
+        </ul>
+        <p>注意 Σ j<sup>3</sup> = (Σ j)<sup>2</sup>，这是一个经典恒等式。k 次幂和总是 k+1 次多项式，系数由伯努利数决定。</p>
+
+        <p class="sub-h">伯努利数与黎曼 zeta 函数</p>
+        <p>伯努利数与黎曼 zeta 函数在偶数点的值有精确关系：</p>
+        <div class="formula">ζ(2n) = <span class="frac"><span class="num">(−1)<sup>n+1</sup> B<sub>2n</sub> (2π)<sup>2n</sup></span><span class="den">2 · (2n)!</span></span></div>
+        <p>前几个值：</p>
+        <ul class="simple">
+          <li>ζ(2) = π<sup>2</sup>/6 ≈ 1.6449（巴塞尔问题，欧拉 1735 年解决）</li>
+          <li>ζ(4) = π<sup>4</sup>/90 ≈ 1.0823</li>
+          <li>ζ(6) = π<sup>6</sup>/945 ≈ 1.0173</li>
+          <li>ζ(8) = π<sup>8</sup>/9450</li>
+        </ul>
+        <p>这说明 ζ(2n) 是 π<sup>2n</sup> 与有理数的乘积。但 ζ(2n+1)（奇数值）至今没有类似的简洁表达式——ζ(3)（Apéry 常数）已证明是无理数（Apéry 1978），但 ζ(5), ζ(7), … 的无理性仍未证明。</p>
+
+        <p class="sub-h">伯努利数的历史</p>
+        <p>雅各布·伯努利在《猜度术》（1713 年遗著）中系统研究了这些数，用于计算幂和。他发现了一个"通用公式"，可以一次性写出任意次幂和。据说他曾夸口说自己"用不到一刻钟"就算出了前 1000 个数的 10 次幂和，这在没有计算机的时代是惊人的。</p>
+        <p>值得注意的是，日本数学家关孝和（Seki Takakazu）几乎同时独立发现了相同的数。欧拉后来将伯努利数与 zeta 函数、三角级数联系起来，大大扩展了其应用范围。</p>
+
+        <p class="sub-h">欧拉-麦克劳林公式的余项与渐近级数</p>
+        <p>欧拉-麦克劳林公式中的余项 R<sub>m</sub> 满足：</p>
+        <div class="formula">R<sub>m</sub> = (−1)<sup>m+1</sup> <span class="op-int"><span class="sup">b</span><span class="op">∫</span><span class="sub">a</span></span> <span class="frac"><span class="num">B<sub>2m</sub>({x})</span><span class="den">(2m)!</span></span> f<sup>(2m)</sup>(x) dx</div>
+        <p>其中 B<sub>2m</sub>({x}) 是周期化的伯努利多项式。一个重要现象：当 m → ∞ 时，欧拉-麦克劳林级数通常<strong>发散</strong>，但前几项的截断误差极小——这是<strong>渐近级数</strong>的典型例子。对于调和级数，取前几项就能得到极高精度的 H<sub>n</sub> 近似。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">伯努利数速查</div>
+          <ol>
+            <li>生成函数：x/(e<sup>x</sup>−1) = Σ B<sub>n</sub>x<sup>n</sup>/n!</li>
+            <li>奇数项：B<sub>1</sub> = −1/2，B<sub>2n+1</sub> = 0（n ≥ 1）</li>
+            <li>前几个偶数项：B<sub>2</sub>=1/6, B<sub>4</sub>=−1/30, B<sub>6</sub>=1/42, B<sub>8</sub>=−1/30, B<sub>10</sub>=5/66</li>
+            <li>分母：denom(B<sub>2n</sub>) = ∏<sub>p−1|2n</sub> p（冯·施陶特-克劳森定理）</li>
+            <li>与 ζ 关系：ζ(2n) = (−1)<sup>n+1</sup>B<sub>2n</sub>(2π)<sup>2n</sup>/(2·(2n)!)</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -714,6 +922,51 @@
         <div class="formula">Γ(z+1) ≈ z<sup>z</sup> e<sup>−z</sup> √(2π z)</div>
         <p>正整数时即 n! ≈ n<sup>n</sup> e<sup>−n</sup> √(2π n)。华里士乘积可由此导出，反之华里士公式也可确定斯特林公式中的系数 √(2π)。</p>
         <div class="note">这几个公式构成了一个紧密网络：余元公式连接三角/复分析，加倍公式展示缩放性质，华里士公式把 π 表示为有理数无穷乘积，斯特林公式描述无穷远行为。Gamma 函数把"阶乘"从整数推广到全体实数，Beta 函数则是桥梁——许多含三角函数、幂函数的积分都能通过换元变成 Beta 积分再求值。</div>
+
+        <p class="sub-h">Bohr-Mollerup 定理：Gamma 的唯一性</p>
+        <p>为什么 Γ(n+1) = n! 的推广是 Γ(z) = ∫₀<sup>∞</sup> t<sup>z−1</sup>e<sup>−t</sup>dt，而不是别的？Bohr-Mollerup 定理回答了这个问题：</p>
+        <p><strong>定理</strong>：若函数 f 满足 (1) f(1)=1；(2) f(x+1)=x·f(x)；(3) ln f 是凸函数，则 f(x) = Γ(x)。</p>
+        <p>对数凸性（ln Γ(x) 凸）是关键约束。它保证了 Gamma 函数是阶乘的"最自然"推广——任何满足递推和对数凸性的函数只能是 Gamma。这是函数方程中"存在唯一性"的漂亮结果。</p>
+
+        <p class="sub-h">Weierstrass 乘积表示</p>
+        <p>Gamma 函数有无穷乘积形式：</p>
+        <div class="formula"><span class="frac"><span class="num">1</span><span class="den">Γ(z)</span></span> = z·e<sup>γz</sup> · <span class="op-prod"><span class="sup">∞</span><span class="op">∏</span><span class="lim">n=1</span></span> (1 + <span class="frac"><span class="num">z</span><span class="den">n</span></span>) · e<sup>−z/n</sup></div>
+        <p>其中 γ 是欧拉-马斯刻若尼常数。这个形式清楚地展示了 Gamma 函数的极点：在 z = 0, −1, −2, … 处有一阶极点。收敛因子 e<sup>−z/n</sup> 保证了无穷乘积的收敛性（类似正弦函数的 Euler 乘积）。</p>
+
+        <p class="sub-h">更多特殊值</p>
+        <ul class="simple">
+          <li>Γ(1/2) = √π</li>
+          <li>Γ(1/3) ≈ 2.678938535，Γ(2/3) ≈ 1.354117939</li>
+          <li>Γ(1/4) ≈ 3.625609908，Γ(3/4) ≈ 1.225416702</li>
+          <li>Γ(n+1/2) = (2n)!√π / (4<sup>n</sup> n!) = (2n−1)!!√π / 2<sup>n</sup></li>
+        </ul>
+        <p>余元公式给出 Γ(1/4)·Γ(3/4) = π√2，Γ(1/3)·Γ(2/3) = 2π/√3。</p>
+
+        <p class="sub-h">概率论中的应用</p>
+        <p>Gamma 函数和 Beta 函数在概率论中无处不在：</p>
+        <ul class="simple">
+          <li><strong>Gamma 分布</strong>：X ~ Gamma(α, β)，密度 f(x) = x<sup>α−1</sup>e<sup>−x/β</sup> / (β<sup>α</sup>Γ(α))。指数分布是 Gamma(1, β)，卡方分布是 Gamma(k/2, 2)。</li>
+          <li><strong>Beta 分布</strong>：X ~ Beta(α, β)，密度 f(x) = x<sup>α−1</sup>(1−x)<sup>β−1</sup> / B(α, β)，定义在 [0,1]。均匀分布是 Beta(1,1)。</li>
+          <li><strong>Dirichlet 分布</strong>：Beta 分布的多变量推广，密度含多个 Gamma 函数的比值。</li>
+          <li><strong>t 分布</strong>：密度中含 Γ((ν+1)/2)/(Γ(ν/2)√(πν))。</li>
+        </ul>
+        <p>Beta(α, β) 的期望 = α/(α+β)，方差 = αβ/((α+β)²(α+β+1))。当 α=β=1 时退化为均匀分布；当 α, β 增大时分布越来越集中在均值附近。</p>
+
+        <p class="sub-h">余元公式的证明思路</p>
+        <p>Γ(z)Γ(1−z) = π/sin(πz) 可用多种方法证明。一种优雅的方法是利用 Weierstrass 乘积和正弦的 Euler 乘积：</p>
+        <div class="formula">sin(πz) = πz · <span class="op-prod"><span class="sup">∞</span><span class="op">∏</span><span class="lim">n=1</span></span> (1 − <span class="frac"><span class="num">z<sup>2</sup></span><span class="den">n<sup>2</sup></span>)</div>
+        <p>将 1/Γ(z) 和 1/Γ(1−z) 的 Weierstrass 乘积相乘，恰好得到 sin(πz)/(πz) 的倒数，故 Γ(z)Γ(1−z) = π/sin(πz)。另一个证明用 Beta 函数的积分表示和留数计算。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心公式网</div>
+          <ol>
+            <li>递推：Γ(z+1) = zΓ(z)</li>
+            <li>余元：Γ(z)Γ(1−z) = π/sin(πz)</li>
+            <li>加倍：Γ(2z) = 2<sup>2z−1</sup>Γ(z)Γ(z+1/2)/√π</li>
+            <li>Beta：B(p,q) = Γ(p)Γ(q)/Γ(p+q)</li>
+            <li>斯特林：Γ(z) ~ z<sup>z−1/2</sup>e<sup>−z</sup>√(2π)</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -725,12 +978,34 @@
       </div>
       <div class="entry-body">
         <p class="sub-h">① 布伦常数（Brun's constant）</p>
-        <p>所有孪生素数对的倒数之和：B<sub>2</sub> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>+<span class="frac"><span class="num">1</span><span class="den">5</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">5</span></span>+<span class="frac"><span class="num">1</span><span class="den">7</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">11</span></span>+<span class="frac"><span class="num">1</span><span class="den">13</span></span>) + … ≈ 1.902160583。有限值——布伦筛法证明了收敛性。而全体素数倒数和是发散的。</p>
+        <p>所有孪生素数对的倒数之和：B<sub>2</sub> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>+<span class="frac"><span class="num">1</span><span class="den">5</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">5</span></span>+<span class="frac"><span class="num">1</span><span class="den">7</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">11</span><span class="den">13</span></span>) + … ≈ 1.902160583。有限值——布伦筛法证明了收敛性。而全体素数倒数和是发散的。</p>
+        <p>布伦常数最出名的"应用"是<strong>Intel Pentium FDIV bug</strong>（1994 年）。Thomas Nicely 在计算布伦常数时发现 Pentium 处理器的浮点除法单元有缺陷，导致某些双精度除法结果错误。Intel 最终耗资约 4.75 亿美元召回缺陷芯片。一个纯数学常数引发了计算机硬件史上最大的召回事件之一。</p>
         <p class="sub-h">② 杜芬数（Dottie number）</p>
-        <p>cos x = x 的唯一实根：D ≈ 0.7390851332。超越数。从任意实数出发反复取余弦最终都收敛到此数——不动点定理的直观例子。</p>
+        <p>cos x = x 的唯一实根：D ≈ 0.7390851332151607。超越数。从任意实数出发反复取余弦最终都收敛到此数——不动点定理的直观例子。</p>
+        <p>为什么从任意初值都收敛？因为 |cos'(x)| = |sin x| ≤ 1，且在不动点处 |sin D| ≈ 0.674 &lt; 1，满足压缩映射条件（局部）。全局收敛需要更细致的分析，但数值实验和理论都确认了这一点。杜芬数与开普勒方程 E − e·sin E = M 密切相关——令 e = 1，方程变为 E − sin E = M，其解与杜芬数有关。</p>
         <p class="sub-h">③ 康威常数（Conway's constant）</p>
-        <p>外观数列 1, 11, 21, 1211, 111221, 312211, … 长度之比极限 λ ≈ 1.303577269，是某 71 次多项式的唯一正实根。任何以非 22 结尾的数字串作为起点，增长速度都由同一个 λ 控制。</p>
-        <div class="note">三个常数代表三种风味：布伦常数是"稀少但存在"；杜芬数是极简的超越数例子；康威常数展示"从简单规则中涌现出复杂代数结构"。</div>
+        <p>外观数列 1, 11, 21, 1211, 111221, 312211, … 长度之比极限 λ ≈ 1.303577269034，是下列 <strong>71 次多项式</strong>的唯一正实根。任何以非 22 结尾的数字串作为起点，增长速度都由同一个 λ 控制。</p>
+        <div class="formula" style="font-size:0.7rem;line-height:1.6;word-break:break-all;">
+          x<sup>71</sup> − x<sup>69</sup> − 2x<sup>68</sup> − x<sup>67</sup> + 2x<sup>66</sup> + 2x<sup>65</sup> + x<sup>64</sup> − x<sup>63</sup><br>
+          − x<sup>62</sup> − x<sup>61</sup> − x<sup>60</sup> − x<sup>59</sup> + 2x<sup>58</sup> + 5x<sup>57</sup> + 3x<sup>56</sup> − 2x<sup>55</sup><br>
+          − 10x<sup>54</sup> − 3x<sup>53</sup> − 2x<sup>52</sup> + 6x<sup>51</sup> + 6x<sup>50</sup> + x<sup>49</sup> + 9x<sup>48</sup><br>
+          − 3x<sup>47</sup> − 7x<sup>46</sup> − 8x<sup>45</sup> − 8x<sup>44</sup> + 10x<sup>43</sup> + 6x<sup>42</sup> + 8x<sup>41</sup><br>
+          − 5x<sup>40</sup> − 12x<sup>39</sup> + 7x<sup>38</sup> − 7x<sup>37</sup> + 7x<sup>36</sup> + x<sup>35</sup> − 3x<sup>34</sup><br>
+          + 10x<sup>33</sup> + x<sup>32</sup> − 6x<sup>31</sup> − 2x<sup>30</sup> − 10x<sup>29</sup> − 3x<sup>28</sup> + 2x<sup>27</sup><br>
+          + 9x<sup>26</sup> − 3x<sup>25</sup> + 14x<sup>24</sup> − 8x<sup>23</sup> − 7x<sup>21</sup> + 9x<sup>20</sup> + 3x<sup>19</sup><br>
+          − 4x<sup>18</sup> − 10x<sup>17</sup> − 7x<sup>16</sup> + 12x<sup>15</sup> + 7x<sup>14</sup> + 2x<sup>13</sup> − 12x<sup>12</sup><br>
+          − 4x<sup>11</sup> − 2x<sup>10</sup> + 5x<sup>9</sup> + x<sup>7</sup> − 7x<sup>6</sup> + 7x<sup>5</sup> − 4x<sup>4</sup><br>
+          + 12x<sup>3</sup> − 6x<sup>2</sup> + 3x − 6 = 0
+        </div>
+        <p>这个多项式有三个实根：−1.088…、−0.682… 和康威常数 λ ≈ 1.303…。值得一提的是，Conway 原始论文中该多项式是正确的，但在 Cover 与 Gopinath 编的再版书中，x<sup>35</sup> 项的符号被误印成了负号。</p>
+        <div class="note">三个常数代表三种风味：布伦常数是"稀少但存在"；杜芬数是极简的超越数例子；康威常数展示"从简单规则中涌现出复杂代数结构"——外观数列规则简单到一句话就能说清，但它的增长常数却需要一个 71 次多项式才能刻画，这种"简单规则 → 复杂代数"的反差正是数学魅力所在。</div>
+
+        <p class="sub-h">④ 费根鲍姆常数（Feigenbaum constant）</p>
+        <p>混沌理论中的普适常数，由 Mitchell Feigenbaum 1975 年发现。考虑逻辑斯蒂映射 x<sub>n+1</sub> = r·x<sub>n</sub>(1−x<sub>n</sub>)，当参数 r 增大时，系统经历倍周期分岔（1 周期 → 2 周期 → 4 周期 → 8 周期 → … → 混沌）。设分岔点参数为 r<sub>1</sub>, r<sub>2</sub>, r<sub>3</sub>, …，则相邻分岔间距之比收敛到：</p>
+        <div class="formula">δ = <span class="op-lim">lim<span class="sub">n→∞</span></span> <span class="frac"><span class="num">r<sub>n</sub> − r<sub>n−1</sub></span><span class="den">r<sub>n+1</sub> − r<sub>n</sub></span></span> ≈ 4.6692016091…</div>
+        <p>最震撼的是<strong>普适性</strong>：这个常数不只出现在逻辑斯蒂映射中，而是出现在<strong>所有</strong>具有单峰最大值的一维映射的倍周期分岔中。正弦映射、二次映射、任何"单峰"映射——分岔间距之比都收敛到同一个 δ。这意味着混沌的产生方式有普适规律，与具体系统细节无关。</p>
+        <p>另一个相关常数是 α ≈ 2.502907875，描述分岔图中相邻周期窗口的横向缩放比。δ 和 α 都是超越数（猜测，未证明），且没有已知的闭式表达式——只能通过数值计算得到。</p>
+        <p>费根鲍姆常数的发现是混沌理论的里程碑：它证明了看似随机的混沌行为背后存在精确的普适数学结构，开创了"重正化群"方法在混沌中的应用。</p>
       </div>
     </div>
 
@@ -825,6 +1100,43 @@
           <li>数值稳定：累计误差小</li>
         </ul>
         <div class="note">共轭变换是群论的核心技巧：绕"歪掉的轴"旋转 = 先转回标准位置 → 绕标准轴旋转 → 再转回去。不同行业对坐标轴和旋转顺序的约定差异极大（航空航天用 Z-Y-X 内在，Unity 用 Z-X-Y 左手系，ROS 用 X-Y-Z 外在），使用前务必确认约定。欧拉角与罗德里格斯公式是两种互补工具：欧拉角三角度参数化，直观但有奇点；罗德里格斯"轴+角"参数化，无奇点但参数冗余（轴有正负二义性）。</div>
+
+        <p class="sub-h">罗德里格斯公式的矩阵形式</p>
+        <p>令 K 为轴 k = (k<sub>x</sub>, k<sub>y</sub>, k<sub>z</sub>) 的反对称矩阵：</p>
+        <div class="formula">K = <span class="matrix"><span class="row"><span>0</span><span>−k<sub>z</sub></span><span>k<sub>y</sub></span></span><span class="row"><span>k<sub>z</sub></span><span>0</span><span>−k<sub>x</sub></span></span><span class="row"><span>−k<sub>y</sub></span><span>k<sub>x</sub></span><span>0</span></span></span></div>
+        <p>则旋转矩阵为：</p>
+        <div class="formula">R = I + (sin θ)K + (1 − cos θ)K<sup>2</sup></div>
+        <p>这就是罗德里格斯旋转公式的矩阵形式。注意 K<sup>2</sup> 不是反对称矩阵，而是对称矩阵。这个展开式与 e<sup>θK</sup> = I + θK + θ²K²/2! + … 一致——因为 K<sup>3</sup> = −K（凯莱-哈密顿定理的推论），所以级数可以重新组合成 sin θ 和 1−cos θ 的形式。</p>
+
+        <p class="sub-h">四元数：旋转的最优表示</p>
+        <p>单位四元数 q = (cos(θ/2), k·sin(θ/2)) 表示绕轴 k 旋转 θ。四元数乘法对应旋转的复合：q<sub>1</sub>q<sub>2</sub> 表示先做 q<sub>2</sub> 再做 q<sub>1</sub>。</p>
+        <ul class="simple">
+          <li><strong>无万向锁</strong>：四元数是 S<sup>3</sup> 到 SO(3) 的双叶覆盖，无奇点</li>
+          <li><strong>紧凑</strong>：只需 4 个数（单位约束后 3 个自由度）</li>
+          <li><strong>插值光滑</strong>：SLERP（球面线性插值）给出最短测地线路径</li>
+          <li><strong>数值稳定</strong>：归一化即可，不会累积漂移</li>
+        </ul>
+        <p>四元数 q 作用于向量 v 的公式：v' = q v q<sup>−1</sup>（将 v 视为纯虚四元数）。从四元数到旋转矩阵的转换：</p>
+        <div class="formula">R = <span class="matrix"><span class="row"><span>1−2(y²+z²)</span><span>2(xy−zw)</span><span>2(xz+yw)</span></span><span class="row"><span>2(xy+zw)</span><span>1−2(x²+z²)</span><span>2(yz−xw)</span></span><span class="row"><span>2(xz−yw)</span><span>2(yz+xw)</span><span>1−2(x²+y²)</span></span></span></div>
+        <p>其中 q = (w, x, y, z)。</p>
+
+        <p class="sub-h">SO(3) 的拓扑</p>
+        <p>三维旋转群 SO(3) 拓扑等价于实射影空间 RP<sup>3</sup>（3 维球面 S<sup>3</sup> 对对径点粘合）。这解释了：</p>
+        <ul class="simple">
+          <li>欧拉角有奇点：毛球定理说 S<sup>2</sup> 上无奇处非零切向量场，SO(3) 中的任何三参数参数化都必有奇点</li>
+          <li>四元数是双覆盖：S<sup>3</sup> → RP<sup>3</sup>，q 和 −q 表示同一旋转</li>
+          <li>存在"扭转 4π 才能复原"的现象（如 Dirac 弦技巧）：RP<sup>3</sup> 的基本群是 ℤ₂，绕 2π 的路径是非平凡的，绕 4π 才同伦于平凡路径</li>
+        </ul>
+
+        <div class="keypoint">
+          <div class="keypoint-title">旋转表示对比</div>
+          <ol>
+            <li><strong>欧拉角</strong>：3 参数，直观，有奇点（万向锁），插值困难</li>
+            <li><strong>旋转矩阵</strong>：9 参数（约束后 3 自由度），无奇点，直接可用，参数冗余</li>
+            <li><strong>轴+角（罗德里格斯）</strong>：4 参数（轴 3 + 角 1，模长约束后 3 自由度），无奇点，轴有正负二义</li>
+            <li><strong>四元数</strong>：4 参数（单位约束后 3 自由度），无奇点，插值最优，需理解复数推广</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -858,6 +1170,41 @@
         <p class="sub-h">左正则表示</p>
         <p>对 n 维数系中每个数 a，"左乘"操作 L<sub>a</sub>(b) = a·b 是 n 维线性变换，可用 n×n 矩阵表示。数与矩阵一一对应，信息量等价——但全体矩阵比数系大得多，只有一小类特殊矩阵才对应数系元素。例如复数 a+bi 对应矩阵 <span class="matrix"><span class="row"><span>a</span><span>−b</span></span><span class="row"><span>b</span><span>a</span></span></span>，只是所有 2×2 矩阵中"旋转+等比缩放"那一小类。</p>
         <div class="note">赫尔维茨定理给出了"好用的数系"维数的完整答案：1、2、4、8，一个都不能多。这和 Bott 周期定理、除法代数的存在性紧密相关——1、2、4、8 这几个数在拓扑学中反复出现，背后是同一个深刻的数学结构。弗罗贝尼乌斯定理是赫尔维茨定理在"保留结合律"约束下的特例。</div>
+
+        <p class="sub-h">四元数的乘法</p>
+        <p>哈密顿 1843 年发现四元数，核心乘法规则：</p>
+        <div class="formula">i<sup>2</sup> = j<sup>2</sup> = k<sup>2</sup> = ijk = −1</div>
+        <p>由此推出：ij = k, jk = i, ki = j；ji = −k, kj = −i, ik = −j。注意<strong>不可交换</strong>：ij = k 但 ji = −k。四元数 q = a + bi + cj + dk 的模 |q| = √(a²+b²+c²+d²)，且 |q₁q₂| = |q₁||q₂|。</p>
+        <p>共轭 q̄ = a − bi − cj − dk，逆 q<sup>−1</sup> = q̄/|q|²。非零四元数都有逆，故是可除代数。</p>
+
+        <p class="sub-h">八元数：最后的数系</p>
+        <p>八元数由 Graves 和 Cayley 1843-1845 年独立发现。八元数有 8 个单位元：1, e<sub>1</sub>, e<sub>2</sub>, …, e<sub>7</sub>，每个 e<sub>i</sub><sup>2</sup> = −1。乘法由 Fano 平面（法诺平面）决定：7 个点和 7 条线，每条线上的三个元素满足 e<sub>i</sub>e<sub>j</sub> = ±e<sub>k</sub>。</p>
+        <p>八元数<strong>既不交换也不结合</strong>，但满足<strong>交错律</strong>：(aa)b = a(ab) 和 (ba)a = b(aa)。这比结合律弱，但足以保证无零因子和可除性。八元数还满足 Moufang 恒等式，这是交错代数的核心性质。</p>
+        <p>八元数之所以重要，是因为它是最后一个赋范可除代数。16 维的十六元数（Sedenions）不再交错，有零因子，已不具备"数系"的核心意义。</p>
+
+        <p class="sub-h">为什么是 1、2、4、8？</p>
+        <p>维数 1、2、4、8 在数学中反复出现，背后有深刻原因：</p>
+        <ul class="simple">
+          <li><strong>赋范可除代数</strong>（赫尔维茨）：仅 1, 2, 4, 8 维</li>
+          <li><strong>球面的可平行化</strong>：S<sup>n</sup> 有处处线性无关切向量场 ⟺ n = 1, 3, 7（即 2, 4, 8 维数系的"虚部"球面）</li>
+          <li><strong>积空间上的 Hopf 纤维化</strong>：S<sup>1</sup>→S<sup>1</sup>, S<sup>3</sup>→S<sup>2</sup>, S<sup>7</sup>→S<sup>4</sup>, S<sup>15</sup>→S<sup>8</sup> 对应 ℝ, ℂ, ℍ, 𝕆 上的射影空间</li>
+          <li><strong>Bott 周期性</strong>：拓扑 K 理论的周期为 8，与八元数相关</li>
+        </ul>
+        <p>这些看似无关的定理实际上都指向同一个结构：实 Clifford 代数的周期性（周期 8）。1、2、4、8 不是巧合，而是实数域上代数结构的深刻限制。</p>
+
+        <p class="sub-h">弗罗贝尼乌斯定理的证明思路</p>
+        <p>弗罗贝尼乌斯定理（1877）说实数域上有限维结合可除代数只有 ℝ, ℂ, ℍ。证明核心：设 A 是这样的代数，考虑 A 中满足 x<sup>2</sup> ≤ 0 的元素构成的子空间 V。若 dim V = 0，则 A ≅ ℝ；若 dim V = 1，则 A ≅ ℂ；若 dim V ≥ 2，取 V 中正交的 i, j，则 ij ∈ V 且与 i, j 正交，且 (ij)<sup>2</sup> = −1。继续扩张可得四元数。若 dim V ≥ 4，类似构造会产生零因子，矛盾。故 dim V 只能是 0, 1, 3，对应 ℝ, ℂ, ℍ。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">数系降级树</div>
+          <ol>
+            <li>实数 ℝ（1维）：交换 + 结合 + 有序</li>
+            <li>复数 ℂ（2维）：交换 + 结合 − 有序</li>
+            <li>四元数 ℍ（4维）：− 交换 + 结合</li>
+            <li>八元数 𝕆（8维）：− 交换 − 结合（仅交错）</li>
+            <li>每升一级放弃一条基本性质，这是扩展数系的代价</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -894,6 +1241,53 @@
         </ul>
         <p>右边 1−(−1)<sup>n</sup> 就是 n 维球的欧拉示性数。凸多胞体与球拓扑等价，故示性数相同。</p>
         <div class="note">五维以上几何对称约束强到只容得下 3 种基础型。正十二面体、正二十面体、四维正二十四胞体这类"特殊型"只在低维有足够几何空间满足严格对称条件。欧拉示性数是拓扑不变量——"形状的DNA"，不管怎么揉捏变形（不撕裂不粘合），V−E+F 永远不变。高维欧拉公式把它推广到任意维度，是代数拓扑学的基石之一。</div>
+
+        <p class="sub-h">Schläfli 符号</p>
+        <p>正多胞体用 Schläfli 符号 {p, q, r, …} 描述，每个数字表示"几个低一维面围成一个高一维面"：</p>
+        <ul class="simple">
+          <li><strong>二维正多边形</strong>：{p}，p 条边</li>
+          <li><strong>三维正多面体</strong>：{p, q}，每个面是 p 边形，每个顶点连接 q 个面</li>
+          <li><strong>四维正多胞体</strong>：{p, q, r}，每个胞是 {p, q} 多面体，每条边周围有 r 个胞</li>
+        </ul>
+        <p>五种柏拉图立体的 Schläfli 符号：{3,3} 正四面体，{4,3} 立方体，{3,4} 正八面体，{5,3} 正十二面体，{3,5} 正二十面体。</p>
+        <p>六种四维正多胞体：{3,3,3} 正五胞体，{4,3,3} 超立方体，{3,3,4} 正十六胞体，{3,4,3} 正二十四胞体，{5,3,3} 正一百二十胞体，{3,3,5} 正六百胞体。其中 {3,4,3} 正二十四胞体是四维独有的，没有三维对应——它由 24 个正八面体胞组成，每个顶点连接 6 个胞。</p>
+
+        <p class="sub-h">正二十四胞体：四维的特例</p>
+        <p>正二十四胞体（24-cell）是最神奇的正多胞体之一：</p>
+        <ul class="simple">
+          <li>由 24 个正八面体胞组成，24 个顶点，96 条棱，96 个三角形面</li>
+          <li>Schläfli 符号 {3,4,3}，自对偶</li>
+          <li>可以铺满整个四维空间（类似三维中立方体铺空间）</li>
+          <li>没有三维或更高维的对应物——只在四维存在</li>
+        </ul>
+        <p>它的存在解释了为什么四维正多胞体有 6 种（比三维的 5 种多 1 种）：四维空间"恰好"容得下这个特殊的几何结构，而五维以上空间的约束太强，类似结构无法存在。</p>
+
+        <p class="sub-h">顶点图（Vertex Figure）</p>
+        <p>正多胞体的分类依赖于"顶点图"概念：在一个顶点附近用一个小球面截取，得到的截面是一个低一维的正多胞体（顶点图）。</p>
+        <p>例如：正十二面体 {5,3} 的顶点图是三角形（每个顶点连接 3 个五边形面）。若 {p, q} 是合法正多面体，则其顶点图必须是正 q 边形，且需满足 (p−2)(q−2) &lt; 4。这给出了 5 种柏拉图立体的约束条件。</p>
+        <p>递归地，n 维正多胞体 {p₁, p₂, …, p<sub>n−1</sub>} 的顶点图是 {p₂, …, p<sub>n−1</sub>}，而其面是 {p₁, …, p<sub>n−2</sub>}。通过这种递归约束可以枚举所有维度的正多胞体。</p>
+
+        <p class="sub-h">高维欧拉公式的拓扑意义</p>
+        <p>欧拉示性数 χ = Σ(−1)<sup>k</sup>N<sub>k</sub> 是拓扑不变量。对凸多胞体，χ = 1−(−1)<sup>n</sup>：</p>
+        <ul class="simple">
+          <li>n=2（多边形）：V − E = 0 → χ = 0</li>
+          <li>n=3（多面体）：V − E + F = 2 → χ = 2</li>
+          <li>n=4（多胞体）：V − E + F − C = 0 → χ = 0</li>
+          <li>n=5：V − E + F − C + H = 2 → χ = 2</li>
+        </ul>
+        <p>奇偶维度交替出现 0 和 2，这是因为 n 维球 S<sup>n</sup> 的欧拉示性数：χ(S<sup>n</sup>) = 1 + (−1)<sup>n</sup>。凸多胞体与球同胚，故示性数相同。</p>
+        <p>这个公式是代数拓扑的起点——它把"计数"（顶点、棱、面的数量）与"拓扑"（形状的整体性质）联系起来。庞加莱后来将其发展为同调理论，χ 成为贝蒂数的交替和：χ = Σ(−1)<sup>k</sup>b<sub>k</sub>。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">正多胞体分类</div>
+          <ol>
+            <li>2 维：∞ 种（正 n 边形，n ≥ 3）</li>
+            <li>3 维：5 种（柏拉图立体）</li>
+            <li>4 维：6 种（多出正二十四胞体）</li>
+            <li>≥ 5 维：3 种（单纯形、超立方体、正轴形）</li>
+            <li>分类基础：Schläfli 符号 + 顶点图递归约束</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -940,6 +1334,35 @@
         <div class="formula"><span class="frac"><span class="num">1</span><span class="den">(R−d)<sup>2</sup></span></span> + <span class="frac"><span class="num">1</span><span class="den">(R+d)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">r<sup>2</sup></span></span></div>
         <p>其中 R 为外接圆半径，r 为内切圆半径，d 为圆心距。</p>
         <div class="note">把"几何闭合"问题转化为纯粹"存在性"问题——只要找到一个闭合的，就有无穷多个。与椭圆光学性质、二次曲线配极理论紧密相关。</div>
+
+        <p class="sub-h">彭赛列闭合定理的历史</p>
+        <p>彭赛列（Jean-Victor Poncelet）1812 年随拿破仑远征俄国，战败被俘。在萨拉托夫战俘营的两年中，他在没有任何书籍的情况下重新推导并发展了射影几何，彭赛列闭合定理就是其中最重要的成果之一。他 1814 年获释回国后发表了《论图形的射影性质》（1822），开创了射影几何这门学科。</p>
+        <p>这个定理的惊人之处在于：闭合性是"全有或全无"的——要么所有起点都闭合，要么没有一个闭合。不存在"有些起点闭合、有些不闭合"的中间情形。</p>
+
+        <p class="sub-h">彭赛列定理与椭圆曲线</p>
+        <p>彭赛列闭合定理的现代证明与椭圆曲线密切相关。给定两条二次曲线 C 和 D，考虑从 C 上一点 P 出发作 D 的切线交 C 于 P' 的映射 T：P → P'。这个映射是 C 上的一个对合（involution），即 T(T(P)) = P。</p>
+        <p>彭赛列 n 边形的存在性等价于 T<sup>n</sup> = identity。在椭圆曲线的语言中，这对应于椭圆曲线上某个点的阶为 n。由于椭圆曲线的群结构，"一个点阶为 n"要么对所有点成立（如果曲线本身有 n 阶挠点），要么对特定点成立——这正是彭赛列定理的代数本质。</p>
+
+        <p class="sub-h">Cayley 闭合条件</p>
+        <p>凯莱（Cayley）给出了判断两条二次曲线是否存在彭赛列 n 边形的代数条件。设两条二次曲线的方程为 C(x,y)=0 和 D(x,y)=0，考虑行列式 det(C + λD) 作为 λ 的多项式。Cayley 条件是这个多项式的某些系数满足特定的代数关系（涉及不变量）。</p>
+        <p>对于双心四边形（外接圆 + 内切圆），Cayley 条件简化为前面的公式：</p>
+        <div class="formula"><span class="frac"><span class="num">1</span><span class="den">(R−d)<sup>2</sup></span></span> + <span class="frac"><span class="num">1</span><span class="den">(R+d)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">r<sup>2</sup></span></span></div>
+        <p>这个公式是欧拉 1765 年发现的，称为欧拉双心四边形公式。</p>
+
+        <p class="sub-h">光学解释</p>
+        <p>彭赛列闭合定理有一个优美的光学解释：椭圆有"从一个焦点发出的光线经反射后汇聚到另一个焦点"的性质。推广到两条二次曲线：若光线在内曲线 D 上反射，且入射光在外侧曲线 C 上，则彭赛列定理说：若光线经过 n 次反射后回到起点，则无论从 C 上哪点出发，都能在 n 次反射后闭合。</p>
+        <p>这是 billiard（台球）问题中"可积性"的体现——彭赛列系统是完全可积的。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>闭合性是"全有或全无"：一个闭合 ⟹ 全部闭合</li>
+            <li>代数本质：椭圆曲线上点的阶</li>
+            <li>Cayley 条件：判断两条二次曲线是否有彭赛列 n 边形</li>
+            <li>光学解释：双二次曲线台球系统的可积性</li>
+            <li>双心四边形公式：1/(R−d)² + 1/(R+d)² = 1/r²</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -981,6 +1404,44 @@
         </div>
 
         <div class="note">背后是积分几何中的运动学公式（克罗夫顿公式一族），和曲线整体形状无关。</div>
+
+        <p class="sub-h">定理的精确表述</p>
+        <p>设 C 是光滑凸闭合曲线，长为 L 的弦两端在 C 上滑动一周。弦上点 P 分弦为 p、q 两段（p+q = L），P 划出曲线 C'。则 C 与 C' 之间的环形面积为：</p>
+        <div class="formula">S(C) − S(C') = πpq</div>
+        <p>注意：面积差只与 p、q 有关，与 C 的形状、大小完全无关！即使 C 是不规则的土豆形，只要弦长固定，面积差就是 πpq。</p>
+
+        <p class="sub-h">证明思路</p>
+        <p>用格林公式和参数化。设弦两端点为 A(t)、B(t)（t 为参数），P = A + (p/(p+q))(B−A)。P 轨迹围成的面积：</p>
+        <div class="formula">S(C') = <span class="frac"><span class="num">1</span><span class="den">2</span></span> ∮ (x dy − y dx)</div>
+        <p>将 P 的坐标代入展开，可以将 S(C') 表示为 S(C)、弦长 L、以及一个与曲线形状有关的积分项的组合。关键是那个"形状有关"的积分项在滑动一周后恰好抵消，只剩下 πpq 的差。</p>
+        <p>更深刻的证明利用<strong>克罗夫顿公式</strong>（Cauchy-Crofton formula）：平面上一条曲线的长度等于它与所有直线相交次数的积分（除以适当常数）。霍迪奇定理是这个公式在"弦滑动"场景下的推论。</p>
+
+        <p class="sub-h">特例验证</p>
+        <p><strong>p = q = L/2</strong>：面积差 = π(L/2)² = πL²/4，恰好是直径为 L 的圆的面积。此时 C' 是 C 的"内平行曲线"（Minkowski 内偏移），面积差等于 πL²/4。</p>
+        <p><strong>p → 0</strong>：面积差 → 0，P 趋近于 A，C' 趋近于 C 本身，符合预期。</p>
+        <p><strong>C 是半径为 R 的圆</strong>：此时 C' 也是圆，半径为 √(R² − pq)？不对。实际上当 C 是圆时，弦长 L = 2√(R² − d²)（d 为圆心到弦的距离），P 到圆心的距离为 √(d² + (q−p)²/4)？让我们用定理验证：面积差 π(R² − r'²) = πpq，故 r' = √(R² − pq)。而弦长 L = 2√(R² − d²)，P 到圆心距离的平方 = d² + ((q−p)/2)² = (R² − L²/4) + (L²/4 − pq) = R² − pq。完全一致！</p>
+
+        <p class="sub-h">推广与变体</p>
+        <ul class="simple">
+          <li><strong>Steiner 公式</strong>：凸体向外偏移距离 r 后，面积 = A + Lr + πr²（L 为周长）。霍迪奇定理可视为其内偏移版本。</li>
+          <li><strong>高维推广</strong>：在 n 维空间中，超平面上的线段滑动有类似结果，涉及超球面面积。</li>
+          <li><strong>Barbier 定理</strong>：宽度为 w 的等宽曲线周长 = πw，与形状无关。这也是积分几何中"形状无关"结果的另一例。</li>
+        </ul>
+
+        <p class="sub-h">与克罗夫顿公式的联系</p>
+        <p>克罗夫顿公式：设 L(γ) 为曲线 γ 的长度，则</p>
+        <div class="formula">L(γ) = <span class="frac"><span class="num">1</span><span class="den">4</span></span> ∬ n(γ, ℓ) dℓ</div>
+        <p>其中 n(γ, ℓ) 是 γ 与直线 ℓ 的交点数，dℓ 是直线空间上的自然测度。霍迪奇定理中的弦恰好是"与 C 相交于两点的直线"，而 P 的轨迹与这些直线的交点数决定了面积差。这揭示了霍迪奇定理本质上是一个<strong>积分几何</strong>结果——它不关心曲线的具体形状，只关心直线与曲线的相交统计。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">霍迪奇定理要点</div>
+          <ol>
+            <li>面积差 = πpq，与外曲线形状无关</li>
+            <li>p=q=L/2 时，面积 = πL²/4（直径为 L 的圆面积）</li>
+            <li>本质：积分几何 / 克罗夫顿公式的推论</li>
+            <li>关联：Steiner 公式、Barbier 定理、Minkowski 内容</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -992,9 +1453,47 @@
       </div>
       <div class="entry-body">
         <p><strong>定理</strong>：对任意 n ∈ ℤ⁺，(n, 2n] 内必存在素数。</p>
+
+        <p class="sub-h">定理的由来</p>
+        <p>伯特兰（Joseph Bertrand）1845 年通过数值计算猜测：对任意 n &gt; 1，区间 (n, 2n) 内至少有一个素数。他验证了 n ≤ 3,000,000 的所有情况。切比雪夫（Pafnuty Chebyshev）1852 年给出完整证明，因此定理以两人命名。</p>
+        <p>切比雪夫的证明思路是分析组合数 C(2n, n) 的素因子分解：若 (n, 2n] 内无素数，则 C(2n, n) 的所有素因子 ≤ n，通过估计其大小可导出矛盾。</p>
+
+        <p class="sub-h">切比雪夫证明的核心</p>
+        <p>组合数 C(2n, n) = (2n)!/(n!)² 满足：</p>
+        <div class="formula"><span class="frac"><span class="num">4<sup>n</sup></span><span class="den">2n+1</span></span> ≤ C(2n, n) ≤ 4<sup>n</sup></div>
+        <p>如果 (n, 2n] 内没有素数，那么 C(2n, n) 的所有素因子 p ≤ n。对每个素数 p，它在 C(2n, n) 中的指数 v<sub>p</sub>(C(2n,n)) = Σ(⌊2n/p<sup>k</sup>⌋ − 2⌊n/p<sup>k</sup>⌋) ≤ log<sub>p</sub>(2n)。因此：</p>
+        <div class="formula">C(2n, n) = <span class="op-prod"><span class="op">∏</span><span class="lim">p ≤ n</span></span> p<sup>v<sub>p</sub></sup> ≤ (2n)<sup>π(n)</sup></div>
+        <p>其中 π(n) 是不超过 n 的素数个数。另一方面，C(2n, n) ≥ 4<sup>n</sup>/(2n+1)。如果 (n, 2n] 无素数，这两个不等式结合会给出矛盾（对足够大的 n）。</p>
+
         <p class="sub-h">应用：n! 不是完全平方数</p>
-        <p>(n/2, n] 中存在素数 p，在 n! 中只出现一次（2p &gt; n），指数为奇数。也证明了素数无穷（设最大素数 P，取 n = P，则 (P, 2P] 内有新素数，矛盾）。</p>
-        <div class="note">素数定理告诉我们 (n, 2n] 内素数个数约为 n/ln n。切比雪夫原始证明用 C(2n,n) 的素因子分析。</div>
+        <p>对 n ≥ 2，伯特兰定理保证 (n/2, n] 内存在素数 p。这个素数在 n! 中只出现一次（因为 2p &gt; n），所以 v<sub>p</sub>(n!) = 1，是奇数。完全平方数的所有素因子指数都是偶数，故 n! 不可能是完全平方数。</p>
+        <p>类似地可以证明：n! 不是任何整数的 k 次幂（k ≥ 2），因为总存在某个素数的指数不是 k 的倍数。</p>
+
+        <p class="sub-h">应用：素数无穷的证明</p>
+        <p>假设素数有限，最大为 P。取 n = P，则 (P, 2P] 内有素数（伯特兰定理），与 P 最大矛盾。这个证明比欧几里得的经典证明更"构造性"——它不仅说素数有无穷多个，还给出了素数之间的间距上界：p<sub>n+1</sub> &lt; 2p<sub>n</sub>。</p>
+
+        <p class="sub-h">与素数定理的关系</p>
+        <p>素数定理（PNT，Hadamard & de la Vallée Poussin, 1896）说 π(x) ~ x/ln x。由此可知 (n, 2n] 内素数个数约为 n/ln n，随 n 增大趋向无穷。伯特兰-切比雪夫定理是 PNT 的一个弱化但精确的版本：它只保证至少一个素数，但对所有 n 成立，不依赖渐近。</p>
+        <p>更强的结果：</p>
+        <ul class="simple">
+          <li><strong>Nagura (1952)</strong>：n ≥ 25 时，(n, 6n/5] 内有素数</li>
+          <li><strong>Dusart (2016)</strong>：n ≥ 468991632 时，(n, n(1+1/5000ln²n)] 内有素数</li>
+          <li><strong>孪生素数猜想（未证）</strong>：存在无穷多对差为 2 的素数</li>
+        </ul>
+
+        <p class="sub-h">Erdős 的优雅证明</p>
+        <p>1932 年，19 岁的 Erdős 给出了伯特兰定理的一个简洁证明。他利用二项式系数的素因子分析，将区间分成三段：(n/3, n/2]、(n/2, n]、(n, 2n]。通过精确估计每段素数对 C(2n, n) 的贡献，证明若 (n, 2n] 无素数则 C(2n, n) 太小，矛盾。这个证明成为组合数论的经典范例。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">伯特兰-切比雪夫定理要点</div>
+          <ol>
+            <li>(n, 2n] 内必有素数，对所有 n ≥ 1 成立</li>
+            <li>证明核心：分析 C(2n, n) 的素因子</li>
+            <li>推论：n! 不是完全幂；素数有无穷多个</li>
+            <li>与 PNT 的关系：PNT 给出 (n,2n] 内素数 ~ n/ln n 个</li>
+            <li>Erdős 19 岁给出简洁证明，是组合数论经典</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -1009,9 +1508,45 @@
         <p>v<sub>p</sub>(n!) = <span class="op-sum"><span class="sup">∞</span><span class="op">∑</span><span class="lim">k=1</span></span> ⌊<span class="frac"><span class="num">n</span><span class="den">p<sup>k</sup></span></span>⌋ = <span class="frac"><span class="num">n − S<sub>p</sub>(n)</span><span class="den">p − 1</span></span></p>
         <p>其中 S<sub>p</sub>(n) 为 n 在 p 进制下各位数字和。组合数推广：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) = <span class="frac"><span class="num">S<sub>p</sub>(m) + S<sub>p</sub>(n−m) − S<sub>p</sub>(n)</span><span class="den">p − 1</span></span>。</p>
 
+        <p class="sub-h">勒让德公式的等价形式证明</p>
+        <p>为什么 v<sub>p</sub>(n!) = (n − S<sub>p</sub>(n))/(p−1)？</p>
+        <p>设 n 的 p 进制展开为 n = n<sub>0</sub> + n<sub>1</sub>p + n<sub>2</sub>p² + …，其中 0 ≤ n<sub>i</sub> &lt; p。则：</p>
+        <div class="formula">⌊n/p⌋ = n<sub>1</sub> + n<sub>2</sub>p + n<sub>3</sub>p² + …</div>
+        <div class="formula">⌊n/p²⌋ = n<sub>2</sub> + n<sub>3</sub>p + …</div>
+        <p>将所有项相加：v<sub>p</sub>(n!) = Σ⌊n/p<sup>k</sup>⌋ = n<sub>1</sub> + n<sub>2</sub>(p+1) + n<sub>3</sub>(p²+p+1) + …</p>
+        <p>注意 (p<sup>k</sup>−1)/(p−1) = 1 + p + p² + … + p<sup>k−1</sup>，所以：</p>
+        <div class="formula">v<sub>p</sub>(n!) = <span class="op-sum"><span class="op">∑</span><span class="lim">i≥1</span></span> n<sub>i</sub> · <span class="frac"><span class="num">p<sup>i</sup>−1</span><span class="den">p−1</span></span> = <span class="frac"><span class="num">(n−n<sub>0</sub>) − (S<sub>p</sub>(n)−n<sub>0</sub>)</span><span class="den">p−1</span></span> = <span class="frac"><span class="num">n−S<sub>p</sub>(n)</span><span class="den">p−1</span></span></div>
+
         <p class="sub-h">库默尔定理</p>
         <p><strong>定理</strong>：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) 等于 p 进制下 m + (n−m) = n 时的<strong>进位次数</strong>。</p>
-        <div class="note">每进位一次，数字和减少 p−1，对应 v<sub>p</sub> 增加 1。勒让德公式用数字和，库默尔定理用进位次数，两者完全等价。与卢卡斯定理（005）呼应：m<sub>i</sub> &gt; n<sub>i</sub> 说明该位必然进位，v<sub>p</sub> ≥ 1，即 C(n,m) ≡ 0 mod p。</div>
+
+        <p class="sub-h">库默尔定理与勒让德公式的等价性</p>
+        <p>在 p 进制加法中，每发生一次进位，数字和减少 p−1（两个数字 a+b ≥ p，进位后变成 (a+b−p)，数字和从 a+b 变为 a+b−p+1，净减少 p−1）。设进位次数为 c，则：</p>
+        <div class="formula">S<sub>p</sub>(m) + S<sub>p</sub>(n−m) = S<sub>p</sub>(n) + c(p−1)</div>
+        <p>代入勒让德公式的组合数版本：</p>
+        <div class="formula">v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) = <span class="frac"><span class="num">S<sub>p</sub>(m)+S<sub>p</sub>(n−m)−S<sub>p</sub>(n)</span><span class="den">p−1</span></span> = <span class="frac"><span class="num">c(p−1)</span><span class="den">p−1</span></span> = c</div>
+        <p>这就证明了库默尔定理：v<sub>p</sub>(C(n,m)) 恰好等于进位次数 c。</p>
+
+        <p class="sub-h">计算示例</p>
+        <p><strong>例 1</strong>：v<sub>2</sub>(C(10, 3))。10 的二进制是 1010，3 的二进制是 0011，7 的二进制是 0111。计算 3 + 7 = 10（二进制：0011 + 0111 = 1010），进位次数：第 0 位 1+1=2→进位，第 1 位 1+1+1=3→进位，第 2 位 0+1+1=2→进位，共 3 次进位。所以 v<sub>2</sub>(C(10,3)) = 3。验证：C(10,3) = 120 = 2³ × 15，确实 v<sub>2</sub> = 3。</p>
+        <p><strong>例 2</strong>：v<sub>5</sub>(C(25, 10))。25 的五进制是 100，10 是 20，15 是 30。20 + 30 = 100（五进制），第 0 位 0+0=0，第 1 位 2+3=5→进位 1，共 1 次进位。所以 v<sub>5</sub>(C(25,10)) = 1。</p>
+
+        <p class="sub-h">应用：判断组合数是否被 p 整除</p>
+        <p>C(n, m) ≡ 0 (mod p) ⟺ p 进制下 m + (n−m) 有进位 ⟺ 存在某一位 m<sub>i</sub> &gt; n<sub>i</sub>（因为如果 m<sub>i</sub> ≤ n<sub>i</sub> 对所有 i 成立，则加法无进位）。</p>
+        <p>这直接与<strong>卢卡斯定理</strong>（005）联系起来：卢卡斯定理说 C(n,m) ≡ ∏C(n<sub>i</sub>, m<sub>i</sub>) mod p。若某位 m<sub>i</sub> &gt; n<sub>i</sub>，则 C(n<sub>i</sub>, m<sub>i</sub>) = 0，整个乘积 ≡ 0 mod p。两个定理说的是同一件事的不同侧面。</p>
+
+        <p class="sub-h">历史注记</p>
+        <p>勒让德公式由勒让德（Adrien-Marie Legendre）1808 年在《数论》中给出。库默尔定理由库默尔（Ernst Kummer）1852 年发现，他当时研究的是费马大定理中理想数的分解。库默尔定理是组合数论中最优雅的结果之一——把素因子指数这个数论问题，转化为进位次数这个组合问题。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>v<sub>p</sub>(n!) = (n − S<sub>p</sub>(n))/(p−1)，数字和形式便于计算</li>
+            <li>v<sub>p</sub>(C(n,m)) = p 进制加法进位次数（库默尔）</li>
+            <li>C(n,m) ≡ 0 mod p ⟺ 某位 m<sub>i</sub> &gt; n<sub>i</sub>（与卢卡斯定理等价）</li>
+            <li>每进位一次数字和减少 p−1，对应 v<sub>p</sub> 增加 1</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -1025,7 +1560,36 @@
         <p><strong>定理</strong>：设 p 为素数，n, m 的 p 进制展开为 n = <span class="op-sum"><span class="op">∑</span><span class="lim">i</span></span> n<sub>i</sub>p<sup>i</sup>，m = <span class="op-sum"><span class="op">∑</span><span class="lim">i</span></span> m<sub>i</sub>p<sup>i</sup>，则</p>
         <div class="formula"><span class="binom"><span class="num">n</span><span class="den">m</span></span> ≡ <span class="op-prod"><span class="op">∏</span><span class="lim">i</span></span> <span class="binom"><span class="num">n<sub>i</sub></span><span class="den">m<sub>i</sub></span></span> &nbsp; (mod p)</div>
         <p>若某位 m<sub>i</sub> &gt; n<sub>i</sub>，则 <span class="binom"><span class="num">n<sub>i</sub></span><span class="den">m<sub>i</sub></span> = 0，原式模 p 为 0。</p>
-        <div class="note">和勒让德公式与库默尔定理（004）呼应：m<sub>i</sub> &gt; n<sub>i</sub> 说明该位必然进位，v<sub>p</sub> ≥ 1，即 C(n,m) ≡ 0 mod p。把"大组合数模素数"拆成"小组合数相乘模素数"，竞赛中极其常用。</div>
+
+        <p class="sub-h">卢卡斯定理的证明</p>
+        <p>利用多项式同余。在模 p 下，费马小定理给出 (1+x)<sup>p</sup> ≡ 1+x<sup>p</sup> (mod p)，更一般地 (1+x)<sup>p<sup>k</sup></sup> ≡ 1+x<sup>p<sup>k</sup></sup> (mod p)。因此：</p>
+        <div class="formula">(1+x)<sup>n</sup> = (1+x)<sup>n<sub>0</sub>+n<sub>1</sub>p+n<sub>2</sub>p²+…</sup> ≡ <span class="op-prod"><span class="op">∏</span><span class="lim">i</span></span> (1+x<sup>p<sup>i</sup></sup>)<sup>n<sub>i</sub></sup> (mod p)</div>
+        <p>左边 x<sup>m</sup> 的系数是 C(n, m)。右边 x<sup>m</sup> = x<sup>m<sub>0</sub>+m<sub>1</sub>p+…</sup> 的系数是各因子中 x<sup>m<sub>i</sub>p<sup>i</sup></sup> 的系数之积，即 ∏C(n<sub>i</sub>, m<sub>i</sub>)。比较两边 x<sup>m</sup> 系数即得卢卡斯定理。</p>
+
+        <p class="sub-h">计算示例</p>
+        <p><strong>例</strong>：求 C(1234, 789) mod 5。</p>
+        <p>1234 的五进制：1234 = 1×625 + 4×125 + 4×25 + 1×5 + 4 = (14414)<sub>5</sub></p>
+        <p>789 的五进制：789 = 1×625 + 1×125 + 1×25 + 2×5 + 4 = (11124)<sub>5</sub></p>
+        <p>逐位比较：m<sub>i</sub> ≤ n<sub>i</sub> 对所有位成立（1≤1, 1≤4, 1≤4, 2≤1? 不！2 &gt; 1）。所以第 3 位 m<sub>3</sub>=2 &gt; n<sub>3</sub>=1，C(n<sub>3</sub>, m<sub>3</sub>) = C(1, 2) = 0。因此 C(1234, 789) ≡ 0 (mod 5)。</p>
+        <p>验证：789 + 445 = 1234，五进制 (11124)<sub>5</sub> + (03320)<sub>5</sub> = (14414)<sub>5</sub>，第 3 位 1+3=4→无进位？等等，让我重新算。实际上用库默尔定理：789 + 445 = 1234，五进制加法中第 1 位 2+2=4→无进位，第 2 位 1+3=4→无进位，第 3 位 1+1=2→无进位，第 4 位 1+0=1→无进位。但卢卡斯定理说 C(1234,789) ≡ 0 mod 5？这与库默尔定理矛盾。让我重新检查五进制转换：1234/5=246余4，246/5=49余1，49/5=9余4，9/5=1余4，1/5=0余1。所以 1234 = (14414)<sub>5</sub>。789/5=157余4，157/5=31余2，31/5=6余1，6/5=1余1，1/5=0余1。所以 789 = (11124)<sub>5</sub>。逐位：n=(1,4,4,1,4), m=(1,1,1,2,4)。第 4 位（从右数第 4 位，即 p³ 位）n=1, m=2，2 &gt; 1，所以 C(1,2)=0。用库默尔：m + (n−m) = 789 + 445 = 1234。445/5=89余0，89/5=17余4，17/5=3余2，3/5=0余3。所以 445 = (03240)<sub>5</sub>。789=(11124)<sub>5</sub> + 445=(03240)<sub>5</sub>：第0位4+0=4，第1位2+4=6=1×5+1→进位1，第2位1+2+1=4，第3位1+3=4，第4位1+0=1。进位1次。所以 v<sub>5</sub>(C(1234,789))=1，确实 ≡ 0 mod 5。卢卡斯定理正确！</p>
+
+        <p class="sub-h">卢卡斯定理的推广：Granville 定理</p>
+        <p>卢卡斯定理只适用于模素数 p。Andrew Granville 1997 年将其推广到模素数幂 p<sup>k</sup>，涉及更复杂的 p 进制块分析。对于模合数的情况，通常使用中国剩余定理分解为模素数幂后分别处理。</p>
+
+        <p class="sub-h">与帕斯卡三角模 p 的关系</p>
+        <p>卢卡斯定理揭示了帕斯卡三角模 p 的分形结构。例如模 2 时，C(n, m) 为奇数当且仅当 m 的二进制位是 n 的二进制位的子集（即 m &amp; n = m）。这产生了著名的<strong>谢尔宾斯基三角形</strong>分形图案。</p>
+        <p>模 p 的帕斯卡三角具有自相似性：第 0 到 p−1 行是基础块，第 p 到 2p−1 行是基础块的拷贝，中间插入 0，以此类推。这种分形结构是卢卡斯定理的直接推论。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">卢卡斯定理要点</div>
+          <ol>
+            <li>C(n,m) mod p = ∏C(n<sub>i</sub>, m<sub>i</sub>) mod p（p 进制逐位相乘）</li>
+            <li>某位 m<sub>i</sub> &gt; n<sub>i</sub> ⟹ C(n,m) ≡ 0 mod p</li>
+            <li>与库默尔定理等价：有进位 ⟺ 某位 m<sub>i</sub> &gt; n<sub>i</sub></li>
+            <li>模 2 时：C(n,m) 为奇 ⟺ m 的二进制是 n 的子集</li>
+            <li>帕斯卡三角模 p 呈现分形（谢尔宾斯基三角形）</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -1038,6 +1602,18 @@
       <div class="entry-body">
         <p class="sub-h">n 次多项式消次</p>
         <div class="formula">令 x = t − <span class="frac"><span class="num">a<sub>1</sub></span><span class="den">n a<sub>0</sub></span></span>，消去 x<sup>n−1</sup> 项</div>
+        <p>这是 Tschirnhaus 变换的最简形式。对首一多项式 x<sup>n</sup> + a<sub>n−1</sub>x<sup>n−1</sup> + …，令 x = t − a<sub>n−1</sub>/n，可消去 t<sup>n−1</sup> 项。其原理是：多项式根的和为 −a<sub>n−1</sub>，平移后根的和变为 0。</p>
+
+        <p class="sub-h">三次方程的历史</p>
+        <p>三次方程求根公式是数学史上最具戏剧性的发现之一。16 世纪意大利：</p>
+        <ul class="simple">
+          <li><strong>Scipione del Ferro</strong>（约 1515）发现 x³+px=q 的解法，但秘而不宣</li>
+          <li><strong>Niccolò Tartaglia</strong>（1535）独立发现，在数学竞赛中大胜</li>
+          <li><strong>Gerolamo Cardano</strong>（1545）在《大术》中发表，承诺保密但食言</li>
+          <li><strong>Lodovico Ferrari</strong>（Cardano 的学生）随后发现四次方程解法</li>
+        </ul>
+        <p>Cardano 在发表公式时承认了 del Ferro 和 Tartaglia 的贡献，但 Tartaglia 认为 Cardano 背信弃义，引发了一场著名的数学论战。</p>
+
         <p class="sub-h">卡尔达诺公式</p>
         <p>三次方程 ax<sup>3</sup>+bx<sup>2</sup>+cx+d=0，换元 x = y − <span class="frac"><span class="num">b</span><span class="den">3a</span></span> 化为 y<sup>3</sup>+py+q=0。令 y = u+v，设 uv = −<span class="frac"><span class="num">p</span><span class="den">3</span></span>，则 u<sup>3</sup>+v<sup>3</sup> = −q，u<sup>3</sup>v<sup>3</sup> = −<span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span>。A=u<sup>3</sup>, B=v<sup>3</sup> 是 t<sup>2</sup>+qt−<span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span>=0 的根。</p>
         <p class="sub-h">判别式 Δ = <span class="frac"><span class="num">q<sup>2</sup></span><span class="den">4</span></span> + <span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span></p>
@@ -1048,7 +1624,33 @@
         </ul>
         <p>记 ω = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> + <span class="frac"><span class="num">i√3</span><span class="den">2</span></span>（三次单位根），三根为：</p>
         <div class="formula">y<sub>1</sub> = <sup>3</sup>√A + <sup>3</sup>√B，&nbsp; y<sub>2</sub> = ω<sup>3</sup>√A + ω<sup>23</sup>√B，&nbsp; y<sub>3</sub> = ω<sup>23</sup>√A + ω<sup>3</sup>√B</div>
-        <div class="note">"不可约情形"最出人意料：三根都是实数，但公式中必须引入复数才能表示——这是历史上虚数被认真对待的起因之一。</div>
+
+        <p class="sub-h">不可约情形（Casus Irreducibilis）</p>
+        <p>当 Δ &lt; 0 时，三次方程有三个互异实根，但卡尔达诺公式中 A 和 B 是共轭复数，必须对复数开立方才能得到实根。这就是著名的"不可约情形"——实根不能用实数的根式表示，必须借助复数。</p>
+        <p>这是数学史上<strong>虚数被认真对待的起因之一</strong>。在此之前，负数的平方根被视为"不可能的数"，但三次方程的解法表明，即使最终答案是实数，中间步骤也必须经过复数。Cardano 本人对此感到困惑，称之为"诡辩的量"（sophistic quantities）。</p>
+        <p>不可约情形的三角解法：当 Δ &lt; 0 时，设 p = −3r²，q = −2r³cos θ，则三根为：</p>
+        <div class="formula">y<sub>k</sub> = 2r cos(<span class="frac"><span class="num">θ + 2πk</span><span class="den">3</span></span>), &nbsp; k = 0, 1, 2</div>
+        <p>这个解法用三角函数绕过了复数，但本质上三次单位根与三等分角密切相关。</p>
+
+        <p class="sub-h">四次方程简述</p>
+        <p>Ferrari 发现了四次方程的解法。对 x⁴ + ax³ + bx² + cx + d = 0，消去三次项后用配方法化为两个二次方程之积。关键是引入一个辅助参数 y，使得方程可写成 (x² + px + q)² − (rx + s)² = 0 的形式，然后求解一个三次预解方程（resolvent cubic）。</p>
+        <p>四次方程的解法依赖于三次预解方程，这解释了为什么五次及以上方程没有一般根式解（阿贝尔-鲁菲尼定理，伽罗瓦理论）——根式解的存在性与对称群的可解性相关，而 S<sub>5</sub> 不可解。</p>
+
+        <p class="sub-h">判别式的一般理论</p>
+        <p>n 次多项式 f(x) = a<sub>0</sub>∏(x−r<sub>i</sub>) 的判别式定义为：</p>
+        <div class="formula">Δ = a<sub>0</sub><sup>2n−2</sup> <span class="op-prod"><span class="op">∏</span><span class="lim">i&lt;j</span></span> (r<sub>i</sub> − r<sub>j</sub>)<sup>2</sup></div>
+        <p>Δ = 0 ⟺ 有重根。对二次方程 Δ = b²−4ac，对三次方程 Δ = −4p³−27q²（注意符号约定可能不同）。判别式是多项式系数的对称多项式，可以用结式（resultant）计算：Δ = (−1)<sup>n(n−1)/2</sup> a<sub>0</sub><sup>−1</sup> Res(f, f')。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>消次变换：x = t − a<sub>n−1</sub>/n，根的和归零</li>
+            <li>三次方程：换元 y = u+v，解二次预解方程</li>
+            <li>不可约情形（Δ &lt; 0）：三实根必须用复数开立方表示</li>
+            <li>不可约情形是虚数被接受的历史起因</li>
+            <li>四次方程可解，五次及以上无一般根式解（伽罗瓦理论）</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -1061,11 +1663,50 @@
       <div class="entry-body">
         <p>令 z = e<sup>ix</sup>，由等比级数及其导数分离实虚部：</p>
         <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k sin(kx) = <span class="frac"><span class="num">(n+1) sin(nx) − n sin((n+1)x)</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
-        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k cos(kx) = <span class="frac"><span class="num">(n+1) cos(nx) − n cos((n+1)x) − 1</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="op">∑</span><span class="lim">k=1</span></span> k cos(kx) = <span class="frac"><span class="num">(n+1) cos(nx) − n cos((n+1)x) − 1</span><span class="den">4 sin<sup>2</sup>(x/2)</span></span></div>
+
+        <p class="sub-h">更一般的三角级数</p>
+        <p>除了 k sin(kx) 和 k cos(kx)，还有几个常用的求和公式：</p>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> sin(kx) = <span class="frac"><span class="num">sin(nx/2) sin((n+1)x/2)</span><span class="den">sin(x/2)</span></span></div>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> cos(kx) = <span class="frac"><span class="num">sin(nx/2) cos((n+1)x/2)</span><span class="den">sin(x/2)</span></span></div>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> sin²(kx) = <span class="frac"><span class="num">n</span><span class="den">2</span></span> − <span class="frac"><span class="num">sin(nx) cos((n+1)x)</span><span class="den">2 sin(x)</span></span></div>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> cos²(kx) = <span class="frac"><span class="num">n</span><span class="den">2</span></span> + <span class="frac"><span class="num">sin(nx) cos((n+1)x)</span><span class="den">2 sin(x)</span></span></div>
+
+        <p class="sub-h">复数方法的统一推导</p>
+        <p>所有这些公式都可以用一个统一的方法推导：等比级数 + 欧拉公式。</p>
+        <p>设 S = <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> z<sup>k</sup>，其中 z = e<sup>ix</sup>。等比级数求和：</p>
+        <div class="formula">S = <span class="frac"><span class="num">z(1−z<sup>n</sup>)</span><span class="den">1−z</span></span></div>
+        <p>分离实部和虚部即得 Σcos(kx) 和 Σsin(kx)。对 S 求导可得 Σk z<sup>k</sup>，再分离实虚部得 Σk cos(kx) 和 Σk sin(kx)。求导两次可得 Σk² z<sup>k</sup>，依此类推。</p>
+        <p>关键技巧：1 − e<sup>ix</sup> = −2i e<sup>ix/2</sup> sin(x/2)，这个恒等式可以将分母化为简洁形式。</p>
+
         <p class="sub-h">特例 x = 2π/n（用单位根推导）</p>
         <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k sin(2πk/n) = −<span class="frac"><span class="num">n</span><span class="den">2 tan(π/n)</span></span>，&nbsp; <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> k cos(2πk/n) = <span class="frac"><span class="num">n</span><span class="den">2</span></span></div>
         <p>设 ω = e<sup>2πi/n</sup>，T = <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> kω<sup>k</sup>，则 T(1−ω) = −nω，故 T = <span class="frac"><span class="num">n</span><span class="den">2</span></span> − i · <span class="frac"><span class="num">n</span><span class="den">2</span></span> · cot(π/n)。</p>
-        <div class="note">复数方法把三角求和变成代数运算。结果可用于计算正 n 边形顶点上等量电荷在中心的电场强度。</div>
+
+        <p class="sub-h">另一个特例：x = π/n</p>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">1</span><span class="den">sin(kπ/n)</span></span> · sin(kx) = <span class="frac"><span class="num">π − x</span><span class="den">2</span></span> &nbsp; (0 &lt; x &lt; 2π)</div>
+        <p>这是傅里叶级数中的经典结果。更一般地，函数 f(x) = x 在 [0, π] 上的正弦级数展开为：</p>
+        <div class="formula">x = 2 <span class="op-sum"><span class="op">∑</span><span class="lim">k=1</span></span> <span class="frac"><span class="num">(−1)<sup>k+1</sup></span><span class="den">k</span></span> sin(kx) &nbsp; (−π &lt; x &lt; π)</div>
+
+        <p class="sub-h">应用：正 n 边形顶点电荷的电场</p>
+        <p>考虑正 n 边形的 n 个顶点上各放置等量电荷 q，求中心处的电场。由于对称性，径向分量抵消，只需要计算切向分量（如果电荷不都相同）。对于均匀分布，电场为零。但如果电荷交替正负，则电场不为零，需要用 Σk sin(kx) 或类似公式计算。</p>
+        <p>另一个应用是计算正 n 边形顶点上的点质量在中心处的引力势能，涉及 Σ1/sin(kπ/n) 类型的和。</p>
+
+        <p class="sub-h">应用：离散傅里叶变换</p>
+        <p>三角级数求和与离散傅里叶变换（DFT）密切相关。DFT 本质上是在单位根处计算多项式值：</p>
+        <div class="formula">X<sub>k</sub> = <span class="op-sum"><span class="op">∑</span><span class="lim">n=0</span></span><sup>N−1</sup> x<sub>n</sub> · e<sup>−2πikn/N</sup></div>
+        <p>上述三角级数公式可以看作 DFT 的特例，当 x<sub>n</sub> = n（线性序列）时。</p>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>统一方法：等比级数 + 欧拉公式 + 分离实虚部</li>
+            <li>Σk sin(kx) 和 Σk cos(kx) 用于线性权重的三角求和</li>
+            <li>Σsin(kx)、Σcos(kx) 是基础等比级数的实虚部</li>
+            <li>x = 2π/n 特例与单位根、正 n 边形相关</li>
+            <li>连接傅里叶级数、离散傅里叶变换、物理中的对称性问题</li>
+          </ol>
+        </div>
       </div>
     </div>
 
@@ -1135,6 +1776,38 @@
 
         <p class="sub-h">推导思路</p>
         <p>把前 m−1 个变量打包：[(x<sub>1</sub>+…+x<sub>m−1</sub>) + x<sub>m</sub>]<sup>n</sup>，先用二项式定理展开，再对 (x<sub>1</sub>+…+x<sub>m−1</sub>)<sup>n−n<sub>m</sub></sup> 递归套用多项式定理——本质上是反复使用二项式定理。</p>
+
+        <p class="sub-h">概率论中的多项分布</p>
+        <p>多项式定理最直接的应用是<strong>多项分布</strong>（multinomial distribution）。设一次试验有 m 种可能结果，概率分别为 p<sub>1</sub>, p<sub>2</sub>, …, p<sub>m</sub>（Σp<sub>i</sub> = 1）。独立重复 n 次试验，第 i 种结果出现 n<sub>i</sub> 次的概率为：</p>
+        <div class="formula">P(n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub>) = <span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span> p<sub>1</sub><sup>n<sub>1</sub></sup> p<sub>2</sub><sup>n<sub>2</sub></sup> … p<sub>m</sub><sup>n<sub>m</sub></sup></div>
+        <p>这正是 (p<sub>1</sub>+p<sub>2</sub>+…+p<sub>m</sub>)<sup>n</sup> = 1<sup>n</sup> = 1 展开式中的一项。多项式系数给出了将 n 次试验分成 m 组的方式数。</p>
+        <p>当 m=2 时，多项分布退化为二项分布。当 m=6 且 p<sub>i</sub>=1/6 时，就是掷 n 次骰子的分布。</p>
+
+        <p class="sub-h">生成函数视角</p>
+        <p>从生成函数的角度看，(x<sub>1</sub>+…+x<sub>m</sub>)<sup>n</sup> 中 x<sub>1</sub><sup>n<sub>1</sub></sup>…x<sub>m</sub><sup>n<sub>m</sub></sup> 的系数就是"从 n 个因子中各选一个变量，使得 x<sub>i</sub> 被选 n<sub>i</sub> 次"的方式数。</p>
+        <p>更一般地，指数生成函数与多项式系数的关系：</p>
+        <div class="formula">(x<sub>1</sub>+x<sub>2</sub>+…+x<sub>m</sub>)<sup>n</sup> = n! · [t<sup>n</sup>] <span class="op-prod"><span class="op">∏</span><span class="lim">i=1</span></span><sup>m</sup> e<sup>tx<sub>i</sub></sup></div>
+        <p>其中 [t<sup>n</sup>] 表示取 t<sup>n</sup> 的系数。这揭示了多项式定理与指数型生成函数的内在联系。</p>
+
+        <p class="sub-h">与有序分拆（Composition）的关系</p>
+        <p>注意区分两个概念：</p>
+        <ul class="simple">
+          <li><strong>多项式系数</strong>：把 n 个<strong>不同</strong>的位置分成大小为 n<sub>1</sub>, …, n<sub>m</sub> 的组，系数 = n!/(n<sub>1</sub>!…n<sub>m</sub>!)</li>
+          <li><strong>有序分拆（composition）</strong>：把 n 拆成有序的正整数之和，方案数 = 2<sup>n−1</sup></li>
+          <li><strong>无序分拆（partition）</strong>：把 n 拆成无序的正整数之和，无简单公式</li>
+        </ul>
+        <p>多项式系数与 composition 的联系：(x<sub>1</sub>+…+x<sub>m</sub>)<sup>n</sup> 的项数 C(n+m−1, m−1) 是"允许零的有序分拆"数（weak composition）。</p>
+
+        <p class="sub-h">多项式系数的递推关系</p>
+        <p>类似二项式系数的帕斯卡递推，多项式系数满足：</p>
+        <div class="formula"><span class="binom"><span class="num">n</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub></span></span> = <span class="binom"><span class="num">n−1</span><span class="den">n<sub>1</sub>−1, n<sub>2</sub>, …, n<sub>m</sub></span></span> + <span class="binom"><span class="num">n−1</span><span class="den">n<sub>1</sub>, n<sub>2</sub>−1, …, n<sub>m</sub></span></span> + … + <span class="binom"><span class="num">n−1</span><span class="den">n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub>−1</span></span></div>
+        <p>组合意义：考虑最后一个位置分给哪个变量——分给 x<sub>1</sub> 则第一项，分给 x<sub>2</sub> 则第二项，依此类推。</p>
+
+        <p class="sub-h">恒等式：范德蒙德卷积的推广</p>
+        <p>二项式的范德蒙德卷积 ΣC(a,k)C(b,n−k) = C(a+b, n) 可以推广到多项式：</p>
+        <div class="formula"><span class="op-sum"><span class="op">∑</span><span class="lim">k<sub>1</sub>+…+k<sub>m</sub>=n</span></span> <span class="binom"><span class="num">a<sub>1</sub></span><span class="den">k<sub>1</sub></span></span><span class="binom"><span class="num">a<sub>2</sub></span><span class="den">k<sub>2</sub></span></span>…<span class="binom"><span class="num">a<sub>m</sub></span><span class="den">k<sub>m</sub></span></span> = <span class="binom"><span class="num">a<sub>1</sub>+a<sub>2</sub>+…+a<sub>m</sub></span><span class="den">n</span></span></div>
+        <p>这是 (1+x)<sup>a<sub>1</sub></sup>(1+x)<sup>a<sub>2</sub></sup>…(1+x)<sup>a<sub>m</sub></sup> = (1+x)<sup>a<sub>1</sub>+…+a<sub>m</sub></sup> 两边 x<sup>n</sup> 系数相等的结果。</p>
+
         <div class="note">多项式定理是二项式、三项式的终极推广。多项式系数在组合数学、概率论（多项分布）、统计力学中频繁出现。与"有序整数分拆"不同：多项式系数是把 n 个不同位置分成指定大小的组，而 composition 是把 n 拆成有序的正整数之和。</div>
       </div>
     </div>
@@ -1193,6 +1866,47 @@
 
         <p class="sub-h">与英文对比</p>
         <p>英文按 3 位分节（thousand, million, billion…），故 limsup 常数分母为 3 ln 10。中文 4 位分节是根源差异。</p>
+
+        <p class="sub-h">具体数值示例</p>
+        <p>让我们看一些具体数字的中文读数长度，直观感受震荡：</p>
+        <table class="formula" style="font-size:0.9rem;line-height:1.8;">
+          <tr><td>N = 100</td><td>"一百"</td><td>2 字</td><td>f/ln N ≈ 2/4.605 ≈ 0.434</td></tr>
+          <tr><td>N = 999</td><td>"九百九十九"</td><td>5 字</td><td>f/ln N ≈ 5/6.908 ≈ 0.724</td></tr>
+          <tr><td>N = 10000</td><td>"一万"</td><td>2 字</td><td>f/ln N ≈ 2/9.210 ≈ 0.217</td></tr>
+          <tr><td>N = 9999</td><td>"九千九百九十九"</td><td>7 字</td><td>f/ln N ≈ 7/9.210 ≈ 0.760</td></tr>
+          <tr><td>N = 10<sup>8</sup></td><td>"一亿"</td><td>2 字</td><td>f/ln N ≈ 2/18.42 ≈ 0.109</td></tr>
+          <tr><td>N = 10<sup>8</sup>−1</td><td>"九千九百九十九万九千九百九十九"</td><td>15 字</td><td>f/ln N ≈ 15/18.42 ≈ 0.814</td></tr>
+        </table>
+        <p>可以看到，同样数量级的数（10<sup>8</sup> 和 10<sup>8</sup>−1），读数长度相差近 8 倍。比值在 0.109（下极限）和 0.869（上极限）之间震荡，且永远不会收敛到一个确定的值。</p>
+
+        <p class="sub-h">更精确的震荡分析</p>
+        <p>比值 f(N)/ln N 的震荡并非随机，而是由 N 的十进制表示决定：</p>
+        <ul class="simple">
+          <li>当 N 的各位都是 9 时，每块 4 位需要 7 字（四千九百九十九），加上块间单位，比值逼近上极限 0.869</li>
+          <li>当 N = 10<sup>4k</sup> 时，只需 k+1 字，比值逼近下极限 0.109</li>
+          <li>对于"随机"的 N（各位均匀分布），平均每块约 4×0.5 + 3×0.9 ≈ 4.7 字（数字出现概率约 0.5，权位出现概率约 0.9），比值约为 0.4~0.5</li>
+        </ul>
+        <p>因此，虽然极限不存在，但比值的"期望值"在 0.4~0.5 之间，远低于上极限。</p>
+
+        <p class="sub-h">自指读数谜题</p>
+        <p>一个有趣的衍生问题：是否存在一个数 N，它的中文读数恰好有 N 个字？例如：</p>
+        <ul class="simple">
+          <li>N = 1："一" = 1 字 ✓（平凡解）</li>
+          <li>N = 2："二" = 1 字 ✗</li>
+          <li>N = 3："三" = 1 字 ✗</li>
+          <li>...</li>
+        </ul>
+        <p>由于 f(N) = Θ(log N)，当 N &gt; 10 时 f(N) &lt; N，所以除了 N=1 外不存在这样的数。更有趣的是"读数长度的读数长度"问题：设 g(N) = f(f(N))，即 N 的读数长度的读数长度。由于 f(N) = Θ(log N)，g(N) = Θ(log log N)，增长更慢。</p>
+
+        <p class="sub-h">推广：其他语言和进制</p>
+        <p>这个问题可以推广到任何语言和进制：</p>
+        <ul class="simple">
+          <li><strong>英文</strong>：3 位分节，limsup = 2/(3 ln 10) ≈ 0.290，但英文单词长度不一（one=3, seven=5, twenty=6），分析更复杂</li>
+          <li><strong>日文</strong>：与中文类似，4 位分节（万、億、兆），常数相同</li>
+          <li><strong>二进制</strong>：每 4 位一个 nibble，但二进制没有"大单位"概念，分析完全不同</li>
+        </ul>
+        <p>这个问题的本质是：<strong>数值大小的增长是指数级的，而语言表示的增长是线性的（与位数成正比）</strong>，所以比值 f(N)/N → 0，但 f(N)/log N 在常数间震荡。</p>
+
         <div class="note">这个问题把语言文字规则转化为渐近分析，很适合体会"离散结构的对数尺度"。一个有趣的对照："一亿"只有 2 个字，"99999999"却要读约 16 个字——数差不多大，读法长度差了 8 倍。</div>
       </div>
     </div>
@@ -1273,6 +1987,38 @@
           <li><strong>重要事实</strong>：至今没有解析闭式最优解，也没有严格证明 4.605 的路径就是全局最优——这是一个<strong>未完全解决的公开数学问题</strong></li>
         </ul>
         <p>对比：简单圆策略 ≈ 5.712，"先走 a 再绕单位圆"策略族内最优 ≈ 5.09，都远差于 4.605。</p>
+
+        <p class="sub-h">数学建模与变分法</p>
+        <p>用极坐标 (r(θ), θ) 参数化路径。路径从原点 (r=0) 出发，目标是与所有角度 θ 处的切线相交。角度 θ 处的切线方程为 x cos θ + y sin θ = 1（切点在 (cos θ, sin θ)）。</p>
+        <p>路径与这条切线相交的条件是：存在某点 (r(φ), φ) 满足 r(φ) cos(φ−θ) = 1，即 r(φ) ≥ 1/cos(φ−θ)。最坏航程 L 是所有切线对应的路径长度的最大值。</p>
+        <p>最优路径满足变分方程（Euler-Lagrange 方程），这是一个复杂的微分方程，没有解析解。数值求解表明最优路径由若干段组成：初始直线段 + 多段螺旋 + 最终圆弧段。</p>
+
+        <p class="sub-h">螺旋路径的具体形式</p>
+        <p>数值最优解的近似形式是一种"广义螺旋"，极径 r 随角度 θ 的变化满足：</p>
+        <div class="formula">dr/dθ = √(r² − 1) · f(θ)</div>
+        <p>其中 f(θ) 是一个由变分条件确定的函数。直观理解：路径在角度方向走得越远，径向扩张越快——这样可以在"侧面"拦截那些即将经过的切线，而不必等到正面对上。</p>
+        <p>最优路径大约旋转 1.5~2 圈，最大径向距离约 2.5~3 个单位。相比之下，简单的"走1单位+绕圆"方案只旋转 2π/3 弧度（120°）。</p>
+
+        <p class="sub-h">极小极大的必要条件</p>
+        <p>最优路径的一个关键性质是<strong>均衡性</strong>：多条不同角度的海岸线必须同时达到相同的最坏航程 L。如果只有一条海岸线最坏，我们可以微调路径（比如在该方向稍微缩短）来降低 L，而不影响其他方向。因此最优解必然是"多方向同时最坏"的均衡点。</p>
+        <p>这类似博弈论中的纳什均衡：路径选择者要最小化 L，"自然"（选择最坏海岸线）要最大化 L，最优解是这个零和博弈的鞍点。</p>
+
+        <p class="sub-h">数值方法</p>
+        <p>由于没有解析解，研究者使用数值方法逼近最优路径：</p>
+        <ul class="simple">
+          <li><strong>变分法 + 打靶法</strong>：建立 Euler-Lagrange 方程，用数值ODE求解器打靶</li>
+          <li><strong>参数化优化</strong>：将路径参数化为有限维向量（如控制点序列），用非线性优化求解</li>
+          <li><strong>遗传算法/模拟退火</strong>：全局搜索，避免陷入局部最优</li>
+        </ul>
+        <p>目前最好的数值结果约 4.605，与下界 4.603 相差不到 0.05%，但无法证明这就是全局最优。</p>
+
+        <p class="sub-h">推广与变体</p>
+        <ul class="simple">
+          <li><strong>多维版本</strong>：在 n 维空间中找超平面，类似但更复杂</li>
+          <li><strong>已知距离分布</strong>：如果知道到岸距离的概率分布，可以求期望航程最小的路径</li>
+          <li><strong>带速度限制</strong>：船速有限时，需要考虑风速、洋流等因素</li>
+          <li><strong>离散版本</strong>：海岸线只有有限条可能方向时，问题简化为有限搜索</li>
+        </ul>
 
         <p class="sub-h">近缘问题（容易混淆）</p>
         <ul class="simple">
