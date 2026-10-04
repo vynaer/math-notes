@@ -373,6 +373,7 @@
       <a href="#thm-6" class="nav-item" data-title="多项式消次与三次方程求根公式">多项式消次与三次方程求根公式</a>
       <a href="#thm-7" class="nav-item" data-title="三角级数求和公式">三角级数求和公式</a>
       <a href="#thm-8" class="nav-item" data-title="多项式定理">多项式定理</a>
+      <a href="#thm-9" class="nav-item" data-title="斐波那契数列中的完全幂（Bugeaud–Mignotte–Siksek 定理）">斐波那契数列中的完全幂</a>
     </div>
     <div class="nav-group">
       <span class="nav-group-title">趣题</span>
@@ -1810,6 +1811,48 @@
 
         <div class="note">多项式定理是二项式、三项式的终极推广。多项式系数在组合数学、概率论（多项分布）、统计力学中频繁出现。与"有序整数分拆"不同：多项式系数是把 n 个不同位置分成指定大小的组，而 composition 是把 n 拆成有序的正整数之和。</div>
       </div>
+    </div>
+
+    <div class="entry" id="thm-9">
+      <div class="entry-header">
+        <span class="entry-num">009</span>
+        <span class="entry-tag">数论 / 丢番图方程</span>
+        <span class="entry-title">斐波那契数列中的完全幂（Bugeaud–Mignotte–Siksek 定理）</span>
+      </div>
+
+      <p><strong>定理</strong>：斐波那契数列 F<sub>n</sub>（F₀=0, F₁=1, Fₙ₊₂=Fₙ₊₁+Fₙ）中的完全幂（即形如 y<sup>k</sup>，k ≥ 2 的数）只有以下五个：</p>
+      <ul class="simple">
+        <li>F₀ = 0 = 0<sup>k</sup></li>
+        <li>F₁ = F₂ = 1 = 1<sup>k</sup></li>
+        <li>F₆ = 8 = 2<sup>3</sup></li>
+        <li>F₁₂ = 144 = 12<sup>2</sup></li>
+      </ul>
+      <p>同一篇论文还解决了卢卡斯数列 Lₙ（L₀=2, L₁=1）的对应问题：只有 L₁ = 1 和 L₃ = 4 = 2²。</p>
+
+      <p class="sub-h">一个 40 年悬案</p>
+      <p>这个问题看似初等，却悬而未决超过 40 年，逐步攻克的时间线：</p>
+      <ul class="simple">
+        <li><strong>1951</strong>，Ljunggren：平方数只有 0, 1, 144</li>
+        <li><strong>1964</strong>，Cohn：重新发现平方数结果</li>
+        <li><strong>1969</strong>，London &amp; Finkelstein：立方数只有 0, 1, 8</li>
+        <li><strong>2003 前</strong>：已知指数 p ≤ 17 或 p ≥ 5.1×10<sup>17</sup> 时无更高次幂，但中间巨大空缺无法处理</li>
+        <li><strong>2006</strong>，Bugeaud, Mignotte, Siksek：<strong>完全解决所有指数</strong></li>
+      </ul>
+
+      <p class="sub-h">论文信息</p>
+      <p>Y. Bugeaud, M. Mignotte, S. Siksek, "Classical and Modular Approaches to Exponential Diophantine Equations I. Fibonacci and Lucas Perfect Powers", <em>Annals of Mathematics</em> 163 (2006), 969–1018. 证明完成于 2003 年。</p>
+
+      <p class="sub-h">证明方法（几句话版）</p>
+      <p>证明的惊人之处在于：问题本身极其初等，却动用了 20 世纪最深刻的数论工具——<strong>Baker 理论</strong>（线性形式中的对数，给出指数上界）与<strong>模方法</strong>（源自 Wiles 证明费马大定理的工具链，构造 Frey 椭圆曲线 Y² = X³ + LₙX² − X，应用 Ribet 的 Level-Lowering 定理）的结合。两者配合排除了所有可能的解。这是模方法首次成功应用于"非费马型"的指数丢番图方程。</p>
+
+      <p class="sub-h">为什么这个结果值得记</p>
+      <ul class="simple">
+        <li><strong>反差之美</strong>：最初等的数列 + 最深奥的方法 = 数学魅力的极致体现</li>
+        <li><strong>方法论突破</strong>：证明了费马大定理的工具链并非只适用于费马方程，而是处理指数丢番图方程的通用武器</li>
+        <li><strong>后续影响</strong>：激发了对 Pell 数列、Jacobsthal 数列、Padovan 数列等递推序列完全幂问题的研究热潮</li>
+      </ul>
+
+      <div class="note">这个定理是"简单问题 + 深刻证明"的典范。斐波那契数列小学生都能写出来，但要证明其中只有 0、1、8、144 是完全幂，需要用到 20 世纪末才成熟的模形式理论。它发表在数学最顶级期刊 Annals of Mathematics 上，足见分量。顺便一提，Fₙ ± 1 是完全幂的情况也被同一组作者解决：解为 Fₙ = 0, 1, 2, 3, 5, 8。</div>
     </div>
 
   </div>
