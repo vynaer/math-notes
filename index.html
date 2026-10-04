@@ -648,9 +648,9 @@
 
         <p class="sub-h">验证：前几层</p>
         <ul class="simple">
-          <li><strong>n=1</strong>：y<sub>1</sub> = x，y<sub>1</sub>' = 1。公式给出 <span class="frac"><span class="num">1</span><span class="den">x</span></span>·y<sub>1</sub>·(ln x)<sup>0</sup> = <span class="frac"><span class="num">1</span><span class="den">x</span></span>·x = 1 ✓</li>
-          <li><strong>n=2</strong>：y<sub>2</sub> = x<sup>x</sup>。直接求导 y<sub>2</sub>' = x<sup>x</sup>(ln x + 1)。公式给出 <span class="frac"><span class="num">1</span><span class="den">x</span></span>[y<sub>2</sub>·y<sub>1</sub> + y<sub>2</sub>·y<sub>1</sub>·y<sub>0</sub>·ln x] = <span class="frac"><span class="num">1</span><span class="den">x</span></span>[y<sub>2</sub>·x + y<sub>2</sub>·x·1·ln x] = y<sub>2</sub>(1 + ln x) ✓</li>
-          <li><strong>n=3</strong>：y<sub>3</sub> = x<sup>x<sup>x</sup></sup>，y<sub>3</sub>' = <span class="frac"><span class="num">y<sub>3</sub>·y<sub>2</sub></span><span class="den">x</span></span> · (1 + x·ln x + x·ln<sup>2</sup>x) ✓</li>
+          <li><strong>n=1</strong>：$y_1 = x$，$y_1' = 1$。公式给出 $\dfrac{1}{x} \cdot y_1 \cdot (\ln x)^0 = \dfrac{1}{x} \cdot x = 1$ ✓</li>
+          <li><strong>n=2</strong>：$y_2 = x^x$。直接求导 $y_2' = x^x(\ln x + 1)$。公式给出 $\dfrac{1}{x}[y_2 \cdot y_1 + y_2 \cdot y_1 \cdot y_0 \cdot \ln x] = \dfrac{1}{x}[y_2 \cdot x + y_2 \cdot x \cdot 1 \cdot \ln x] = y_2(1 + \ln x)$ ✓</li>
+          <li><strong>n=3</strong>：$y_3 = x^{x^x}$，$y_3' = \dfrac{y_3 \cdot y_2}{x} \cdot (1 + x\ln x + x\ln^2 x)$ ✓</li>
         </ul>
 
         <div class="figure">
@@ -685,7 +685,7 @@
         <p class="sub-h">无穷幂塔与朗伯 W 函数</p>
         <p>当层数趋于无穷时，幂塔 h(x) = x<sup>x<sup>x<sup>⋯</sup></sup></sup> 满足不动点方程 h = x<sup>h</sup>。两边取对数：ln h = h ln x，即 (−h ln x)·e<sup>−h ln x</sup> = −ln x。用 W 函数解得：</p>
         <div class="formula">$$h(x) = \frac{W(-\ln x)}{-\ln x}$$</div>
-        <p><strong>收敛域</strong>：无穷幂塔仅在 e<sup>−e</sup> ≈ 0.066 ≤ x ≤ e<sup><span class="frac"><span class="num">1</span><span class="den">e</span></span></sup> ≈ 1.444 时收敛。x = e<sup><span class="frac"><span class="num">1</span><span class="den">e</span></span></sup> 时 h = e；x = e<sup>−e</sup> 时 h = <span class="frac"><span class="num">1</span><span class="den">e</span></span>。</p>
+        <p><strong>收敛域</strong>：无穷幂塔仅在 $e^{-e} \approx 0.066 \le x \le e^{1/e} \approx 1.444$ 时收敛。$x = e^{1/e}$ 时 $h = e$；$x = e^{-e}$ 时 $h = \dfrac{1}{e}$。</p>
 
         <p class="sub-h">特殊值</p>
         <ul class="simple">
@@ -953,7 +953,7 @@
 
         <p class="sub-h">Beta 函数</p>
         <div class="formula">$$B(p, q) = \int_0^1 t^{p-1}(1-t)^{q-1}\,dt = \frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}$$</div>
-        <p>与组合数的联系：B(k+1, n−k+1) = <span class="frac"><span class="num">1</span><span class="den">(n+1) <span class="binom"><span class="num">n</span><span class="den">k</span></span></span></span>。</p>
+        <p>与组合数的联系：$B(k+1, n-k+1) = \dfrac{1}{(n+1)\binom{n}{k}}$。</p>
         <p>三角函数积分的一般公式（华里士公式的推广）：</p>
         <div class="formula">$$\int_0^{\pi/2} \sin^m x \cos^n x\,dx = \frac{1}{2} \cdot \frac{\Gamma\left(\frac{m+1}{2}\right) \Gamma\left(\frac{n+1}{2}\right)}{\Gamma\left(\frac{m+n+2}{2}\right)}$$</div>
 
@@ -1031,7 +1031,7 @@
       </div>
       <div class="entry-body">
         <p class="sub-h">① 布伦常数（Brun's constant）</p>
-        <p>所有孪生素数对的倒数之和：B<sub>2</sub> = (<span class="frac"><span class="num">1</span><span class="den">3</span></span>+<span class="frac"><span class="num">1</span><span class="den">5</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">5</span></span>+<span class="frac"><span class="num">1</span><span class="den">7</span></span>) + (<span class="frac"><span class="num">1</span><span class="den">11</span><span class="den">13</span></span>) + … ≈ 1.902160583。有限值——布伦筛法证明了收敛性。而全体素数倒数和是发散的。</p>
+        <p>所有孪生素数对的倒数之和：$B_2 = \left(\dfrac{1}{3}+\dfrac{1}{5}\right) + \left(\dfrac{1}{5}+\dfrac{1}{7}\right) + \left(\dfrac{1}{11}+\dfrac{1}{13}\right) + \cdots \approx 1.902160583$。有限值——布伦筛法证明了收敛性。而全体素数倒数和是发散的。</p>
         <p>布伦常数最出名的"应用"是<strong>Intel Pentium FDIV bug</strong>（1994 年）。Thomas Nicely 在计算布伦常数时发现 Pentium 处理器的浮点除法单元有缺陷，导致某些双精度除法结果错误。Intel 最终耗资约 4.75 亿美元召回缺陷芯片。一个纯数学常数引发了计算机硬件史上最大的召回事件之一。</p>
         <p class="sub-h">② 杜芬数（Dottie number）</p>
         <p>cos x = x 的唯一实根：D ≈ 0.7390851332151607。超越数。从任意实数出发反复取余弦最终都收敛到此数——不动点定理的直观例子。</p>
@@ -1144,7 +1144,7 @@
         </ul>
         <p class="sub-h" style="font-size:0.95rem;">垂直轴简化</p>
         <p>k·v = 0 时第三项消失：v' = v cosθ + (k × v) sinθ。旋转完全在垂直平面内，与二维旋转一致。</p>
-        <p>坐标展开（轴 k = (<span class="frac"><span class="num">−y</span><span class="den">r</span></span>, <span class="frac"><span class="num">x</span><span class="den">r</span></span>, 0)，r = √(x<sup>2</sup>+y<sup>2</sup>)）：</p>
+        <p>坐标展开（轴 $k = \left(-\dfrac{y}{r}, \dfrac{x}{r}, 0\right)$，$r = \sqrt{x^2+y^2}$）：</p>
         <div class="formula">$$x' = x\cos\theta + \frac{xz}{r}\sin\theta, \quad y' = y\cos\theta + \frac{yz}{r}\sin\theta, \quad z' = z\cos\theta - r\sin\theta$$</div>
         <p class="sub-h" style="font-size:0.95rem;">优势</p>
         <ul class="simple">
@@ -1638,7 +1638,7 @@
         <div class="formula">$$v_p(n!) = \sum_{i \ge 1} n_i \cdot \frac{p^i - 1}{p - 1} = \frac{(n - n_0) - (S_p(n) - n_0)}{p - 1} = \frac{n - S_p(n)}{p - 1}$$</div>
 
         <p class="sub-h">库默尔定理</p>
-        <p><strong>定理</strong>：v<sub>p</sub>(<span class="binom"><span class="num">n</span><span class="den">m</span></span>) 等于 p 进制下 m + (n−m) = n 时的<strong>进位次数</strong>。</p>
+        <p><strong>定理</strong>：$v_p\dbinom{n}{m}$ 等于 p 进制下 m + (n−m) = n 时的<strong>进位次数</strong>。</p>
 
         <p class="sub-h">库默尔定理与勒让德公式的等价性</p>
         <p>在 p 进制加法中，每发生一次进位，数字和减少 p−1（两个数字 a+b ≥ p，进位后变成 (a+b−p)，数字和从 a+b 变为 a+b−p+1，净减少 p−1）。设进位次数为 c，则：</p>
@@ -1781,14 +1781,14 @@
         <p>Cardano 在发表公式时承认了 del Ferro 和 Tartaglia 的贡献，但 Tartaglia 认为 Cardano 背信弃义，引发了一场著名的数学论战。</p>
 
         <p class="sub-h">卡尔达诺公式</p>
-        <p>三次方程 ax<sup>3</sup>+bx<sup>2</sup>+cx+d=0，换元 x = y − <span class="frac"><span class="num">b</span><span class="den">3a</span></span> 化为 y<sup>3</sup>+py+q=0。令 y = u+v，设 uv = −<span class="frac"><span class="num">p</span><span class="den">3</span></span>，则 u<sup>3</sup>+v<sup>3</sup> = −q，u<sup>3</sup>v<sup>3</sup> = −<span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span>。A=u<sup>3</sup>, B=v<sup>3</sup> 是 t<sup>2</sup>+qt−<span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span>=0 的根。</p>
-        <p class="sub-h">判别式 Δ = <span class="frac"><span class="num">q<sup>2</sup></span><span class="den">4</span></span> + <span class="frac"><span class="num">p<sup>3</sup></span><span class="den">27</span></span></p>
+        <p>三次方程 $ax^3+bx^2+cx+d=0$，换元 $x = y - \dfrac{b}{3a}$ 化为 $y^3+py+q=0$。令 $y = u+v$，设 $uv = -\dfrac{p}{3}$，则 $u^3+v^3 = -q$，$u^3v^3 = -\dfrac{p^3}{27}$。$A=u^3, B=v^3$ 是 $t^2+qt-\dfrac{p^3}{27}=0$ 的根。</p>
+        <p class="sub-h">判别式 $\Delta = \dfrac{q^2}{4} + \dfrac{p^3}{27}$</p>
         <ul class="simple">
           <li>Δ &gt; 0：一实根 + 一对共轭复根</li>
           <li>Δ = 0：重根，三实根</li>
           <li>Δ &lt; 0：三互不等实根（不可约情形）</li>
         </ul>
-        <p>记 ω = −<span class="frac"><span class="num">1</span><span class="den">2</span></span> + <span class="frac"><span class="num">i√3</span><span class="den">2</span></span>（三次单位根），三根为：</p>
+        <p>记 $\omega = -\dfrac{1}{2} + \dfrac{i\sqrt{3}}{2}$（三次单位根），三根为：</p>
         <div class="formula">y<sub>1</sub> = <sup>3</sup>√A + <sup>3</sup>√B，&nbsp; y<sub>2</sub> = ω<sup>3</sup>√A + ω<sup>23</sup>√B，&nbsp; y<sub>3</sub> = ω<sup>23</sup>√A + ω<sup>3</sup>√B</div>
 
         <p class="sub-h">不可约情形（Casus Irreducibilis）</p>
@@ -1924,7 +1924,7 @@
             <li>(a+b+c)<sup>4</sup>：15 项（三项式）</li>
             <li>(a+b+c+d)<sup>4</sup>：35 项（四项式）</li>
             <li>(a+b+c+d+e)<sup>4</sup>：70 项（五项式）</li>
-            <li>通项：(x<sub>1</sub>+…+x<sub>m</sub>)<sup>n</sup> 的项数 = <span class="binom"><span class="num">n+m−1</span><span class="den">m−1</span></span>（隔板法）</li>
+            <li>通项：$(x_1+\cdots+x_m)^n$ 的项数 = $\dbinom{n+m-1}{m-1}$（隔板法）</li>
           </ol>
         </div>
 
@@ -2128,16 +2128,16 @@
         </ul>
 
         <p class="sub-h">渐近尺度</p>
-        <p>N ≈ 10<sup>m</sup> ⟹ ln N = m ln 10。中文按 4 位分块，共 ⌈<span class="frac"><span class="num">m</span><span class="den">4</span></span>⌉ 块。每块最多 4 个数字 + 3 个权（千、百、十）= 7 字，再加块尾大单位 1 字。故每块字数为常数，不随 m 增长：</p>
+        <p>N ≈ 10<sup>m</sup> ⟹ ln N = m ln 10。中文按 4 位分块，共 $\left\lceil \dfrac{m}{4} \right\rceil$ 块。每块最多 4 个数字 + 3 个权（千、百、十）= 7 字，再加块尾大单位 1 字。故每块字数为常数，不随 m 增长：</p>
         <div class="formula">$$f(N) = \Theta\left(\frac{m}{4}\right) = \Theta\left(\frac{\ln N}{\ln 10}\right)$$</div>
-        <p>比值 <span class="frac"><span class="num">f(N)</span><span class="den">ln N</span></span> 是有界量，但普通极限<strong>不存在</strong>——在两个常数之间震荡。</p>
+        <p>比值 $\dfrac{f(N)}{\ln N}$ 是有界量，但普通极限<strong>不存在</strong>——在两个常数之间震荡。</p>
 
         <div class="keypoint">
           <div class="keypoint-title">核心结论</div>
           <ol>
             <li><strong>量级</strong>：f(N) ∝ log<sub>10</sub> N，即汉字数与十进制位数成正比</li>
-            <li><strong>上极限</strong>：全为 9 时取得，limsup = <span class="frac"><span class="num">2</span><span class="den">ln 10</span></span> ≈ <strong>0.869</strong></li>
-            <li><strong>下极限</strong>：1 后全 0 时取得，liminf = <span class="frac"><span class="num">1</span><span class="den">4 ln 10</span></span> ≈ <strong>0.109</strong></li>
+            <li><strong>上极限</strong>：全为 9 时取得，$\limsup = \dfrac{2}{\ln 10} \approx$ <strong>0.869</strong></li>
+            <li><strong>下极限</strong>：1 后全 0 时取得，$\liminf = \dfrac{1}{4\ln 10} \approx$ <strong>0.109</strong></li>
             <li><strong>结论</strong>：比值在 0.109 ~ 0.869 之间震荡，<strong>不收敛</strong></li>
           </ol>
         </div>
@@ -2261,7 +2261,7 @@
         <ul class="simple">
           <li><strong>方案 1</strong>：朝任一方向直行 1km——若刚好朝岸则 1km 到，最坏方向垂直于岸则永远碰不到，<strong>不可行</strong>。</li>
           <li><strong>方案 2</strong>：阿基米德螺旋——一定能碰到，但最坏距离很大。</li>
-          <li><strong>方案 3</strong>：先直行 1km，再沿半径 1 的圆转圈——最坏航程 1 + <span class="frac"><span class="num">2</span><span class="den">3</span></span>π ≈ 5.712。</li>
+          <li><strong>方案 3</strong>：先直行 1km，再沿半径 1 的圆转圈——最坏航程 $1 + \dfrac{2}{3}\pi \approx 5.712$。</li>
         </ul>
 
         <p class="sub-h">核心误解拆解</p>
