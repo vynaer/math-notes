@@ -1628,6 +1628,52 @@
 
         <p class="sub-h">与帕斯卡三角模 p 的关系</p>
         <p>卢卡斯定理揭示了帕斯卡三角模 p 的分形结构。例如模 2 时，C(n, m) 为奇数当且仅当 m 的二进制位是 n 的二进制位的子集（即 m &amp; n = m）。这产生了著名的<strong>谢尔宾斯基三角形</strong>分形图案。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 320 180" width="320" height="180">
+            <rect width="320" height="180" fill="white"/>
+            <g font-size="7" text-anchor="middle">
+              <rect x="154" y="4" width="12" height="12" fill="var(--accent)"/>
+              <rect x="148" y="18" width="12" height="12" fill="var(--accent)"/>
+              <rect x="166" y="18" width="12" height="12" fill="var(--accent)"/>
+              <rect x="142" y="32" width="12" height="12" fill="var(--accent)"/>
+              <rect x="154" y="32" width="12" height="12" fill="var(--ink)"/>
+              <rect x="166" y="32" width="12" height="12" fill="var(--ink)"/>
+              <rect x="178" y="32" width="12" height="12" fill="var(--accent)"/>
+              <rect x="136" y="46" width="12" height="12" fill="var(--accent)"/>
+              <rect x="148" y="46" width="12" height="12" fill="var(--accent)"/>
+              <rect x="160" y="46" width="12" height="12" fill="var(--accent)"/>
+              <rect x="172" y="46" width="12" height="12" fill="var(--accent)"/>
+              <rect x="184" y="46" width="12" height="12" fill="var(--accent)"/>
+              <rect x="130" y="60" width="12" height="12" fill="var(--accent)"/>
+              <rect x="142" y="60" width="12" height="12" fill="var(--ink)"/>
+              <rect x="154" y="60" width="12" height="12" fill="var(--accent)"/>
+              <rect x="166" y="60" width="12" height="12" fill="var(--ink)"/>
+              <rect x="178" y="60" width="12" height="12" fill="var(--accent)"/>
+              <rect x="190" y="60" width="12" height="12" fill="var(--ink)"/>
+              <rect x="124" y="74" width="12" height="12" fill="var(--accent)"/>
+              <rect x="136" y="74" width="12" height="12" fill="var(--accent)"/>
+              <rect x="148" y="74" width="12" height="12" fill="var(--ink)"/>
+              <rect x="160" y="74" width="12" height="12" fill="var(--ink)"/>
+              <rect x="172" y="74" width="12" height="12" fill="var(--ink)"/>
+              <rect x="184" y="74" width="12" height="12" fill="var(--ink)"/>
+              <rect x="196" y="74" width="12" height="12" fill="var(--accent)"/>
+              <rect x="118" y="88" width="12" height="12" fill="var(--accent)"/>
+              <rect x="130" y="88" width="12" height="12" fill="var(--ink)"/>
+              <rect x="142" y="88" width="12" height="12" fill="var(--accent)"/>
+              <rect x="154" y="88" width="12" height="12" fill="var(--accent)"/>
+              <rect x="166" y="88" width="12" height="12" fill="var(--accent)"/>
+              <rect x="178" y="88" width="12" height="12" fill="var(--accent)"/>
+              <rect x="190" y="88" width="12" height="12" fill="var(--ink)"/>
+              <rect x="202" y="88" width="12" height="12" fill="var(--accent)"/>
+            </g>
+            <text x="160" y="115" text-anchor="middle" font-size="10" fill="var(--ink)">实心 = C(n,m) 为奇数</text>
+            <text x="160" y="130" text-anchor="middle" font-size="10" fill="var(--ink)">空心 = C(n,m) 为偶数</text>
+            <text x="160" y="150" text-anchor="middle" font-size="9" fill="#666">帕斯卡三角前8行模2 = 谢尔宾斯基三角形</text>
+          </svg>
+          <div class="figure-caption">帕斯卡三角前 8 行模 2 的可视化。实心方块表示 C(n,m) 为奇数，空心（深色）表示偶数。自相似的分形结构是卢卡斯定理的直接推论。</div>
+        </div>
+
         <p>模 p 的帕斯卡三角具有自相似性：第 0 到 p−1 行是基础块，第 p 到 2p−1 行是基础块的拷贝，中间插入 0，以此类推。这种分形结构是卢卡斯定理的直接推论。</p>
 
         <div class="keypoint">
@@ -1901,7 +1947,32 @@
         <li><strong>后续影响</strong>：激发了对 Pell 数列、Jacobsthal 数列、Padovan 数列等递推序列完全幂问题的研究热潮</li>
       </ul>
 
-      <div class="note">这个定理是"简单问题 + 深刻证明"的典范。斐波那契数列小学生都能写出来，但要证明其中只有 0、1、8、144 是完全幂，需要用到 20 世纪末才成熟的模形式理论。它发表在数学最顶级期刊 Annals of Mathematics 上，足见分量。顺便一提，Fₙ ± 1 是完全幂的情况也被同一组作者解决：解为 Fₙ = 0, 1, 2, 3, 5, 8。</div>
+      <p class="sub-h">Baker 理论简述</p>
+      <p>Alan Baker 因"线性形式中的对数"理论获 1970 年菲尔兹奖。核心思想：对于代数数 α₁, …, αₙ 和整数 b₁, …, bₙ，若 Λ = b₁ log α₁ + … + bₙ log αₙ ≠ 0，则 |Λ| 有一个可计算的下界（依赖于 αᵢ 和 bᵢ 的高度）。</p>
+      <p>在 BMS 证明中，Baker 理论用于给出指数 p 的上界：若 Fₙ = yᵖ，则可构造一个对数线性形式，由 Baker 下界推出 p 不能太大（约 p &lt; 10⁸）。这就把无穷问题化为有限验证。</p>
+
+      <p class="sub-h">模方法简述</p>
+      <p>源自 Wiles 证明费马大定理的工具链，核心步骤：</p>
+      <ol>
+        <li><strong>构造 Frey 曲线</strong>：从假设的解 Fₙ = yᵖ 构造椭圆曲线 E: Y² = X(X − Fₙ)(X + yᵖ)</li>
+        <li><strong>模性定理</strong>：E 对应某个模形式（Wiles 等证明）</li>
+        <li><strong>Ribet Level-Lowering</strong>：该模形式可"降级"到较低等级</li>
+        <li><strong>矛盾</strong>：低等级空间中不存在这样的模形式，故原假设不成立</li>
+      </ol>
+      <p>BMS 的关键创新是将此方法应用于斐波那契数——这需要巧妙地将 Fₙ 与卢卡斯数 Lₙ 结合（利用恒等式 Lₙ² − 5Fₙ² = 4(−1)ⁿ），构造出合适的 Frey 曲线。</p>
+
+      <p class="sub-h">卢卡斯数列的对应结果</p>
+      <p>同一篇论文还证明：卢卡斯数列 Lₙ 中的完全幂只有 L₁ = 1 和 L₃ = 4 = 2²。证明方法与斐波那契情形平行，利用 Lₙ 的整除性质和模方法。</p>
+
+      <p class="sub-h">更多后续推广</p>
+      <ul class="simple">
+        <li><strong>Fₙ ± 1 为完全幂</strong>（Bugeaud, Luca, Mignotte, Siksek）：解为 Fₙ = 0, 1, 2, 3, 5, 8</li>
+        <li><strong>Fibonomial 系数的完全幂</strong>：唯一非平凡解为 F₆/F₁ = 8 = 2³ 和 F₁₂/F₁ = 144 = 12²</li>
+        <li><strong>其他 Lucas 序列</strong>：Pell 数、Jacobsthal 数、Padovan 数等的完全幂问题陆续被解决</li>
+        <li><strong>多项式值问题</strong>：对一般多项式 g，斐波那契/卢卡斯序列中只有有限个落在 g(Z) 中</li>
+      </ul>
+
+      <div class="note">这个定理是"简单问题 + 深刻证明"的典范。斐波那契数列小学生都能写出来，但要证明其中只有 0、1、8、144 是完全幂，需要用到 20 世纪末才成熟的模形式理论。它发表在数学最顶级期刊 Annals of Mathematics 上，足见分量。这个结果的真正意义不在于结论本身（5个数），而在于它展示了现代数论工具（Baker理论+模方法）的强大威力——它们能解决看似无从下手的初等问题。</div>
     </div>
 
     <div class="entry" id="thm-10">
@@ -1925,8 +1996,28 @@
         <li><strong>Kűrschák</strong>：任意连续一段单位分数之和，项数 ≥ 2，必不是整数</li>
       </ul>
 
+      <p class="sub-h">具体例子</p>
+      <p><strong>H₂</strong> = 1 + 1/2 = 3/2，分子 3 为奇数，分母含 2，不是整数。</p>
+      <p><strong>H₃</strong> = 1 + 1/2 + 1/3 = 11/6。通分分母 6，分子 6+3+2 = 11（奇数），不是整数。</p>
+      <p><strong>H₄</strong> = 1 + 1/2 + 1/3 + 1/4 = 25/12。2 的最高次幂是 4 = 2²，只有 1/4 这一项通分后分子为奇数（3），其余分子均为偶数，总和奇数，不是整数。</p>
+      <p>一般地，设 2<sup>k</sup> ≤ n &lt; 2<sup>k+1</sup>。在 1 到 n 中，只有 2<sup>k</sup> 这一个数含有因子 2<sup>k</sup>，其余数的 2-adic 赋值都 ≤ k−1。通分后分母含 2<sup>k</sup>，只有 1/2<sup>k</sup> 的分子为奇数，其余均为偶数，总和为奇数，故 H<sub>n</sub> 不是整数。</p>
+
+      <p class="sub-h">Kűrschák 定理的证明思路</p>
+      <p>对任意区间 [m+1, n]，设其中 2 的最高次幂为 2<sup>k</sup>。关键是证明这个 2<sup>k</sup> 在区间中<strong>唯一</strong>——因为 2<sup>k+1</sup> &gt; n（否则 2<sup>k</sup> 不是最高的），而 2·2<sup>k</sup> = 2<sup>k+1</sup> 不在区间内。所以区间中只有一个数是 2<sup>k</sup> 的奇数倍。</p>
+      <p>通分后，只有这一项的分子为奇数，其余均为偶数，总和为奇数，不可能被分母的 2<sup>k</sup> 整除。</p>
+
       <p class="sub-h">后续推广</p>
       <p>Erdős 进一步推广到等差数列倒数和：Σ 1/(a + kd) 在适当条件下也不能为整数。Kűrschák 本人还是赋值（valuation）理论的建立者，是 p 进赋值的先驱——这个定理的证明本质上就是 2-adic 赋值的应用。</p>
+
+      <p class="sub-h">p-adic 赋值视角</p>
+      <p>记 v₂(k) 为 k 中 2 的指数。则 v₂(H<sub>n</sub>) = v₂(Σ1/i)。证明的核心是：在 1/i 中，v₂(1/i) = −v₂(i) 最小（最负）的项唯一出现（即 i = 2<sup>k</sup>）。在 p-adic 赋值中，有限和的赋值等于各项赋值的最小值（当最小值唯一时）。因此 v₂(H<sub>n</sub>) = −k &lt; 0，说明 H<sub>n</sub> 的分母含 2<sup>k</sup>，不是整数。这是现代赋值论的语言。</p>
+
+      <p class="sub-h">调和数的其他性质</p>
+      <ul class="simple">
+        <li><strong>发散性</strong>：H<sub>n</sub> → ∞（对数发散），但增长极慢：H<sub>10⁶</sub> ≈ 14.39</li>
+        <li><strong>渐近</strong>：H<sub>n</sub> = ln n + γ + 1/(2n) − 1/(12n²) + …，γ ≈ 0.5772 为欧拉常数</li>
+        <li><strong>交错调和数</strong>：1 − 1/2 + 1/3 − 1/4 + … = ln 2</li>
+      </ul>
 
       <div class="keypoint">
         <div class="keypoint-title">核心要点</div>
@@ -1934,6 +2025,7 @@
           <li>Theisinger：H<sub>n</sub>（n ≥ 2）不是整数，证明用 2-adic 赋值</li>
           <li>Kűrschák：任意连续单位分数和（≥2项）不是整数</li>
           <li>关键：区间中存在唯一的 2 的最高次幂，使分子为奇数</li>
+          <li>p-adic 视角：最小赋值唯一 ⟹ 和的赋值 = 最小赋值 &lt; 0</li>
           <li>Erdős 推广到等差数列倒数和</li>
         </ol>
       </div>
