@@ -914,6 +914,28 @@
       </div>
       <div class="entry-body">
         <p><strong>定理</strong>：给定两条二次曲线 C（外）和 D（内），从 C 上任一点出发，交替作 D 的切线交 C，若某起点经 n 次后回到起点（形成彭赛列 n 边形），则 C 上任意起点都能作出闭合 n 边形。闭合性只由两曲线相对位置决定，与起点无关。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- 外二次曲线 C（圆）-->
+            <circle cx="200" cy="110" r="80" fill="none" stroke="#3a6b8a" stroke-width="1.5"/>
+            <text x="280" y="50" font-size="10" fill="#3a6b8a">外曲线 C</text>
+            <!-- 内二次曲线 D（圆，与三角形各边相切）-->
+            <circle cx="200" cy="110" r="40" fill="rgba(106,139,58,0.08)" stroke="#6a8b3a" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="168" y="108" font-size="10" fill="#6a8b3a">D</text>
+            <!-- 彭赛列三角形：内接于C，外切于D -->
+            <polygon points="200,30 130.7,70 269.3,70" fill="rgba(180,80,80,0.08)" stroke="#b45050" stroke-width="1.8"/>
+            <!-- 顶点 -->
+            <circle cx="200" cy="30" r="3" fill="#b45050"/>
+            <circle cx="130.7" cy="70" r="3" fill="#b45050"/>
+            <circle cx="269.3" cy="70" r="3" fill="#b45050"/>
+            <text x="200" y="22" text-anchor="middle" font-size="9" fill="#b45050">起点</text>
+            <!-- 标注 -->
+            <text x="200" y="210" text-anchor="middle" font-size="10" fill="#2c2c2c">若一个起点能闭合，则所有起点都能闭合</text>
+          </svg>
+          <div class="figure-caption">彭赛列 n=3 情形：三角形内接于外圆 C、外切于内圆 D。若存在这样一个三角形，则从 C 上任意点出发都能作出闭合三角形。</div>
+        </div>
+
         <p class="sub-h">特例：双心四边形</p>
         <div class="formula"><span class="frac"><span class="num">1</span><span class="den">(R−d)<sup>2</sup></span></span> + <span class="frac"><span class="num">1</span><span class="den">(R+d)<sup>2</sup></span></span> = <span class="frac"><span class="num">1</span><span class="den">r<sup>2</sup></span></span></div>
         <p>其中 R 为外接圆半径，r 为内切圆半径，d 为圆心距。</p>
@@ -931,6 +953,33 @@
         <p><strong>定理</strong>：取光滑凸闭合曲线 C，定长弦两端贴合 C 滑动一周。弦上定点把弦分为 p、q 两段，该定点划出内曲线 C'。则环形面积恒为：</p>
         <div class="formula">S<sub>C</sub> − S<sub>C'</sub> = πpq</div>
         <p>只与弦被分成的两段长度有关，与原曲线形状无关！p = q = L/2 时面积 = πL<sup>2</sup>/4，恰好等于直径为 L 的圆面积。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- 外凸曲线 C（椭圆，体现"与形状无关"）-->
+            <ellipse cx="200" cy="110" rx="85" ry="55" fill="rgba(58,107,138,0.05)" stroke="#3a6b8a" stroke-width="1.5"/>
+            <text x="280" y="70" font-size="10" fill="#3a6b8a">外曲线 C</text>
+            <!-- 内曲线 C'（弦上定点划出的轨迹，虚线）-->
+            <ellipse cx="200" cy="110" rx="48" ry="30" fill="none" stroke="#6a8b3a" stroke-width="1.3" stroke-dasharray="5,3"/>
+            <text x="238" y="100" font-size="10" fill="#6a8b3a">C′（轨迹）</text>
+            <!-- 定长弦：端点 A、B 在 C 上 -->
+            <line x1="126.4" y1="137.5" x2="273.6" y2="82.5" stroke="#b45050" stroke-width="2.2"/>
+            <circle cx="126.4" cy="137.5" r="3.5" fill="#2c2c2c"/>
+            <circle cx="273.6" cy="82.5" r="3.5" fill="#2c2c2c"/>
+            <text x="112" y="152" font-size="9" fill="#2c2c2c">A</text>
+            <text x="278" y="80" font-size="9" fill="#2c2c2c">B</text>
+            <!-- 弦上定点 P，分弦为 p、q 两段 -->
+            <circle cx="224.5" cy="100.8" r="4" fill="#6a8b3a"/>
+            <text x="230" y="96" font-size="9" fill="#6a8b3a">P</text>
+            <!-- 标注 p、q -->
+            <text x="248" y="88" font-size="10" fill="#b45050">p</text>
+            <text x="180" y="126" font-size="10" fill="#b45050">q</text>
+            <!-- 标注 -->
+            <text x="200" y="210" text-anchor="middle" font-size="10" fill="#2c2c2c">弦 AB 长固定，P 分弦为 p、q；环域面积 = πpq</text>
+          </svg>
+          <div class="figure-caption">霍迪奇定理示意图。定长弦 AB 在凸曲线 C 上滑动，弦上点 P（分弦为 p、q）划出虚线内曲线 C′。环域面积恒为 πpq，与 C 的形状无关。</div>
+        </div>
+
         <div class="note">背后是积分几何中的运动学公式（克罗夫顿公式一族），和曲线整体形状无关。</div>
       </div>
     </div>
@@ -1046,6 +1095,32 @@
           <li><strong>m=3（三项式定理）</strong>：(x+y+z)<sup>n</sup> = <span class="op-sum"><span class="op">∑</span><span class="lim">a+b+c=n</span></span> <span class="frac"><span class="num">n!</span><span class="den">a! b! c!</span></span> x<sup>a</sup>y<sup>b</sup>z<sup>c</sup></li>
         </ul>
 
+        <p class="sub-h">完整展开示例（视觉震撼）</p>
+        <p>把公式全部写开，能直观感受项数爆炸。(a+b+c)<sup>4</sup> 共 15 项：</p>
+        <div class="formula" style="font-size:0.92rem;line-height:1.8;">
+          (a+b+c)<sup>4</sup> = a<sup>4</sup> + b<sup>4</sup> + c<sup>4</sup><br>
+          &nbsp;&nbsp;+ 4(a<sup>3</sup>b + a<sup>3</sup>c + ab<sup>3</sup> + b<sup>3</sup>c + ac<sup>3</sup> + bc<sup>3</sup>)<br>
+          &nbsp;&nbsp;+ 6(a<sup>2</sup>b<sup>2</sup> + a<sup>2</sup>c<sup>2</sup> + b<sup>2</sup>c<sup>2</sup>)<br>
+          &nbsp;&nbsp;+ 12(a<sup>2</sup>bc + ab<sup>2</sup>c + abc<sup>2</sup>)
+        </div>
+        <p>再看 (a+b+c+d)<sup>4</sup>，变量只多一个，项数暴增到 35 项：</p>
+        <div class="formula" style="font-size:0.82rem;line-height:1.7;">
+          (a+b+c+d)<sup>4</sup> = a<sup>4</sup> + b<sup>4</sup> + c<sup>4</sup> + d<sup>4</sup><br>
+          &nbsp;&nbsp;+ 4(a<sup>3</sup>b + a<sup>3</sup>c + a<sup>3</sup>d + ab<sup>3</sup> + b<sup>3</sup>c + b<sup>3</sup>d + ac<sup>3</sup> + bc<sup>3</sup> + c<sup>3</sup>d + ad<sup>3</sup> + bd<sup>3</sup> + cd<sup>3</sup>)<br>
+          &nbsp;&nbsp;+ 6(a<sup>2</sup>b<sup>2</sup> + a<sup>2</sup>c<sup>2</sup> + a<sup>2</sup>d<sup>2</sup> + b<sup>2</sup>c<sup>2</sup> + b<sup>2</sup>d<sup>2</sup> + c<sup>2</sup>d<sup>2</sup>)<br>
+          &nbsp;&nbsp;+ 12(a<sup>2</sup>bc + a<sup>2</sup>bd + a<sup>2</sup>cd + ab<sup>2</sup>c + ab<sup>2</sup>d + b<sup>2</sup>cd + abc<sup>2</sup> + ac<sup>2</sup>d + bc<sup>2</sup>d + abd<sup>2</sup> + acd<sup>2</sup> + bcd<sup>2</sup>)
+        </div>
+        <div class="keypoint">
+          <div class="keypoint-title">项数增长规律</div>
+          <ol>
+            <li>(a+b)<sup>4</sup>：5 项（二项式）</li>
+            <li>(a+b+c)<sup>4</sup>：15 项（三项式）</li>
+            <li>(a+b+c+d)<sup>4</sup>：35 项（四项式）</li>
+            <li>(a+b+c+d+e)<sup>4</sup>：70 项（五项式）</li>
+            <li>通项：(x<sub>1</sub>+…+x<sub>m</sub>)<sup>n</sup> 的项数 = <span class="binom"><span class="num">n+m−1</span><span class="den">m−1</span></span>（隔板法）</li>
+          </ol>
+        </div>
+
         <p class="sub-h">组合意义</p>
         <p>把 n 个因式相乘，每个因式选一个变量。要得到 x<sub>1</sub><sup>n<sub>1</sub></sup>x<sub>2</sub><sup>n<sub>2</sub></sup>…x<sub>m</sub><sup>n<sub>m</sub></sup>，相当于把 n 个位置分成大小为 n<sub>1</sub>, n<sub>2</sub>, …, n<sub>m</sub> 的 m 组——等价于多重集合 {n<sub>1</sub>·x<sub>1</sub>, n<sub>2</sub>·x<sub>2</sub>, …, n<sub>m</sub>·x<sub>m</sub>} 的全排列数。</p>
 
@@ -1137,28 +1212,46 @@
 
         <div class="figure">
           <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-            <!-- 单位圆 -->
-            <circle cx="200" cy="150" r="60" fill="none" stroke="#3a6b8a" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <!-- 船的起始位置（原点） -->
+            <!-- 单位圆（所有可能海岸线的内切圆）-->
+            <circle cx="200" cy="150" r="60" fill="rgba(58,107,138,0.06)" stroke="#3a6b8a" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="200" y="154" text-anchor="middle" font-size="9" fill="#3a6b8a">单位圆</text>
+            <!-- 船的起始位置（原点）-->
             <circle cx="200" cy="150" r="4" fill="#b45050"/>
             <text x="208" y="146" font-size="10" fill="#b45050">船</text>
-            <!-- 几条切线（海岸线）-->
-            <line x1="60" y1="150" x2="340" y2="150" stroke="#6b6b6b" stroke-width="1"/>
-            <text x="344" y="154" font-size="9" fill="#6b6b6b">海岸线（切线）之一</text>
-            <!-- 切线2 -->
-            <line x1="140" y1="50" x2="300" y2="250" stroke="#6b6b6b" stroke-width="1"/>
-            <!-- 切线3 -->
-            <line x1="80" y1="80" x2="260" y2="260" stroke="#6b6b6b" stroke-width="1"/>
-            <!-- 最优路径示意（向外扩张的螺旋） -->
-            <path d="M 200 150 Q 230 120 260 140 Q 290 165 270 195 Q 240 220 210 200 Q 180 180 200 150" fill="none" stroke="#b45050" stroke-width="2"/>
-            <text x="270" y="120" font-size="10" fill="#b45050">最优路径（向外扩张）</text>
-            <!-- 切点标注 -->
-            <circle cx="140" cy="150" r="2" fill="#3a6b8a"/>
-            <text x="124" y="142" font-size="8" fill="#3a6b8a">切点</text>
+
+            <!-- 四条真正的切线（海岸线）：每条都与单位圆相切于一点 -->
+            <!-- 切线1：右侧切点 (260,150)，竖直线 x=260 -->
+            <line x1="260" y1="40" x2="260" y2="260" stroke="#6b6b6b" stroke-width="1.2"/>
+            <circle cx="260" cy="150" r="3" fill="#3a6b8a"/>
+            <text x="266" y="144" font-size="8" fill="#3a6b8a">切点</text>
+            <!-- 切线2：顶部切点 (200,90)，水平线 y=90 -->
+            <line x1="80" y1="90" x2="320" y2="90" stroke="#6b6b6b" stroke-width="1.2"/>
+            <circle cx="200" cy="90" r="3" fill="#3a6b8a"/>
+            <!-- 切线3：左侧切点 (140,150)，竖直线 x=140 -->
+            <line x1="140" y1="40" x2="140" y2="260" stroke="#6b6b6b" stroke-width="1.2"/>
+            <circle cx="140" cy="150" r="3" fill="#3a6b8a"/>
+            <!-- 切线4：底部切点 (200,210)，水平线 y=210 -->
+            <line x1="80" y1="210" x2="320" y2="210" stroke="#6b6b6b" stroke-width="1.2"/>
+            <circle cx="200" cy="210" r="3" fill="#3a6b8a"/>
+            <text x="326" y="94" font-size="9" fill="#6b6b6b">海岸线（单位圆的切线）</text>
+
+            <!-- 最优路径：阿基米德螺旋 r = (6/π)·θ，从原点向外扩张约2.5圈，越出单位圆拦截切线 -->
+            <path d="M 200 150
+                     L 202.2 152.2 L 200 156.3 L 193.3 156.7 L 187.4 150
+                     L 188.9 138.9 L 200 131.2 L 215.6 134.5 L 225.1 150
+                     L 220.0 170.0 L 200 181.4 L 175.6 174.4 L 162.3 150
+                     L 171.1 121.1 L 200 106.0 L 233.3 116.7 L 250.3 150
+                     L 237.8 187.8 L 200 206.6 L 157.8 192.2 L 137.2 150
+                     L 153.4 103.4 L 200 80.9 L 251.1 98.9 L 275.4 150
+                     L 237.8 214.5 L 170.0 214.5 L 122.0 150"
+                  fill="none" stroke="#b45050" stroke-width="2" stroke-linejoin="round"/>
+            <text x="280" y="70" font-size="10" fill="#b45050">最优路径</text>
+            <text x="280" y="82" font-size="9" fill="#b45050">（向外扩张螺旋）</text>
+
             <!-- 标注 -->
-            <text x="200" y="285" text-anchor="middle" font-size="10" fill="#2c2c2c">不必走到切点，可在圆外更早撞上切线</text>
+            <text x="200" y="288" text-anchor="middle" font-size="10" fill="#2c2c2c">不必走到切点本身，可在圆外某点更早撞上切线</text>
           </svg>
-          <div class="figure-caption">虚线为单位圆，灰线为可能的海岸线（单位圆的切线）。最优路径（红色）一边旋转一边向外扩张，在圆外拦截切线</div>
+          <div class="figure-caption">虚线圆为单位圆（船到岸距离=1），四条灰线为单位圆的切线（可能的海岸线）。最优路径（红色）是从原点出发、一边旋转一边缓慢向外扩张的螺旋，在圆外拦截切线——而非沿圆周走一圈。</div>
         </div>
 
         <p class="sub-h">朴素方案</p>
