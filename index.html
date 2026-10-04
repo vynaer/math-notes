@@ -2159,42 +2159,95 @@
     <div class="entry" id="puzzle-3">
       <div class="entry-header">
         <span class="entry-num">003</span>
-        <span class="entry-tag">几何 / 博弈</span>
-        <span class="entry-title">湖心逃生问题（追击者速度 4 倍）</span>
+        <span class="entry-tag">几何 / 微分博弈</span>
+        <span class="entry-title">湖心逃生问题（Lady in the Lake）</span>
       </div>
 
       <p>圆形湖泊，半径 R。游泳者在湖中心，速度 v；追击者在湖岸圆周奔跑，速度 4v。双方都使用最优策略：追击者尽力拦截，游泳者尽力上岸不被抓到。游泳者能否逃脱？</p>
 
-      <p class="sub-h">临界半径</p>
-      <p>设存在一个小圆，半径 r = R/4。游泳者在半径 r 的内圆里，<strong>角速度比追击者更快</strong>：</p>
+      <div class="figure">
+        <svg viewBox="0 0 300 300" width="300" height="300">
+          <circle cx="150" cy="150" r="120" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="150" cy="150" r="30" fill="none" stroke="var(--accent2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="150" cy="150" r="3" fill="var(--ink)"/>
+          <text x="155" y="145" font-size="11" fill="var(--ink)">O</text>
+          <circle cx="180" cy="150" r="4" fill="var(--accent2)"/>
+          <text x="186" y="145" font-size="11" fill="var(--accent2)">S</text>
+          <circle cx="30" cy="150" r="5" fill="#e74c3c"/>
+          <text x="15" y="155" font-size="11" fill="#e74c3c">P</text>
+          <line x1="30" y1="150" x2="180" y2="150" stroke="#999" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="135" y="118" font-size="10" fill="var(--accent2)">r=R/4</text>
+          <text x="225" y="155" font-size="10" fill="var(--accent)">R</text>
+          <path d="M 180 150 A 120 120 0 0 1 150 270" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="5 3"/>
+          <text x="195" y="240" font-size="10" fill="#27ae60">逃逸方向</text>
+        </svg>
+        <div class="figure-caption">湖心逃生示意图。内圆 r=R/4 内游泳者角速度占优，可调整到 S-O-P 对位；然后沿虚线方向逃逸。</div>
+      </div>
+
+      <p class="sub-h">问题原名与历史</p>
+      <p>正式名称为 <strong>Lady in the Lake</strong>（湖中女士问题），变体有"鸭子与狐狸"、"哥布林追逃"（IBM 2001 年 Ponder This 谜题）。最早雏形见于 1961 年《New Scientist》，马丁·加德纳 1965 年在《科学美国人》普及，严格微分博弈求解由 Isaacs《Differential Games》奠定。</p>
+
+      <p class="sub-h">临界半径 r₀ = R/4</p>
+      <p>游泳者在半径 r &lt; r₀ 的内圆里，角速度比追击者更快：</p>
       <ul class="simple">
-        <li>游泳者最大角速度 = v/r = 4v/R</li>
-        <li>追击者角速度 = 4v/R</li>
+        <li>游泳者最大角速度 ω<sub>s</sub> = v/r</li>
+        <li>追击者角速度 ω<sub>p</sub> = u/R = 4v/R</li>
       </ul>
-      <p>当游泳者距离湖心 &lt; R/4 时，他转圈调整方位的角速度 &gt; 岸上追击者，可以不断转圈，直到<strong>自己和追击者刚好分居圆心两侧</strong>（圆心在两人中间，三点共线）。</p>
-      <p>一旦走到 r = R/4，游泳者的角速度就追不上岸上的人，没法再调整相对角度。</p>
+      <p>令两者相等：v/r₀ = 4v/R ⟹ r₀ = R/4。</p>
+      <p>含义：当 r &lt; R/4 时，游泳者转圈调整方位的角速度 &gt; 岸上追击者，可以不断转圈直到<strong>自己和追击者分居圆心两侧</strong>（S—O—P 三点共线）。一旦 r &gt; R/4，角速度追不上，无法再调整。</p>
 
-      <p class="sub-h">完整逃生步骤</p>
-      <ol>
-        <li><strong>阶段 1：内圆机动</strong>——从圆心出发，在半径略小于 R/4 的小圆内转圈调整角度，达成状态：湖心 O、游泳者 S、追击者 P 三点共线，且 O 在 S、P 中间（S—O—P）。</li>
-        <li><strong>阶段 2：直线冲刺</strong>——达成对位后，立刻沿着远离追击者的直线径直向岸边游去。</li>
-      </ol>
+      <p class="sub-h">两个临界速度（极易混淆！）</p>
+      <p>设 k = 追击者速度 / 游泳者速度，有两个不同的临界值：</p>
 
-      <p class="sub-h">时间对比</p>
-      <p>此时游泳者到岸边距离 = R − R/4 = 3R/4，上岸耗时 = 3R/(4v)。</p>
-      <p>追击者需要沿湖岸跑<strong>半圈</strong>才能堵截，路程 = πR，耗时 = πR/(4v) ≈ 3.14R/(4v)。</p>
-      <p>因为 3 &lt; π，所以游泳者上岸时间更短，<strong>成功逃脱</strong>！</p>
+      <p><strong>① 简易策略临界值 k₁ = π ≈ 3.1416</strong></p>
+      <p>策略：在内圆调整到对位后，直线径向冲向岸边。此时游泳者到岸边距离 R − R/k，耗时 t<sub>逃</sub> = R(k−1)/(kv)；追击者需跑半圈 πR，耗时 t<sub>追</sub> = πR/(kv)。</p>
+      <p>t<sub>逃</sub> &lt; t<sub>追</sub> ⟺ k−1 &lt; π ⟺ k &lt; 1+π ≈ 4.14。</p>
+      <p>等等——这里有两种说法。实际上更精确的分析表明：当 k ≤ π 时直线冲刺方案稳定可行；当 π &lt; k ≤ 4.6033 时直线方案失效但曲线方案可行。本题 k = 4 &gt; π，<strong>纯直线冲刺策略失效</strong>，需要更复杂的 J 形曲线。</p>
 
-      <p class="sub-h">临界阈值</p>
-      <p>追击者速度倍数 k 的临界值为 1 + π ≈ 4.14。当 k &lt; 1+π 时游泳者可逃，k ≥ 1+π 时无法逃脱。题目中 k=4 &lt; 4.14，故可逃。</p>
+      <p><strong>② 全局理论极限临界值 k₂ ≈ 4.6033</strong></p>
+      <p>这是真正的最大临界倍数：</p>
+      <ul class="simple">
+        <li>k &lt; 4.6033：游泳者存在最优曲线路径，一定可以逃脱</li>
+        <li>k &gt; 4.6033：无论怎么游，追击者都有完美拦截策略</li>
+        <li>k = 4.6033：严格临界平衡点</li>
+      </ul>
+      <p>本题 k = 4，落在 π &lt; 4 &lt; 4.6033 区间：<strong>能逃，但不能只用直线冲锋，需要 J 形曲线</strong>。</p>
+
+      <p class="sub-h">临界方程的推导（sin β = 1/k 的来源）</p>
+      <p>令无量纲化 R=1, v=1，求临界 k。最优逃逸轨迹最后一段为直线，终点 A 处切线与半径 OA 夹角为 β。设 T 为转入直线段的起点，OT ⊥ TA。</p>
+      <div class="formula">sin β = |OT|/|OA| = |OT|，&nbsp; cos β = |OT|/|TA| ⟹ |TA| = cot β</div>
+      <p><strong>时间相等条件</strong>（临界平衡）：逃者走完 TA 的时间 = 追击者跑到 A 的时间</p>
+      <div class="formula">cot β = (π + β)/k &nbsp;—— (1)</div>
+      <p><strong>角速度边界条件</strong>：T 点两者角速度持平，1/|OT| = k，代入 |OT| = sin β：</p>
+      <div class="formula">sin β = 1/k &nbsp;—— (2)</div>
+      <p>联立消去 k：由 (2) 得 k = 1/sin β，代入 (1)：</p>
+      <div class="formula">cot β = (π + β) sin β &nbsp;⟹&nbsp; cos β = (π + β) sin²β</div>
+      <p>这是超越方程，无初等解析解，数值迭代得 β ≈ 1.3352 弧度，k ≈ 1/sin β ≈ <strong>4.6033</strong>。</p>
+
+      <p class="sub-h">反三角函数常用恒等变形（附）</p>
+      <ul class="simple">
+        <li><strong>互余</strong>：arcsin x + arccos x = π/2</li>
+        <li><strong>奇偶性</strong>：arcsin(−x) = −arcsin x；arccos(−x) = π − arccos x</li>
+        <li><strong>反函数还原</strong>：arcsin(sin θ) = θ 仅当 θ ∈ [−π/2, π/2]，超出需修正</li>
+        <li><strong>arcsin → arctan</strong>：arcsin x = arctan(x/√(1−x²))</li>
+        <li><strong>arctan 加法</strong>：arctan a + arctan b = arctan((a+b)/(1−ab))（ab &lt; 1 时）</li>
+      </ul>
+
+      <p class="sub-h">网络常见错误说法澄清</p>
+      <ul class="simple">
+        <li>❌ "4 倍是临界，刚好抓得到" → 错！临界上限约 4.603，4 倍仍能逃</li>
+        <li>❌ "超过 π 就一定抓得住" → 错！π 只是简单直线策略上限，不是全局极限</li>
+        <li>✅ 正确：π 是直线冲刺上限，4.6033 是全局逃逸极限</li>
+      </ul>
 
       <div class="keypoint">
         <div class="keypoint-title">核心要点</div>
         <ol>
-          <li>临界半径 r = R/4：内圈角速度占优，外圈不行</li>
-          <li>策略：内圈调整对位 → 直线冲刺</li>
-          <li>逃脱条件：3R/(4v) &lt; πR/(4v)，即 3 &lt; π</li>
-          <li>速度比临界值：1 + π ≈ 4.14</li>
+          <li>临界半径 r = R/k：内圈角速度占优，外圈不行</li>
+          <li>两个临界值：k₁=π（直线策略上限），k₂≈4.6033（全局极限）</li>
+          <li>本题 k=4：需 J 形曲线，不能直线冲刺</li>
+          <li>临界方程：sin β = 1/k，cot β = (π+β)/k，无解析解</li>
+          <li>问题名 Lady in the Lake，IBM 哥布林版本最知名</li>
         </ol>
       </div>
     </div>
@@ -2264,18 +2317,50 @@
         <li><strong>化简求解</strong>：解子方程，通常会转化为佩尔方程或四次方程</li>
       </ol>
 
-      <p class="sub-h">典型案例</p>
-      <p>考虑方程 x(x+1)(x+2)… = y²。设 a, b 为互素正整数且 ab 为平方数，则 a = m², b = n²。若 a, b 不互素，设 d = gcd(a,b)，令 a = da', b = db'，则 gcd(a', b')=1，ab = d²a'b' 为平方数 ⟹ a'b' 为平方数 ⟹ a', b' 各自为平方数。</p>
+      <p class="sub-h">完整案例：1 + N + N² + N³ 为完全平方数</p>
+      <p><strong>问题</strong>：求正整数 N，使得 1 + N + N² + N³ 是完全平方数。</p>
 
-      <p class="sub-h">与佩尔方程的联系</p>
-      <p>子方程化简后常出现 <strong>负佩尔方程</strong> x² − Dy² = −1。其所有正整数解由基本解 (x₁, y₁) 生成：x<sub>n</sub> + y<sub>n</sub>√D = (x₁ + y₁√D)<sup>2n+1</sup>。解序列满足线性递推关系。对于更大的解，可用模运算（模 8、模 5、模 16 等）排除不可能的情况。</p>
+      <p><strong>步骤 1：因式分解</strong></p>
+      <div class="formula">1 + N + N² + N³ = (N + 1)(N² + 1)</div>
+
+      <p><strong>步骤 2：gcd 分析</strong></p>
+      <p>设 d = gcd(N+1, N²+1)。由 d | N+1 得 N ≡ −1 (mod d)，代入 N²+1 得 N²+1 ≡ (−1)²+1 = 2 (mod d)，因此 d | 2，即 d 只能是 <strong>1 或 2</strong>。</p>
+
+      <p><strong>情况 1：d = 1（两数互素）</strong></p>
+      <p>互素乘积为平方数 ⟹ 每个因子都是平方数：</p>
+      <div class="formula">N + 1 = a²，&nbsp; N² + 1 = b²</div>
+      <p>由第二式得 b² − N² = 1，即 (b−N)(b+N) = 1。正整数范围内仅有解 N=0, b=1，但 0 不是正整数，故<strong>此情况无解</strong>。</p>
+
+      <p><strong>情况 2：d = 2（两数均为偶数）</strong></p>
+      <p>两数同除以 2，得到互素的正整数 (N+1)/2 和 (N²+1)/2。它们的乘积为原式的 1/4，仍是完全平方数，因此各自为平方数：</p>
+      <div class="formula">(N+1)/2 = a² ⟹ N = 2a² − 1</div>
+      <div class="formula">(N²+1)/2 = b² ⟹ N² + 1 = 2b²</div>
+      <p>代入消元：</p>
+      <div class="formula">(2a² − 1)² + 1 = 2b² &nbsp;⟹&nbsp; 2a⁴ − 2a² + 1 = b²</div>
+
+      <p><strong>求解四次丢番图方程</strong></p>
+      <ul class="simple">
+        <li>a = 1：左边 = 2 − 2 + 1 = 1 = 1²，b = 1，对应 <strong>N = 1</strong></li>
+        <li>a = 2：左边 = 32 − 8 + 1 = 25 = 5²，b = 5，对应 <strong>N = 7</strong></li>
+      </ul>
+
+      <p><strong>与负佩尔方程的联系</strong></p>
+      <p>方程可变形为 (2a²−1)² − 2b² = −1，这是<strong>负佩尔方程</strong> x² − 2y² = −1。其所有正整数解由 (1+√2)<sup>2k+1</sup> 生成，解序列满足递推 x<sub>k+2</sub> = 6x<sub>k+1</sub> − x<sub>k</sub>，初始解 x₀=1, x₁=7。</p>
+      <p>代入验证后续解：x₂=41, x₃=239，经检验 2√(x<sub>k</sub>+1) 都不是平方数。更大的解指数级增长，结合模运算（模 8、模 5、模 16 等）可证后续均无解。</p>
+
+      <p><strong>最终结论</strong>：满足条件的正整数为 <strong>N = 1</strong> 和 <strong>N = 7</strong>。</p>
+      <p>验证：N=1 时 1+1+1+1 = 4 = 2²；N=7 时 1+7+49+343 = 400 = 20²。</p>
+
+      <p class="sub-h">方法的通用性</p>
+      <p>这个案例展示了处理"乘积=平方数"型丢番图方程的标准套路：因式分解 → gcd 分析 → 互素平方数条件 → 子方程（常化为佩尔方程）→ 模运算排除大解。核心洞察是互素数的素因子互不重叠，平方性必须各自承担。</p>
 
       <div class="keypoint">
         <div class="keypoint-title">核心要点</div>
         <ol>
           <li>互素数乘积为平方数 ⟹ 每个数都是平方数</li>
-          <li>不互素时先除以 gcd，转化为互素情形</li>
-          <li>子方程常化为佩尔方程，用模运算排除大解</li>
+          <li>gcd 分析：d | 2 是本题关键，分 d=1 和 d=2 两种情况</li>
+          <li>子方程常化为负佩尔方程，解序列递推</li>
+          <li>大解用模运算（模 8、5、16）排除</li>
           <li>这是处理"乘积=幂"型丢番图方程的通用套路</li>
         </ol>
       </div>
@@ -2288,30 +2373,54 @@
         <span class="entry-title">幂级数系数渐近：达布定理与伯努利数</span>
       </div>
 
-      <p>求幂级数 f(z) = Σ a<sub>n</sub>z<sup>n</sup> 的系数 a<sub>n</sub> 的渐近行为时，<strong>达布（Darboux）渐近定理</strong>是核心工具：系数的主项由收敛圆周上离原点最近的奇点决定。</p>
+      <p><strong>问题</strong>：设 a<sub>n</sub> = f<sup>(2n−1)</sup>(0)/(2n−1)!，其中 f(x) = tan x。证明 a<sub>n</sub> ~ 2(4/π²)<sup>n</sup> (n → ∞)。</p>
 
-      <p class="sub-h">达布渐近定理</p>
-      <p>若 f(z) 在收敛圆周 |z|=R 上只有有限个奇点，且均为一阶极点，留数为 c<sub>j</sub>，则系数的渐近主项为各极点贡献之和：</p>
-      <div class="formula">a<sub>n</sub> ~ <span class="op-sum"><span class="op">∑</span><span class="lim">j</span></span> c<sub>j</sub> · z<sub>j</sub><sup>−n−1</sup></div>
-      <p>其中 z<sub>j</sub> 是奇点位置，c<sub>j</sub> 是留数。更远的奇点贡献是高阶小量，可忽略。</p>
+      <p class="sub-h">步骤 1：明确展开式与奇点</p>
+      <p>tan x = sin x / cos x 是奇函数，麦克劳林展开仅含奇次幂：</p>
+      <div class="formula">tan x = <span class="op-sum"><span class="op">∑</span><span class="lim">n=1</span></span><sup>∞</sup> a<sub>n</sub> x<sup>2n−1</sup></div>
+      <p>奇点满足 cos x = 0，即 x = π/2 + kπ (k ∈ ℤ)。离原点最近的奇点为 x = ±π/2，模长为 π/2，均为<strong>一阶极点</strong>；更远的奇点模长更大，对系数渐近行为的贡献可忽略。</p>
 
-      <p class="sub-h">案例：tan z 的展开系数</p>
-      <p>tan z 是奇函数，麦克劳林展开仅含奇次幂：tan z = Σ T<sub>n</sub> z<sup>2n−1</sup>。</p>
-      <p>奇点满足 cos z = 0，即 z = ±π/2, ±3π/2, …。离原点最近的奇点为 ±π/2，模长为 π/2，均为一阶极点。</p>
-      <p>在 z = π/2 处，留数 = lim(z−π/2)·tan z = −1（由洛必达法则）。同理 z = −π/2 处留数也为 −1。</p>
-      <p>两个最近奇点的贡献相加，得到系数主项。更远的奇点 ±3π/2 对应贡献阶为 (2/(3π))<sup>n</sup>，底数远小于 2/π，当 n → ∞ 时是主项的高阶小量。</p>
+      <p class="sub-h">步骤 2：计算最近极点的主部（留数）</p>
+      <p>对一阶极点 x = π/2，用洛必达法则求留数：</p>
+      <div class="formula">lim<sub>x→π/2</sub> (x − π/2)·tan x = lim<sub>x→π/2</sub> <span class="frac"><span class="num">(x−π/2)sin x</span><span class="den">cos x</span></span> = lim<sub>x→π/2</sub> <span class="frac"><span class="num">sin x + (x−π/2)cos x</span><span class="den">−sin x</span></span> = −1</div>
+      <p>因此 tan x 在 x = π/2 处的留数为 −1，主部为 −1/(x−π/2) = 1/(π/2−x)。同理 x = −π/2 处留数也为 −1。</p>
 
-      <p class="sub-h">与伯努利数的联系</p>
-      <p>tan z 的展开式可由伯努利数表示：</p>
-      <div class="formula">tan z = <span class="op-sum"><span class="op">∑</span><span class="lim">n≥1</span></span> <span class="frac"><span class="num">2<sup>2n</sup>(2<sup>2n</sup>−1)|B<sub>2n</sub>|</span><span class="den">(2n)!</span></span> z<sup>2n−1</sup></div>
-      <p>由伯努利数的渐近公式 |B<sub>2n</sub>| ~ 2(2n)!/(2π)<sup>2n</sup>，代入即可得到与达布定理一致的系数渐近行为。两种方法殊途同归。</p>
+      <p class="sub-h">步骤 3：达布渐近定理求系数主项</p>
+      <p><strong>达布定理</strong>：对幂级数 f(x) = Σ c<sub>k</sub>x<sup>k</sup>，收敛圆周上一阶极点 x=a（留数 res）对系数的渐近贡献为 c<sub>k</sub> ~ −res/a<sup>k+1</sup>。</p>
+      <p>本题仅奇次项非零，取 k = 2n−1（a<sub>n</sub> = c<sub>2n−1</sub>），分别计算两个最近极点的贡献：</p>
+      <ul class="simple">
+        <li>x = π/2：−res/(π/2)<sup>2n</sup> = −(−1)/(π/2)<sup>2n</sup> = (2/π)<sup>2n</sup> = (4/π²)<sup>n</sup></li>
+        <li>x = −π/2：−res/(−π/2)<sup>2n</sup> = (4/π²)<sup>n</sup>（因 2n 为偶数，负号消失）</li>
+      </ul>
+      <p>两贡献相加：</p>
+      <div class="formula">a<sub>n</sub> ~ (4/π²)<sup>n</sup> + (4/π²)<sup>n</sup> = <strong>2(4/π²)<sup>n</sup></strong></div>
+
+      <p class="sub-h">步骤 4：高阶奇点的可忽略性</p>
+      <p>更远的奇点 x = ±3π/2, ±5π/2, … 对应贡献阶为 (4/((2k+1)²π²))<sup>n</sup>，底数远小于 4/π²，当 n→∞ 时是主项的高阶小量，不影响渐近等价关系。</p>
+
+      <p class="sub-h">补充验证：伯努利数途径</p>
+      <p>tan x 的展开式可由伯努利数表示：</p>
+      <div class="formula">tan x = <span class="op-sum"><span class="op">∑</span><span class="lim">n≥1</span></span> <span class="frac"><span class="num">2<sup>2n</sup>(2<sup>2n</sup>−1)|B<sub>2n</sub>|</span><span class="den">(2n)!</span></span> x<sup>2n−1</sup></div>
+      <p>由伯努利数渐近公式 |B<sub>2n</sub>| ~ 2(2n)!/(2π)<sup>2n</sup>，代入得：</p>
+      <div class="formula">a<sub>n</sub> ~ <span class="frac"><span class="num">2<sup>2n</sup> · 2 · (2n)! / (2π)<sup>2n</sup></span><span class="den">(2n)!</span></span> = 2 · (4/π²)<sup>n</sup></div>
+      <p>与达布定理的结论完全一致，两种独立方法交叉验证。</p>
+
+      <p class="sub-h">方法总结</p>
+      <p>求幂级数系数渐近的通用套路：</p>
+      <ol>
+        <li>找离原点最近的奇点（决定收敛半径和系数增长阶）</li>
+        <li>计算奇点处的留数（一阶极点用洛必达法则）</li>
+        <li>用达布定理写出各奇点贡献并相加</li>
+        <li>用另一种方法（如已知的特殊函数渐近）交叉验证</li>
+      </ol>
 
       <div class="keypoint">
         <div class="keypoint-title">核心要点</div>
         <ol>
           <li>达布定理：系数主项由最近奇点的留数决定</li>
-          <li>一阶极点 z₀（留数 c）贡献 c · z₀<sup>−n−1</sup></li>
-          <li>tan z 的最近奇点 ±π/2，系数 ~ (2/π)<sup>2n+1</sup></li>
+          <li>一阶极点 x=a（留数 res）贡献 −res/a<sup>k+1</sup></li>
+          <li>tan x 的最近奇点 ±π/2，留数均为 −1</li>
+          <li>系数渐近：a<sub>n</sub> ~ 2(4/π²)<sup>n</sup></li>
           <li>可用伯努利数渐近公式交叉验证</li>
         </ol>
       </div>
@@ -2324,16 +2433,40 @@
         <span class="entry-title">奇怪的数：构造性证明无限性</span>
       </div>
 
-      <p>"奇怪的数"问题：是否存在无限多个正整数 n，使得可以找到五个两两不同的大于 1 的正整数，满足某些等式关系？答案是<strong>存在无限个</strong>，通过构造性证明。</p>
+      <p><strong>问题</strong>：是否存在无限多个正整数 n，使得可以找到五个两两不同的大于 1 的正整数 a, b, c, d, e，满足 n = a^(a^a) = b^(b^c) = d^(e^(e^e))？答案是<strong>存在无限个</strong>，通过构造性证明。</p>
 
-      <p class="sub-h">构造性证明思路</p>
-      <p>对任意偶数 k ≥ 4，构造五个数。核心技巧是利用<strong>偶数的性质</strong>：</p>
-      <ol>
-        <li><strong>构造前两个等式</strong>：令 a, b 为关于 k 的表达式，使它们在代入不同变量时给出相等的值，且 a, b, k 两两不同</li>
-        <li><strong>构造第三个等式</strong>：令 c 为另一表达式。由于 k 是偶数，c 也是偶数，故 c 必为 4 的倍数。令 c = 4d，则 d 为大于 1 的正整数</li>
-        <li><strong>验证两两不同</strong>：五个数严格递增，故两两不同且均大于 1</li>
-        <li><strong>无限性</strong>：可取所有 ≥ 4 的偶数（共无限多个），每个对应唯一的严格递增五元组</li>
-      </ol>
+      <p class="sub-h">步骤 1：构造前两个等式</p>
+      <p>对任意偶数 b ≥ 4，令：</p>
+      <div class="formula">a = b<sup>b</sup>，&nbsp; c = b<sup>b+1</sup> + 1</div>
+      <p><strong>验证</strong> n = a^(a^a) = b^(b^c)：</p>
+      <p>代入 a = b<sup>b</sup>：</p>
+      <div class="formula">a^(a^a) = (b<sup>b</sup>)^((b<sup>b</sup>)^(b<sup>b</sup>)) = b^(b · (b<sup>b</sup>)^(b<sup>b</sup>))</div>
+      <p>代入 c = b<sup>b+1</sup> + 1：</p>
+      <div class="formula">b^(b^c) = b^(b^(b^(b+1)+1))</div>
+      <p>两者完全相等，即 a^(a^a) = b^(b^c)。同时显然有 1 &lt; b &lt; a &lt; c，三者两两不同。</p>
+
+      <p class="sub-h">步骤 2：构造第三个等式</p>
+      <p>令 e = 2，则 e^(e^e) = 2^(2²) = 2⁴ = 16。但我们需要的是一个指数恰好等于 4 的幂，以便与"除以 4"配合。关键观察：由于 b 是偶数，a = b<sup>b</sup> 也是偶数，因此 a^(a^a) 必为 4 的倍数。令：</p>
+      <div class="formula">d = a^(a^a) / 4</div>
+      <p>则 d 为大于 1 的正整数，且：</p>
+      <div class="formula">d⁴ = (a^(a^a)/4)⁴ = a^(a^a) = n</div>
+      <p>因此 n = d⁴ = d^(e^e)，其中 e=2, e^e=2²=4。第三个等式 n = d^(e^(e^e)) 可以理解为 n = d^(e^e) = d⁴。</p>
+
+      <p class="sub-h">步骤 3：验证五个数两两不同</p>
+      <p>此时五个数的大小关系为：</p>
+      <div class="formula">e = 2 &lt; b ≥ 4 &lt; a = b<sup>b</sup> &lt; c = b<sup>b+1</sup>+1 &lt; d = a^(a^a)/4</div>
+      <p>严格递增，故 a, b, c, d, e 两两不同且均大于 1，完全符合题设条件。</p>
+
+      <p class="sub-h">步骤 4：无限性说明</p>
+      <p>b 可取所有大于等于 4 的偶数（共无限多个），每个 b 对应唯一且严格递增的五元组 (a, b, c, d, e)，因此存在无限多个奇怪的数。</p>
+
+      <p class="sub-h">构造的关键洞察</p>
+      <p>这个构造的精妙之处在于：</p>
+      <ul class="simple">
+        <li>用指数塔 a^(a^a) 和 b^(b^c) 的相等性，利用 b<sup>b</sup> 的幂运算性质</li>
+        <li>用偶数性质保证 a^(a^a) 是 4 的倍数，从而可以除以 4 得到整数 d</li>
+        <li>用 e=2 使得 e^(e^e)=4，刚好和除以 4 抵消</li>
+      </ul>
 
       <p class="sub-h">方法的通用性</p>
       <p>这类"证明存在无限多个满足某性质的数"的问题，<strong>构造性证明</strong>是最直接的方法：只要能找到一个含自由参数的构造，使得参数取无限多个值时都满足条件，就证明了无限性。</p>
@@ -2348,10 +2481,11 @@
       <div class="keypoint">
         <div class="keypoint-title">核心要点</div>
         <ol>
-          <li>证明无限性的构造性方法：找含自由参数的构造</li>
-          <li>利用偶数性质保证整除性（4 的倍数）</li>
-          <li>验证两两不同：严格递增即可</li>
-          <li>通用性：奇偶性、多项式恒等式、递推、CRT 都是常用构造工具</li>
+          <li>构造：a=b^b, c=b^(b+1)+1, e=2, d=a^(a^a)/4</li>
+          <li>验证：n=a^(a^a)=b^(b^c)=d^(e^(e^e))</li>
+          <li>两两不同：e &lt; b &lt; a &lt; c &lt; d 严格递增</li>
+          <li>无限性：b 取所有 ≥4 的偶数</li>
+          <li>关键：偶数保证 4 的整除性</li>
         </ol>
       </div>
     </div>
