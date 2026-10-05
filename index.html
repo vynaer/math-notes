@@ -191,7 +191,8 @@
   .entry-body .placeholder { color: var(--ink-light); opacity: 0.6; font-style: italic; font-size: 0.95rem; }
   .entry-body p { margin-bottom: 10px; }
   .entry-body p:last-child { margin-bottom: 0; }
-  .formula { margin: 14px 0; padding: 10px 16px; background: rgba(58,107,138,0.04); border-left: 3px solid var(--accent); font-family: "Cambria Math","Times New Roman",serif; font-size: 1.02rem; line-height: 2; overflow-x: auto; }
+  .formula { margin: 14px 0; padding: 10px 16px; background: rgba(58,107,138,0.04); border-left: 3px solid var(--accent); overflow-x: auto; }
+  .formula .katex { font-size: 1.05em; }
   .note { margin-top: 14px; padding: 10px 14px; background: var(--highlight); border-radius: 3px; font-size: 0.92rem; color: #6b5b3a; line-height: 1.8; }
   .note::before { content: "记"; display: inline-block; background: #c9a96a; color: white; font-size: 0.72rem; padding: 1px 7px; border-radius: 2px; margin-right: 8px; vertical-align: middle; letter-spacing: 0.1em; }
   .sub-h { font-weight: 600; color: var(--accent); margin-top: 16px; margin-bottom: 6px; font-size: 0.98rem; letter-spacing: 0.05em; }
@@ -810,52 +811,52 @@
         <span class="entry-title">有序整数分拆（Composition）</span>
       </div>
       <div class="entry-body">
-        <p>将正整数 n 拆为若干正整数的和，顺序不同视为不同分拆。记 a<sub>n</sub> 为总数。</p>
-        <p class="sub-h">① 用 1 ~ m 分拆</p>
+        <p>将正整数 n 拆为若干正整数的有序之和，顺序不同视为不同分拆。例如 n=3 有 4 种：1+1+1、1+2、2+1、3。</p>
+
+        <div class="keypoint" style="border-color:var(--accent);">
+          <div class="keypoint-title">核心结论</div>
+          <div style="text-align:center;font-size:1.3rem;margin:8px 0;">
+            $$\text{有序整数分拆数} = 2^{\,n-1}$$
+          </div>
+          <p style="margin:0;">将 n 写成 n 个 1 排成一排：<code>1 1 1 … 1</code>，中间有 n−1 个空隙。每个空隙可"切"或"不切"，共 $2^{n-1}$ 种选择，每种对应一种分拆。</p>
+        </div>
+
+        <p class="sub-h">分成 k 部分的数目</p>
+        <p>若恰好分成 k 个正整数之和，需在 n−1 个空隙中选 k−1 个切开：</p>
+        <div class="formula">$$\binom{n-1}{k-1}$$</div>
+        <p>对 k 求和即得总数：$\sum_{k=1}^{n} \binom{n-1}{k-1} = 2^{n-1}$。</p>
+
+        <p class="sub-h">例子：n=4</p>
         <ul class="simple">
-          <li>n ≤ m：a<sub>n</sub> = a<sub>n−1</sub> + … + a<sub>1</sub> + 1</li>
-          <li>n &gt; m：a<sub>n</sub> = a<sub>n−1</sub> + … + a<sub>n−m</sub></li>
+          <li>k=1：4 → 1 种</li>
+          <li>k=2：1+3, 2+2, 3+1 → 3 种 = C(3,1)</li>
+          <li>k=3：1+1+2, 1+2+1, 2+1+1 → 3 种 = C(3,2)</li>
+          <li>k=4：1+1+1+1 → 1 种</li>
+          <li>合计：1+3+3+1 = 8 = 2³ ✓</li>
         </ul>
-        <p>m = 2 时退化为斐波那契递推。隔板法直接给出无限制时共 2<sup>n−1</sup> 种。</p>
-        <p class="sub-h">② 通项（特征方程法）</p>
-        <p>以 m=2 为例：λ<sup>2</sup> = λ + 1，解得 λ<sub>1</sub> = (1+√5)/2, λ<sub>2</sub> = (1−√5)/2，</p>
-        <div class="formula">$$a_n = \frac{1}{\sqrt{5}} \cdot \left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right]$$</div>
-        <div class="note">递推法和特征方程法给出了更一般的框架——当各部分大小有限制时，这套方法依然适用。</div>
-
-        <p class="sub-h">Composition vs Partition：顺序是否重要</p>
-        <p>有序分拆（Composition）与无序分拆（Partition）的核心区别在于<strong>顺序是否计入</strong>：</p>
-        <ul class="simple">
-          <li><strong>Composition（有序）</strong>：1+2 和 2+1 是两种不同分拆。n=3 的 composition 有 4 种：1+1+1, 1+2, 2+1, 3</li>
-          <li><strong>Partition（无序）</strong>：1+2 和 2+1 视为同一种。n=3 的 partition 有 3 种：3, 2+1, 1+1+1</li>
-        </ul>
-        <p>Composition 总数是 2<sup>n−1</sup>，Partition 总数 p(n) 增长更慢但没有简单闭式（渐近 p(n) ~ e<sup>π√(2n/3)</sup>/(4n√3)，由 Hardy-Ramanujan 给出）。</p>
-
-        <p class="sub-h">隔板法的直观理解</p>
-        <p>把 n 写成 n 个 1 排成一排：1 1 1 … 1（共 n 个）。中间有 n−1 个空隙。在每个空隙可以选择"切"或"不切"，共 2<sup>n−1</sup> 种选择，每种选择对应一种 composition。例如 n=4：空隙 1__1__1__1，在第 1、3 个空隙切 → 1 | 1 1 | 1 → 1+2+1。</p>
-
-        <p class="sub-h">生成函数</p>
-        <p>composition 的生成函数极其简洁。由于每部分是正整数，且顺序重要，生成函数为：</p>
-        <div class="formula">$$C(x) = \frac{1}{1 - (x + x^2 + x^3 + \cdots)} = \frac{1}{1 - x/(1-x)} = \frac{1-x}{1-2x}$$</div>
-        <p>展开得 C(x) = 1 + x + 2x<sup>2</sup> + 4x<sup>3</sup> + 8x<sup>4</sup> + …，系数 2<sup>n−1</sup> 正是 composition 数。若限制每部分 ≤ m，生成函数变为 1/(1 − x(1−x<sup>m</sup>)/(1−x))，对应前面的递推关系。</p>
 
         <p class="sub-h">有限制的 composition</p>
-        <p><strong>限制每部分 ≤ m</strong>：递推 a<sub>n</sub> = a<sub>n−1</sub> + a<sub>n−2</sub> + … + a<sub>n−m</sub>（n > m），特征方程 λ<sup>m</sup> = λ<sup>m−1</sup> + λ<sup>m−2</sup> + … + 1。m=2 时退化为斐波那契，m→∞ 时退化为 2<sup>n−1</sup>。</p>
-        <p><strong>限制每部分为奇数</strong>：生成函数 1/(1 − (x + x<sup>3</sup> + x<sup>5</sup> + …)) = 1/(1 − x/(1−x<sup>2</sup>))，解得递推 a<sub>n</sub> = a<sub>n−1</sub> + a<sub>n−2</sub>，又是斐波那契！</p>
-        <p><strong>限制每部分为素数</strong>：生成函数 1/(1 − ∑<sub>p prime</sub> x<sup>p</sup>)，与哥德巴赫猜想相关——每个偶数能否写成两个素数之和，等价于素数 composition 的计数问题。</p>
+        <p><strong>限制每部分 ≤ m</strong>：递推 $a_n = a_{n-1} + a_{n-2} + \cdots + a_{n-m}$（n > m）。m=2 时退化为斐波那契数列；m→∞ 时退化为 $2^{n-1}$。</p>
+        <p><strong>限制每部分为奇数</strong>：生成函数 $1/(1 - (x + x^3 + x^5 + \cdots))$，解得递推 $a_n = a_{n-1} + a_{n-2}$，又是斐波那契！</p>
+        <p><strong>限制每部分为素数</strong>：生成函数 $1/(1 - \sum_{p} x^p)$，与哥德巴赫猜想相关。</p>
+
+        <p class="sub-h">m=2 时的通项（斐波那契）</p>
+        <p>限制每部分 ≤ 2 时，$a_n = a_{n-1} + a_{n-2}$，特征方程 $\lambda^2 = \lambda + 1$，解得 $\lambda_1 = \frac{1+\sqrt{5}}{2},\ \lambda_2 = \frac{1-\sqrt{5}}{2}$，</p>
+        <div class="formula">$$a_n = \frac{1}{\sqrt{5}} \left[ \left(\frac{1+\sqrt{5}}{2}\right)^{\!n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{\!n+1} \right]$$</div>
+
+        <p class="sub-h">Composition vs Partition：顺序是否重要</p>
+        <ul class="simple">
+          <li><strong>Composition（有序）</strong>：1+2 和 2+1 是不同分拆。总数 $2^{n-1}$</li>
+          <li><strong>Partition（无序）</strong>：1+2 和 2+1 视为同一种。总数 p(n) 无简单闭式，渐近 $p(n) \sim \frac{e^{\pi\sqrt{2n/3}}}{4n\sqrt{3}}$（Hardy–Ramanujan）</li>
+        </ul>
+
+        <p class="sub-h">生成函数</p>
+        <div class="formula">$$C(x) = \frac{1}{1 - (x + x^2 + x^3 + \cdots)} = \frac{1-x}{1-2x} = 1 + x + 2x^2 + 4x^3 + 8x^4 + \cdots$$</div>
+        <p>系数 $2^{n-1}$ 正是 composition 数。限制每部分 ≤ m 时，生成函数变为 $\frac{1}{1 - x(1-x^m)/(1-x)}$。</p>
 
         <p class="sub-h">应用：概率与随机过程</p>
-        <p>composition 在概率论中自然出现。若 X<sub>1</sub>, X<sub>2</sub>, … 独立同分布取正整数值，则 P(X<sub>1</sub> + … + X<sub>k</sub> = n) 是将 n 分成 k 部分的某种加权 composition 数。几何分布的更新过程、骰子点数和的分布都与此相关。</p>
-        <p>例如：掷骰子直到点数和 ≥ 100，最后一次掷出的点数期望是多少？这个经典问题的答案是 7/2 ≈ 3.5，与直觉相反（不是 3），其分析用到了 composition 的对称性。</p>
-
-        <div class="keypoint">
-          <div class="keypoint-title">速查</div>
-          <ol>
-            <li>无限制 composition 数：2<sup>n−1</sup></li>
-            <li>分成 k 部分：C(n−1, k−1)（隔板法）</li>
-            <li>每部分 ≤ m：递推 a<sub>n</sub> = Σ<sub>i=1</sub><sup>m</sup> a<sub>n−i</sub></li>
-            <li>生成函数：1/(1 − Σ<sub>允许值</sub> x<sup>d</sup>)</li>
-          </ol>
-        </div>
+        <p>若 $X_1, X_2, \ldots$ 独立同分布取正整数值，则 $P(X_1+\cdots+X_k = n)$ 是将 n 分成 k 部分的某种加权 composition 数。</p>
+        <p>经典问题：掷骰子直到点数和 ≥ 100，最后一次掷出点数的期望是 $7/2 \approx 3.5$（不是直觉的 3），分析用到 composition 的对称性。</p>
       </div>
     </div>
 
