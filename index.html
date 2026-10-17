@@ -378,6 +378,10 @@
       <a href="#def-10" class="nav-item" data-title="赋范可除代数与维数定理">赋范可除代数与维数定理</a>
       <a href="#def-11" class="nav-item" data-title="正多胞体与高维欧拉公式">正多胞体与高维欧拉公式</a>
       <a href="#def-12" class="nav-item" data-title="EML 算子（Exp-Minus-Log）">EML 算子</a>
+      <a href="#def-13" class="nav-item" data-title="取模运算向有理数、实数域的扩展">取模的域扩张</a>
+      <a href="#def-14" class="nav-item" data-title="素元：为什么 Q、R、C 没有素数">素元：为什么域没有素数</a>
+      <a href="#def-15" class="nav-item" data-title="有理数的素指数分解与幂塔">有理数的素指数分解</a>
+      <a href="#def-16" class="nav-item" data-title="算术导数（数论导数）">算术导数（数论导数）</a>
     </div>
     <div class="nav-group">
       <span class="nav-group-title">定理</span>
@@ -391,6 +395,9 @@
       <a href="#thm-8" class="nav-item" data-title="多项式定理">多项式定理</a>
       <a href="#thm-9" class="nav-item" data-title="斐波那契数列中的完全幂（Bugeaud–Mignotte–Siksek 定理）">斐波那契数列中的完全幂</a>
       <a href="#thm-10" class="nav-item" data-title="Theisinger 定理与 Kűrschák 定理（调和数非整数）">调和数非整数定理</a>
+      <a href="#thm-11" class="nav-item" data-title="牛顿恒等式与对称多项式基本定理">牛顿恒等式与对称多项式</a>
+      <a href="#thm-12" class="nav-item" data-title="卷积与组合数（范德蒙德卷积）">卷积与组合数（范德蒙德）</a>
+      <a href="#thm-13" class="nav-item" data-title="抛物线纯滚动与悬链线">抛物线纯滚动与悬链线</a>
     </div>
     <div class="nav-group">
       <span class="nav-group-title">趣题</span>
@@ -398,6 +405,7 @@
       <a href="#puzzle-2" class="nav-item" data-title="雾中船问题（Bellman 失海问题）">雾中船问题（Bellman 失海问题）</a>
       <a href="#puzzle-3" class="nav-item" data-title="湖心逃生问题（追击者速度4倍）">湖心逃生问题</a>
       <a href="#puzzle-4" class="nav-item" data-title="灯的翻转操作次数问题">灯的翻转操作次数问题</a>
+      <a href="#puzzle-5" class="nav-item" data-title="Inaba 硬币谜题（不交单位圆覆盖点集）">Inaba 硬币谜题</a>
     </div>
     <div class="nav-group">
       <span class="nav-group-title">经验</span>
@@ -1388,6 +1396,375 @@
       <div class="note">EML 算子是"极简主义"在数学中的极致体现：一个算子 + 常数 1 = 全部初等函数。它与 NAND 门（一个逻辑门 = 全部布尔运算）形成完美的离散-连续类比。虽然工程上不能直接用，但它揭示了初等函数体系的最小生成元，类似于群论中的生成元概念。</div>
     </div>
 
+    <!-- 013：取模运算向有理数、实数域的扩展 -->
+    <div class="entry" id="def-13">
+      <div class="entry-header">
+        <span class="entry-date">013 · 代数 / 数论</span>
+        <span class="entry-title">取模运算向有理数、实数域的扩展</span>
+      </div>
+      <div class="entry-body">
+        <p>整数取模：对整数 $a$ 与 $m>0$，$a\bmod m$ 是唯一整数 $r$，使</p>
+        <div class="formula">$$a = q\cdot m + r,\qquad 0\le r &lt; m$$</div>
+        <p>核心约束只有两条：<strong>商 $q\in\mathbb Z$</strong>、<strong>余数落在 $[0,m)$</strong>。把这两条分别松弛到有理数域、实数域，会得到两种截然不同的结果，也正好分清"作为函数"与"作为数论结构"的区别。</p>
+
+        <p class="sub-h">一、实数取模（浮点模）</p>
+        <p>对实数 $x$ 与 $m>0$，定义</p>
+        <div class="formula">$$x\bmod m = x - m\left\lfloor \frac{x}{m}\right\rfloor$$</div>
+        <p>其中 $\lfloor\cdot\rfloor$ 为下取整。输出仍满足 $0\le (x\bmod m) &lt; m$。例如</p>
+        <ul class="simple">
+          <li>$5.3\bmod 2 = 5.3-2\lfloor 2.65\rfloor = 5.3-4 = 1.3$</li>
+          <li>$-1.2\bmod 2 = -1.2-2\lfloor -0.6\rfloor = -1.2+2 = 0.8$</li>
+        </ul>
+        <p>这正是编程语言里 <code>fmod</code> 的数学原型（注意：C 的 <code>fmod</code> 向 0 截断，与"向下取整"版本不同，会对 $-1.2\bmod 2$ 给出 $-1.2$）。</p>
+        <p><strong>结论</strong>：实数域<strong>可以定义取模函数</strong>，但它已不再是数论工具，而成了分析 / 周期函数工具——本质是把实数轴"卷成"周长 $m$ 的圆周，$x\bmod m$ 就是 $x$ 在圆周上的落点。周期函数 $\sin$ 就等价于先做模 $2\pi$ 再取正弦。</p>
+        <p>但实数模<strong>丢掉了全部数论性质</strong>：$\mathbb R$ 是域，对非零 $m$ 有理想 $(m)=\mathbb R$，于是商环 $\mathbb R/m\mathbb R=\{0\}$ 是平凡环，得不到剩余类环那种代数结构。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- 数轴 -->
+            <line x1="30" y1="152" x2="272" y2="152" stroke="#333" stroke-width="1.5"/>
+            <polygon points="280,152 268,147 268,157" fill="#333"/>
+            <line x1="50" y1="146" x2="50" y2="158" stroke="#333"/>
+            <text x="50" y="174" text-anchor="middle" font-size="10" fill="#666">0</text>
+            <line x1="110" y1="146" x2="110" y2="158" stroke="#333"/>
+            <text x="110" y="174" text-anchor="middle" font-size="10" fill="#666">m</text>
+            <line x1="170" y1="146" x2="170" y2="158" stroke="#333"/>
+            <text x="170" y="174" text-anchor="middle" font-size="10" fill="#666">2m</text>
+            <line x1="230" y1="146" x2="230" y2="158" stroke="#333"/>
+            <text x="230" y="174" text-anchor="middle" font-size="10" fill="#666">3m</text>
+            <rect x="50" y="152" width="60" height="7" fill="rgba(58,107,138,0.22)"/>
+            <text x="80" y="138" text-anchor="middle" font-size="9" fill="#3a6b8a">区间 [0, m)</text>
+            <!-- 卷绕虚线 -->
+            <path d="M 110 146 Q 155 96 200 78" fill="none" stroke="#b45050" stroke-width="1.2" stroke-dasharray="4,3"/>
+            <path d="M 170 146 Q 190 108 205 92" fill="none" stroke="#b45050" stroke-width="1.2" stroke-dasharray="4,3"/>
+            <path d="M 230 146 Q 224 114 210 100" fill="none" stroke="#b45050" stroke-width="1.2" stroke-dasharray="4,3"/>
+            <!-- 圆周 -->
+            <circle cx="332" cy="86" r="52" fill="none" stroke="#3a6b8a" stroke-width="1.6"/>
+            <circle cx="358" cy="46" r="3.5" fill="#b45050"/>
+            <text x="310" y="42" font-size="10" fill="#b45050">r = x mod m</text>
+            <text x="332" y="152" text-anchor="middle" font-size="10" fill="#666">周长 = m 的圆</text>
+            <text x="332" y="168" text-anchor="middle" font-size="9" fill="#9a9a9a">相差整数倍 m 的数叠在同一点</text>
+          </svg>
+          <div class="figure-caption">实数取模的几何图像：把数轴按周期 $m$ 卷成圆，$x\bmod m$ 就是 $x$ 在圆上的落点。</div>
+        </div>
+
+        <p class="sub-h">二、有理数域 $\mathbb Q$ 的两层情况</p>
+        <p><strong>① 直接借用实数取模函数</strong>：对 $a=\dfrac{p}{q}$、$m=\dfrac{s}{t}>0$，用同一个公式</p>
+        <div class="formula">$$a\bmod m = a - m\left\lfloor\frac{a}{m}\right\rfloor$$</div>
+        <p>结果仍是有理数。例：$\dfrac{7}{3}\bmod\dfrac{2}{3}=\dfrac13$。但这只是"作为函数"可用，不是同余。</p>
+        <p><strong>② 数论同余的推广</strong>：整数同余 $a\equiv b\pmod m$ 即 $m\mid(a-b)$。对有理数 $a,b$ 仍可定义</p>
+        <div class="formula">$$a\equiv b\pmod m \iff \frac{a-b}{m}\in\mathbb Z$$</div>
+        <p>例：$\dfrac12\equiv\dfrac52\pmod 2$，因为 $\dfrac{\frac52-\frac12}{2}=1\in\mathbb Z$。</p>
+        <p>然而这一步立刻退化：任意非零 $m\in\mathbb Q$ 都有 $m\mathbb Q=\mathbb Q$（每个有理数都是 $m$ 的整数倍），于是所有有理数互相模 $m$ 同余，<strong>只剩一个剩余类</strong>。整个 $\mathbb Q$ 上的"模 m"在代数上没有意义。</p>
+
+        <p class="sub-h">三、补救：限制到子环，或映射到有限域</p>
+        <ul class="simple">
+          <li><strong>分母受限子环</strong> $\mathbb Z\!\left[\tfrac1n\right]=\left\{\dfrac{a}{n^k}\mid a\in\mathbb Z,\ k\ge0\right\}$：分母只含素因子 $n$ 的有理数，可构造非平凡的同余与剩余类。</li>
+          <li><strong>p-进整数</strong> $\mathbb Z_p$：包含 $\mathbb Z$ 并容纳一部分有理数（分母不被 $p$ 整除者），可做模 $p^k$，是数论中处理"分数模素数"的标准框架。</li>
+          <li><strong>有限域 $\mathbb F_p$ 里算分数 = 乘逆元</strong>：在 $\mathbb F_7$ 里 "$\frac13$" 即 $3^{-1}=5$，因为 $3\cdot5\equiv1\pmod7$。注意这不是在 $\mathbb Q$ 上运算，而是把有理数映射进 $\mathbb F_p$（丢掉分母被 $p$ 整除的分数）。</li>
+        </ul>
+
+        <p class="sub-h">四、总结对比</p>
+        <table class="data">
+          <thead><tr><th>对象</th><th>能否定义"取模函数"</th><th>是否有非平凡商环 / 剩余类</th></tr></thead>
+          <tbody>
+            <tr><td>$\mathbb Z$</td><td>✅</td><td>✅ &nbsp;$\mathbb Z/m\mathbb Z$</td></tr>
+            <tr><td>$\mathbb Q$</td><td>✅（作为函数）</td><td>❌ 全体退化；仅 $\mathbb Z[1/n],\ \mathbb Z_p$ 等子环有意义</td></tr>
+            <tr><td>$\mathbb R$</td><td>✅（fmod、周期折叠）</td><td>❌ 环论商平凡，只是一个周期函数</td></tr>
+          </tbody>
+        </table>
+
+        <div class="keypoint">
+          <div class="keypoint-title">关键结论</div>
+          <ol>
+            <li><strong>作为函数</strong>：取模可无损扩展到 $\mathbb Q,\mathbb R$，公式都是 $x-m\lfloor x/m\rfloor$，物理与计算机大量使用。</li>
+            <li><strong>作为数论结构</strong>：不能套到整个 $\mathbb Q,\mathbb R$，会全部退化；想要数论性质必须限制到子环（p-进整数、分母受限有理数）或映射到有限域。</li>
+            <li>通俗理解：整数模 $m$ 是"把整数切成一块块大小为 $m$ 的块"；有理数 / 实数里整块可以无限缩放，代数上分不出多个等价类。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 014：素元：为什么 Q、R、C 没有素数 -->
+    <div class="entry" id="def-14">
+      <div class="entry-header">
+        <span class="entry-date">014 · 代数 / 环论</span>
+        <span class="entry-title">素元与"素数"：为什么 $\mathbb Q$、$\mathbb R$、$\mathbb C$ 没有素数</span>
+      </div>
+      <div class="entry-body">
+        <p>先重申定义：<strong>素元（不可约元）是"环"上的概念，不是"数"本身的性质</strong>。整数环 $\mathbb Z$ 中，非零、非单位（$\pm1$）的元素 $p$，若 $p=ab$ 只能推出 $a$ 或 $b$ 是单位，就称 $p$ 为素元。<strong>离开环谈素数没有意义。</strong></p>
+
+        <p class="sub-h">一、实数域 $\mathbb R$：没有素元</p>
+        <p>域的定义是每个非零元都有乘法逆元。任取 $a\neq0$，都有 $a=\sqrt a\cdot\sqrt a$，而 $\sqrt a\in\mathbb R$。域里<strong>所有非零元都是单位</strong>，于是"非单位"这个前提直接失效，不存在素元（没有实数版本的质数）。</p>
+        <p>任何正实数都能无限分解：$6=2\times3=\sqrt2\times\sqrt2\times\sqrt3\times\sqrt3$，分解不唯一，不存在"不能再拆"的基石。实数乘法结构太"滑"，到处可以开方。</p>
+
+        <p class="sub-h">二、复数域 $\mathbb C$：域本身无素元，但子环有</p>
+        <p>$\mathbb C$ 同样是域，任意非零复数都有逆元，<strong>$\mathbb C$ 本身没有素元</strong>。但极易混淆的是<strong>高斯整数环</strong></p>
+        <div class="formula">$$\mathbb Z[i]=\{a+bi\mid a,b\in\mathbb Z\}$$</div>
+        <p>这不是复数域 $\mathbb C$，而是复平面里的一个<strong>离散子环</strong>。$\mathbb Z[i]$ 是整环，单位是 $\{\pm1,\pm i\}$，这里真的有一套"高斯素数"：</p>
+        <ul class="simple">
+          <li>$1+i$ 是高斯素数（$N(1+i)=2$）；</li>
+          <li>整数素数中模 $4$ 余 $3$ 的（$3,7,11,\dots$）在 $\mathbb Z[i]$ 中<strong>仍是素数</strong>；</li>
+          <li>模 $4$ 余 $1$ 的（$5,13,\dots$）以及 $2$ 会分解：$2=(1+i)(1-i)$，$5=(2+i)(2-i)$。</li>
+        </ul>
+        <p><strong>重点区分</strong>：$\mathbb C$（全体复数）是域、无素元；$\mathbb Z[i]$（高斯整数，只是复数的一部分）是环、有高斯素数。很多人把"高斯素数"说成"复数的素数"，其实它只是<strong>复平面里一个离散子环的素元</strong>。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
+            <!-- 网格 -->
+            <g stroke="#e6e3dc" stroke-width="1">
+              <line x1="35" y1="20" x2="35" y2="320"/>
+              <line x1="80" y1="20" x2="80" y2="320"/>
+              <line x1="125" y1="20" x2="125" y2="320"/>
+              <line x1="170" y1="20" x2="170" y2="320"/>
+              <line x1="215" y1="20" x2="215" y2="320"/>
+              <line x1="260" y1="20" x2="260" y2="320"/>
+              <line x1="305" y1="20" x2="305" y2="320"/>
+              <line x1="35" y1="35" x2="350" y2="35"/>
+              <line x1="35" y1="80" x2="350" y2="80"/>
+              <line x1="35" y1="125" x2="350" y2="125"/>
+              <line x1="35" y1="170" x2="350" y2="170"/>
+              <line x1="35" y1="215" x2="350" y2="215"/>
+              <line x1="35" y1="260" x2="350" y2="260"/>
+              <line x1="35" y1="305" x2="350" y2="305"/>
+            </g>
+            <!-- 坐标轴 -->
+            <line x1="20" y1="170" x2="368" y2="170" stroke="#333" stroke-width="1.4"/>
+            <line x1="170" y1="14" x2="170" y2="326" stroke="#333" stroke-width="1.4"/>
+            <text x="372" y="174" font-size="10" fill="#333">Re</text>
+            <text x="176" y="14" font-size="10" fill="#333">Im</text>
+            <!-- 单位 -->
+            <circle cx="215" cy="170" r="3" fill="#c9a96a"/>
+            <circle cx="125" cy="170" r="3" fill="#c9a96a"/>
+            <circle cx="170" cy="125" r="3" fill="#c9a96a"/>
+            <circle cx="170" cy="215" r="3" fill="#c9a96a"/>
+            <!-- 可分解（蓝） -->
+            <circle cx="260" cy="170" r="3" fill="#3a6b8a"/>
+            <circle cx="260" cy="125" r="3" fill="#3a6b8a"/>
+            <circle cx="260" cy="215" r="3" fill="#3a6b8a"/>
+            <circle cx="170" cy="80" r="3" fill="#3a6b8a"/>
+            <!-- 高斯素数（红） -->
+            <circle cx="215" cy="125" r="3.5" fill="#b45050"/>
+            <circle cx="215" cy="215" r="3.5" fill="#b45050"/>
+            <!-- 仍素（绿） -->
+            <circle cx="305" cy="170" r="3.5" fill="#6a8b3a"/>
+            <circle cx="170" cy="35" r="3.5" fill="#6a8b3a"/>
+            <!-- 标注 -->
+            <text x="222" y="120" font-size="10" fill="#b45050">1+i</text>
+            <text x="266" y="166" font-size="10" fill="#3a6b8a">2=(1+i)(1−i)</text>
+            <text x="308" y="166" font-size="10" fill="#6a8b3a">3</text>
+            <text x="120" y="186" font-size="10" fill="#c9a96a">单位 ±1,±i</text>
+            <text x="20" y="322" font-size="9.5" fill="#666">红=高斯素数　蓝=可分解（如 2、5）　绿=模 4 余 3 的整数素数</text>
+          </svg>
+          <div class="figure-caption">高斯整数 $\mathbb Z[i]$ 的格点：红点为高斯素数，蓝点可分解，绿点为"仍素"的整数素数。$\mathbb Z[i]$ 嵌在复平面里，但只是一部分复数。</div>
+        </div>
+
+        <p class="sub-h">三、为什么域不可能有素元</p>
+        <p>素元要求 $p=ab\Rightarrow a$ 单位或 $b$ 单位。在域中随便取 $p\neq0$，写 $p=p\cdot1$，而 $p$ 本身就是单位——所有非零元天然是单位，定义条件直接失效。</p>
+        <p>除此之外，尚有别的"复子环"同样有素元：<strong>艾森斯坦整数</strong> $\mathbb Z[\omega]$（$\omega=e^{2\pi i/3}$）、以及更一般的<strong>代数整数环</strong> $\mathcal O_{\mathbb C}$（所有首一整系数多项式的根构成的环）。它们都是嵌在复平面里的<strong>离散代数整数环</strong>，不是整个 $\mathbb C$。</p>
+
+        <p class="sub-h">四、关键逻辑对比</p>
+        <table class="data">
+          <thead><tr><th>集合</th><th>类型</th><th>单位（可逆元）</th><th>是否存在素元</th></tr></thead>
+          <tbody>
+            <tr><td>$\mathbb Z$</td><td>整环</td><td>$\pm1$</td><td>✅ 普通素数</td></tr>
+            <tr><td>$\mathbb Q$</td><td>域</td><td>全部非零有理数</td><td>❌</td></tr>
+            <tr><td>$\mathbb R$</td><td>域</td><td>全部非零实数</td><td>❌</td></tr>
+            <tr><td>$\mathbb C$</td><td>域</td><td>全部非零复数</td><td>❌</td></tr>
+            <tr><td>$\mathbb Z[i]$（高斯整数）</td><td>整环</td><td>$\pm1,\pm i$</td><td>✅ 高斯素数</td></tr>
+          </tbody>
+        </table>
+
+        <div class="note">整数好比一堆乐高积木，素数是不可拆分的最小积木；域（实数、复数）好比一团橡皮泥，随便一块都能切成两块更小的，没有最小基本块。我们常听说的"复素数"，几乎全部指高斯整数 / 代数整数环里的素元，<strong>不是全体复数</strong>。</div>
+
+        <div class="keypoint">
+          <div class="keypoint-title">思考题</div>
+          <ol>
+            <li>$\mathbb Q[\sqrt2]=\{a+b\sqrt2\mid a,b\in\mathbb Q\}$ 是域，有没有素元？（没有——它是域。）</li>
+            <li>其子环 $\mathbb Z[\sqrt2]=\{a+b\sqrt2\mid a,b\in\mathbb Z\}$ 是不是整环？有没有素元？（是整环；这是二次数域 $\mathbb Q(\sqrt2)$ 的整数环，有素元。）</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 015：有理数的素指数分解、幂塔与唯一性 -->
+    <div class="entry" id="def-15">
+      <div class="entry-header">
+        <span class="entry-date">015 · 数论 / 代数</span>
+        <span class="entry-title">有理数的素指数分解：唯一性、幂塔与代数结构</span>
+      </div>
+      <div class="entry-body">
+        <p>$\mathbb Q$ 是域、没有素元（见上一条）。但我们日常仍天天用整数素数去分解有理数，这两件事必须分清：<strong>有理数的分解是"借用母环 $\mathbb Z$ 的素数 + 允许负指数"，而不是在 $\mathbb Q$ 内部诞生了新素数。</strong></p>
+
+        <p class="sub-h">一、有理数的标准分解</p>
+        <p>任意非零有理数写成既约分数 $r=\dfrac{a}{b}$（$b>0,\ \gcd(a,b)=1$），把分子分母各自做整数素分解并合并：</p>
+        <div class="formula">$$r=\pm\prod_{p\ \text{素数}} p^{\,e_p},\qquad e_p=\alpha_p-\beta_p\in\mathbb Z,\ \text{仅有限个}e_p\neq0$$</div>
+        <p>例：$\dfrac{12}{35}=2^2\cdot3^1\cdot5^{-1}\cdot7^{-1}$，$\dfrac78=7^1\cdot2^{-3}$，$-18=-2^1\cdot3^2$。分解<strong>唯一</strong>，这正是"分子分母分开拆质数"的操作。</p>
+
+        <p class="sub-h">二、为什么它仍不算"$\mathbb Q$ 的素元"</p>
+        <p>拿 $2$ 来看，$2\in\mathbb Q$ 有逆元 $\dfrac12$，本身就是单位，故不能当"不可约元"。在环论视角，$2=\dfrac12\times4$ 的两个因子在 $\mathbb Q$ 里都可逆，等价于乘 1 的变体，不算真正分解。对比 $\mathbb Z$：$\mathbb Z$ 的单位只有 $\pm1$，$2=\dfrac12\times4$ 在整数环里根本不合法（$\frac12\notin\mathbb Z$）。</p>
+
+        <p class="sub-h">三、指数向量视角：$\mathbb Q^\times$ 的结构</p>
+        <p>每个非零有理数对应一个"无穷维整数向量"（只有有限分量非零），外加符号 $\pm1$；乘法对应向量加法：</p>
+        <div class="formula">$$\mathbb Q^\times_{>0}\cong\bigoplus_{p}\mathbb Z,\qquad \mathbb Q^\times\cong\{\pm1\}\oplus\bigoplus_{p}\mathbb Z$$</div>
+        <p>每个素数配一根独立整数坐标轴。这是<strong>群的直和分解</strong>，不是环的不可约元分解。整数只需指数 $\ge0$；有理数允许指数为负，相当于既能"乘素数"也能"除以素数"。</p>
+
+        <p class="sub-h">四、把指数放宽会发生什么？</p>
+        <ul class="simple">
+          <li><strong>放宽到分数指数（根号）</strong>：$\sqrt2=2^{1/2}$。看上去仅是指数从 $\mathbb Z$ 拓到 $\mathbb Q$，但<strong>唯一性立刻崩溃</strong>：$2^{1/2}=4^{1/4}$，$\sqrt2=8^{1/3}\cdot2^{1/6}$，"某个素数的指数是几"不再良定义。</li>
+          <li><strong>放宽到实数指数</strong>：任意正实数都能写成 $x=2^{\,t}$（$t\in\mathbb R$），<strong>只需一个底数</strong>就能表达全部正实数。素数之间通过实数对数互相换算，不再独立：$(\log_2 3)\ln2-1\cdot\ln3=0$。</li>
+        </ul>
+
+        <p class="sub-h">五、收紧：只用素底 + 有理指数（集合 $K$）</p>
+        <p>若限定底数只能取整数素数、指数取有理数、只有有限个非零，得到集合</p>
+        <div class="formula">$$K=\left\{\prod_{p}p^{\,r_p}\ \Big|\ r_p\in\mathbb Q,\ \text{有限非零}\right\}$$</div>
+        <p><strong>唯一分解仍然成立</strong>：因不同素数的对数 $\{\ln p\}$ 在 $\mathbb Q$ 上线性无关（兰伯特定理），若 $\sum d_p\ln p=0$ 且 $d_p\in\mathbb Q$，则所有 $d_p=0$。于是 $\prod p^{r_p}=\prod p^{r'_p}\Rightarrow r_p=r'_p$。</p>
+        <p>但代价是：<strong>$K$ 不是域</strong>。它对乘法封闭，对加法不封闭——例如 $\sqrt2+\sqrt[4]2\in K$（$\sqrt2+\sqrt[4]2=2^{1/2}+2^{1/4}$ 无法写成有限个素数有理次幂之积）。它只是嵌在 $\mathbb R$ 里的一个乘法子幺半群，乘法群是 $\bigoplus_p\mathbb Q$。</p>
+
+        <p class="sub-h">六、用幂塔替代分数指数？</p>
+        <p>有人想把 $2^{1/3}$ 写成 $2^{3^{-1}}$（用整数求逆代替分数线）。形式上的确相等：$2^{1/3}=2^{3^{-1}}$。但要注意</p>
+        <ul class="simple">
+          <li>$3^{-1}$ 处在<strong>指数位置</strong>，它本身就代表有理数 $\dfrac13$，只是换了一套记号，<strong>并没有消除有理数</strong>；</li>
+          <li>幂塔是右结合：$a^{b^c}=a^{(b^c)}$，且 $2^{3^{-1}}\neq(2^3)^{-1}$（前者 $=\sqrt[3]2$，后者 $=\frac18$）；</li>
+          <li>$\sqrt[3]2$ <strong>不能写成全部由整数构成的有限幂塔</strong>：整数的整数次幂要么是整数、要么是单位分数，$2^{1/3}$ 两者都不是。</li>
+        </ul>
+        <p>所以幂塔改写不会改变集合 $K$，只是换书写外壳（如同把 $\frac25$ 写成 $2\cdot5^{-1}$，你没有回到整数环）。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- 左侧：指数格 -->
+            <line x1="40" y1="150" x2="200" y2="150" stroke="#333" stroke-width="1.4"/>
+            <line x1="40" y1="150" x2="40" y2="60" stroke="#333" stroke-width="1.4"/>
+            <text x="204" y="154" font-size="10" fill="#666">v₂ 坐标</text>
+            <text x="30" y="58" font-size="10" fill="#666" text-anchor="end">v₃</text>
+            <g fill="#3a6b8a">
+              <circle cx="40" cy="150" r="2.4"/><circle cx="75" cy="150" r="2.4"/><circle cx="110" cy="150" r="2.4"/><circle cx="145" cy="150" r="2.4"/><circle cx="180" cy="150" r="2.4"/>
+              <circle cx="40" cy="115" r="2.4"/><circle cx="75" cy="115" r="2.4"/><circle cx="110" cy="115" r="2.4"/><circle cx="145" cy="115" r="2.4"/><circle cx="180" cy="115" r="2.4"/>
+              <circle cx="40" cy="80" r="2.4"/><circle cx="75" cy="80" r="2.4"/><circle cx="110" cy="80" r="2.4"/><circle cx="145" cy="80" r="2.4"/><circle cx="180" cy="80" r="2.4"/>
+            </g>
+            <text x="120" y="192" text-anchor="middle" font-size="9.5" fill="#3a6b8a">ℝˣ = 素数方向上的无穷维离散格</text>
+            <!-- 折叠箭头 -->
+            <text x="253" y="108" text-anchor="middle" font-size="10" fill="#b45050">折叠</text>
+            <path d="M 205 115 L 300 115" stroke="#b45050" stroke-width="1.3" fill="none"/>
+            <polygon points="306,115 296,111 296,119" fill="#b45050"/>
+            <!-- 右侧：连续直线 -->
+            <line x1="315" y1="115" x2="470" y2="115" stroke="#6a8b3a" stroke-width="1.8"/>
+            <g stroke="#6a8b3a" stroke-width="1">
+              <line x1="330" y1="110" x2="330" y2="120"/><line x1="360" y1="110" x2="360" y2="120"/>
+              <line x1="390" y1="110" x2="390" y2="120"/><line x1="420" y1="110" x2="420" y2="120"/><line x1="450" y1="110" x2="450" y2="120"/>
+            </g>
+            <text x="392" y="90" text-anchor="middle" font-size="9.5" fill="#6a8b3a">ℝ⁺：一维连续，只有一个自由度</text>
+            <text x="392" y="140" text-anchor="middle" font-size="9" fill="#9a9a9a">3 = 2^(log₂3)，素数不再独立</text>
+          </svg>
+          <div class="figure-caption">$\mathbb Q^\times_{>0}\cong\bigoplus_p\mathbb Z$ 是离散无穷维格（每个素数一根整数轴）；$\mathbb R^+_{>0}\cong(\mathbb R,+)$ 被压扁成一维连续直线，素数丧失独立地位。</div>
+        </div>
+
+        <p class="sub-h">七、链条总结</p>
+        <table class="data">
+          <thead><tr><th>集合</th><th>形式</th><th>指数</th><th>唯一分解</th><th>是否是域（加法封闭）</th></tr></thead>
+          <tbody>
+            <tr><td>正有理数 $\mathbb Q_{>0}^\times$</td><td>$\prod p^{e_p}$</td><td>$e_p\in\mathbb Z$</td><td>✅</td><td>✅</td></tr>
+            <tr><td>根式集合 $K$</td><td>$\prod p^{r_p}$</td><td>$r_p\in\mathbb Q$</td><td>✅</td><td>❌ 加法不封闭</td></tr>
+            <tr><td>正实数 $\mathbb R^+$</td><td>$\prod p^{t_p}$（或 $2^{t}$）</td><td>$t_p\in\mathbb R$</td><td>❌ 完全丧失</td><td>✅</td></tr>
+          </tbody>
+        </table>
+        <p>$\mathbb R$ 里还有<strong>超越数</strong>（$\pi,e$）根本写不成素数的任何次幂乘积，甚至不少代数数（如 $\cos\frac{2\pi}{7}$）也不行。想得到完整实数域，要么牺牲唯一性，要么牺牲加法封闭——二者不可兼得。</p>
+
+        <div class="note">补充：$\mathbb Q$ 上漂亮的素幂分解，本质来自 $\mathbb Q$ 拥有一族独立的 <strong>p-进赋值</strong> $v_p$；这套赋值<strong>不能连续扩张到全部实数域</strong>。这也解释了为什么"依赖素因子"的概念难以搬到实数。</div>
+      </div>
+    </div>
+
+    <!-- 016：算术导数（数论导数） -->
+    <div class="entry" id="def-16">
+      <div class="entry-header">
+        <span class="entry-date">016 · 数论 / 算术微积分</span>
+        <span class="entry-title">算术导数（数论导数 Arithmetic Derivative）</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>算术导数</strong>（也叫数论导数）是把微积分里的"求导"搬到整数素因子结构上的构造，历史已超过 100 年，被称作 "arithmetic calculus（算术微积分）"。</p>
+
+        <p class="sub-h">一、公理定义</p>
+        <ol>
+          <li><strong>素数公理</strong>：对任意素数 $p$，$p'=1$；</li>
+          <li><strong>莱布尼茨法则</strong>：对任意正整数 $n,m$，$(n\cdot m)'=n'\cdot m+n\cdot m'$。</li>
+        </ol>
+        <p>由此可推出全部性质：幂法则 $(p^k)'=k\,p^{k-1}$（与求导形式一模一样）、单位元导数 $1'=0$、商法则</p>
+        <div class="formula">$$\left(\frac{n}{m}\right)'=\frac{n'm-nm'}{m^2}$$</div>
+        <p><strong>结论</strong>：算术导数可完美扩展到全体正有理数 $\mathbb Q^+$，用商法则即可，良定义、无歧义。例：$\left(\dfrac12\right)'=\dfrac{0\cdot2-1\cdot1}{2^2}=-\dfrac14$。这与"有理数 = 素数带正负指数分解"完全对应：算术导数本质是对每个素因子的指数求导再乘回去。</p>
+
+        <p class="sub-h">二、算几个例子</p>
+        <ul class="simple">
+          <li>$6=(2\cdot3)'=2'\cdot3+2\cdot3'=3+2=5$，故 $6'=5$，$6''=5'=1$，$6'''=1'=0$；</li>
+          <li>$12=(2^2\cdot3)'=(2^2)'\cdot3+4\cdot3'=4\cdot3+4\cdot1=16$；</li>
+          <li>$30=(2\cdot3\cdot5)'=1\cdot15+2\cdot5+6\cdot1=15+10+6=31$（$30$ 的导数是素数 $31$！）；</li>
+          <li>$81=(3^4)'=4\cdot3^3=108$。</li>
+        </ul>
+
+        <p class="sub-h">三、迭代导数与一个著名猜想</p>
+        <p>反复求导 $n,n',n'',n'''\dots$。<strong>猜想：对任意正整数，反复求导最终要么跌到 $0$，要么趋向无穷</strong>。例 $6\to5\to1\to0$。这个猜想<strong>至今未被证明</strong>，是算术导数方向最著名的开放问题之一。</p>
+
+        <p class="sub-h">四、算术微分方程</p>
+        <ul class="simple">
+          <li>$x'=0$：正整数解恰为 $1$（无平方因子数的导数为 $0$ 当且仅当 $n=1$）；</li>
+          <li>$x'=1$：<strong>正整数解恰好是全体素数</strong>！这是算术导数里非常漂亮的对偶——"导数为 1"刻画了素数。但有理数上会出现额外解，很有意思；</li>
+          <li>$x'=x$：正整数解只有 $x=0$；对比微积分 $\frac{\mathrm d}{\mathrm dx}e^x=e^x$，形式模仿、代数行为完全不同。</li>
+        </ul>
+
+        <div class="figure">
+          <svg viewBox="0 0 440 250" xmlns="http://www.w3.org/2000/svg">
+            <!-- 坐标轴 -->
+            <line x1="40" y1="215" x2="420" y2="215" stroke="#333" stroke-width="1.4"/>
+            <line x1="40" y1="20" x2="40" y2="215" stroke="#333" stroke-width="1.4"/>
+            <text x="424" y="219" font-size="10" fill="#333">n</text>
+            <text x="44" y="16" font-size="10" fill="#333">n′</text>
+            <line x1="40" y1="170" x2="420" y2="170" stroke="#e6e3dc" stroke-width="1"/>
+            <line x1="130" y1="20" x2="130" y2="215" stroke="#e6e3dc" stroke-width="1"/>
+            <line x1="220" y1="20" x2="220" y2="215" stroke="#e6e3dc" stroke-width="1"/>
+            <line x1="310" y1="20" x2="310" y2="215" stroke="#e6e3dc" stroke-width="1"/>
+            <text x="34" y="174" font-size="9" fill="#9a9a9a" text-anchor="end">40</text>
+            <text x="34" y="24" font-size="9" fill="#9a9a9a" text-anchor="end">80</text>
+            <!-- 素数所在水平线 -->
+            <line x1="40" y1="212.8" x2="420" y2="212.8" stroke="rgba(180,80,80,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+            <!-- 数据点 -->
+            <g fill="#3a6b8a">
+              <circle cx="50" cy="215" r="2.4"/><circle cx="60" cy="212.8" r="2.4"/><circle cx="70" cy="212.8" r="2.4"/><circle cx="80" cy="206" r="2.4"/><circle cx="90" cy="212.8" r="2.4"/><circle cx="100" cy="203.8" r="2.4"/><circle cx="110" cy="212.8" r="2.4"/><circle cx="120" cy="188" r="2.4"/><circle cx="130" cy="201.5" r="2.4"/><circle cx="140" cy="199.3" r="2.4"/><circle cx="150" cy="212.8" r="2.4"/><circle cx="160" cy="179" r="2.4"/><circle cx="170" cy="212.8" r="2.4"/><circle cx="180" cy="194.8" r="2.4"/><circle cx="190" cy="197" r="2.4"/><circle cx="200" cy="143" r="2.4"/><circle cx="210" cy="212.8" r="2.4"/><circle cx="220" cy="167.8" r="2.4"/><circle cx="230" cy="212.8" r="2.4"/><circle cx="240" cy="161" r="2.4"/><circle cx="250" cy="192.5" r="2.4"/><circle cx="260" cy="185.8" r="2.4"/><circle cx="270" cy="212.8" r="2.4"/><circle cx="280" cy="116" r="2.4"/><circle cx="290" cy="192.5" r="2.4"/><circle cx="300" cy="181.3" r="2.4"/><circle cx="310" cy="154.3" r="2.4"/><circle cx="320" cy="143" r="2.4"/><circle cx="330" cy="212.8" r="2.4"/><circle cx="340" cy="145.3" r="2.4"/><circle cx="350" cy="212.8" r="2.4"/><circle cx="360" cy="35" r="2.4"/><circle cx="370" cy="183.5" r="2.4"/><circle cx="380" cy="172.3" r="2.4"/><circle cx="390" cy="188" r="2.4"/><circle cx="400" cy="80" r="2.4"/>
+            </g>
+            <text x="368" y="30" font-size="9.5" fill="#3a6b8a">32′=80</text>
+            <text x="60" y="206" font-size="9" fill="#b45050">素数：n′=1</text>
+          </svg>
+          <div class="figure-caption">$n$ 与 $n'$ 的散点图（$n=1\dots36$）。所有素数都落在 $n'=1$ 的虚线上；合数因分解结构不同而高度起伏，与 $n$ 的大小、远近毫无关系。</div>
+        </div>
+
+        <p class="sub-h">五、能不能用有理逼近定义 $\pi'$？（不能）</p>
+        <p>不要用定义无理数幂的方式类推。$a^\pi$ 是用 $a^3,a^{3.1},a^{3.14},\dots$ 逼近取极限，于是有人想用 $3',3.1',3.14',\dots$ 逼近 $\pi'$。这条路走不通：</p>
+        <ul class="simple">
+          <li>十进制逼近 $\pi$ 的算术导数<strong>不收敛</strong>：$3'=1$，$3.1'=-2.07$，$3.14'\approx-2.806$，$3.141'\approx-4.49$，$3.1415'\approx-8.17$，绝对值越来越大；</li>
+          <li>更极端的反例：取梅森素数 $p_m=2^m-1$，令 $r_m=\dfrac{2^m}{2^m-1}\to1$，但 $r_m'\approx\dfrac m2\to+\infty$。而 $1'=0$。同一个实数可以找到逼近序列让导数趋于 $0$、趋于 $\infty$，极限不唯一。</li>
+        </ul>
+        <p><strong>本质原因</strong>：$a^x$ 依赖实数的度量/序结构（两数越近，幂越近），所以有理逼近有唯一极限；而算术导数<strong>完全依赖素因子代数结构</strong>，与"大小远近"无关。数轴上几乎重合的两个数（如 $1$ 与 $\frac{2^m}{2^m-1}$）素因子结构可以天差地别。十进制分母 $10^n=2^n5^n$ 的导数随 $n$ 快速增长，把整个分数的导数带跑，永不收敛。</p>
+
+        <p class="sub-h">六、研究现状与地位</p>
+        <div class="formula">$$\text{历史：1911 Shelly 提出 → 1950 Putnam 竞赛 → 1961 Barbeau 系统整理 → 2003 Ufnarovski \& Ahlander 里程碑论文}$$</div>
+        <ul class="simple">
+          <li>它不是数论下的一级大分支，而是<strong>一个小众专题</strong>，更像模仿微分的"玩具模型"，用来窥探整数素因子结构；</li>
+          <li>OEIS 序列 <strong>A003415</strong> 专门记录 $n'$，有大量计算实验；</li>
+          <li>Ufnarovski 的论文把<strong>哥德巴赫猜想、孪生素数猜想</strong>改写为算术导数的命题——注意只是等价改写，<strong>并没有完成证明</strong>，没把难题变简单；</li>
+          <li>推广方向：偏算术导数（只对某个素因子求导）、高斯整数环 / 代数数域上的算术导数、p-进域上的算术导数；非唯一分解环上往往定义不出来。</li>
+        </ul>
+
+        <table class="data">
+          <thead><tr><th>集合 / 环</th><th>算术导数是否良定义</th></tr></thead>
+          <tbody>
+            <tr><td>$\mathbb Q$（有理数）</td><td>✅ 完美良定义（商法则成立），这是最舒服的地盘</td></tr>
+            <tr><td>$\mathbb R,\mathbb C$</td><td>❌ 无自然、公认定义；朴素有理逼近根本不收敛</td></tr>
+            <tr><td>$\mathbb Z[i]$ 等唯一分解整环</td><td>✅ 可照搬公理；非唯一分解环会出矛盾</td></tr>
+          </tbody>
+        </table>
+
+        <div class="note">把这几条串起来看：素数、素因子分解是整数环的<strong>离散结构</strong>；实数域没有天然的素元分解。所以一切基于素因子的概念（算术导数、同余类、素元）都<strong>不能自然地、连续地扩展到全体实数</strong>——这正是本条目与上面三条共同的"主旋律"。</div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ====== 定理 ====== -->
@@ -2102,6 +2479,311 @@
       </div>
     </div>
 
+    <!-- 011：牛顿恒等式与对称多项式基本定理 -->
+    <div class="entry" id="thm-11">
+      <div class="entry-header">
+        <span class="entry-date">011 · 代数 / 对称多项式</span>
+        <span class="entry-title">牛顿恒等式与对称多项式基本定理</span>
+      </div>
+      <div class="entry-body">
+        <p>从一道题说起：已知四个数 $a,b,c,d$ 的幂和 $S_k=a^k+b^k+c^k+d^k$ 满足</p>
+        <div class="formula">$$S_1=1,\qquad S_2=2,\qquad S_3=3,\qquad S_4=4$$</div>
+        <p>求 $S_6$。这类"已知低次幂和、反求高次幂和"的问题，标准工具是<strong>牛顿恒等式</strong>（Newton's identities，牛顿‑韦达公式）；背后的理论保证是<strong>对称多项式基本定理</strong>。两者必须一起理解，否则只会背公式。</p>
+
+        <p class="sub-h">一、两类核心对象</p>
+        <p><strong>幂和</strong>（power sum）：每个变量取 $k$ 次方后求和</p>
+        <div class="formula">$$p_k=x_1^k+x_2^k+\cdots+x_n^k$$</div>
+        <p><strong>初等对称多项式</strong>（elementary symmetric polynomial）：所有 $k$ 元乘积之和</p>
+        <div class="formula">$$e_0=1,\quad e_1=\sum_{i=1}^n x_i,\quad e_2=\sum_{1\le i&lt;j\le n}x_ix_j,\quad e_3=\sum_{1\le i&lt;j&lt;k\le n}x_ix_jx_k,\quad \dots,\quad e_n=x_1x_2\cdots x_n$$</div>
+        <p>所谓<strong>对称多项式</strong>，是把变量 $x_1,\dots,x_n$ 任意置换后多项式不变的式子。例：$x_1^2+x_2^2+x_3^2$ 是对称的；$x_1^2+x_2$ 不对称——交换 $x_1,x_2$ 式子就变。</p>
+
+        <p class="sub-h">二、对称多项式基本定理（存在 + 唯一）</p>
+        <p><strong>定理</strong>：任意 $n$ 元对称多项式 $f(x_1,\dots,x_n)$，都能<strong>唯一</strong>地写成初等对称多项式 $e_1,\dots,e_n$ 的多项式</p>
+        <div class="formula">$$f(x_1,\dots,x_n)=F(e_1,e_2,\dots,e_n)$$</div>
+        <p>其中 $F$ 是普通多项式，系数与 $f$ 同源。通俗理解：$e_1,\dots,e_n$ 是对称多项式世界的一组<strong>基底（坐标系）</strong>，任何对称式都能由它们加减乘得到，而且表达方式唯一。例</p>
+        <div class="formula">$$x_1^2+x_2^2+x_3^2=(x_1+x_2+x_3)^2-2(x_1x_2+x_1x_3+x_2x_3)=e_1^2-2e_2$$</div>
+        <p><strong>为什么"唯一"？</strong>由韦达定理，$e_1,\dots,e_n$ 恰是首一多项式 $P(t)=\prod_{i=1}^n(t-x_i)=t^n-e_1t^{n-1}+e_2t^{n-2}-\cdots+(-1)^ne_n$ 的（带符号）系数。给定 $(e_1,\dots,e_n)$ 就唯一确定这个多项式；而对称多项式只关心"根的全体"、不关心根的次序，所以它只能表达成 $e_i$ 的函数。反例：$x_1^2+x_2$ 不对称，就无法只用 $e_1,e_2$ 写出。这就是<strong>韦达定理往高阶对称式子的推广</strong>。</p>
+
+        <p class="sub-h">三、牛顿恒等式（牛顿公式）</p>
+        <p>幂和 $p_k$ 本身是对称多项式，按基本定理一定能写成 $e_i$ 的多项式；<strong>牛顿恒等式给出的正是这个显式递推</strong>。分 $k\le n$ 与 $k>n$ 两种情形（$n$ 为变量个数，系数 $+,-,+,-$ 交替）：</p>
+        <div class="formula">$$p_k-e_1p_{k-1}+e_2p_{k-2}-\cdots+(-1)^{k-1}e_{k-1}p_1+(-1)^k\,k\,e_k=0\qquad(1\le k\le n)$$</div>
+        <div class="formula">$$p_k-e_1p_{k-1}+e_2p_{k-2}-\cdots+(-1)^n e_n\,p_{k-n}=0\qquad(k>n)$$</div>
+        <p><strong>最关键的一点</strong>：$k>n$ 时公式<strong>不带系数项</strong>（没有 $(\pm)k\,e_k$），直接终止于 $(-1)^n e_n p_{k-n}$，是一个干净的线性递推。很多人抄公式时把系数项也带进去，直接算错。</p>
+
+        <p class="sub-h">四、公式从哪里来</p>
+        <p><strong>（1）$k>n$：韦达 + 特征方程。</strong>每个根 $x_i$ 都满足它自己的特征多项式（把韦达系数代回）</p>
+        <div class="formula">$$x_i^n-e_1x_i^{n-1}+e_2x_i^{n-2}-\cdots+(-1)^ne_n=0$$</div>
+        <p>两边乘 $x_i^{k-n}$ 后对所有 $i$ 求和：左边 $=\sum_i x_i^k=p_k$，右边 $=e_1p_{k-1}-e_2p_{k-2}+\cdots$，即得 $k>n$ 的公式。</p>
+        <p><strong>（2）$k\le n$：生成函数 / 对数求导。</strong>此时 $x_i^k$ 不满足 $n$ 次约束，需借助生成函数。令</p>
+        <div class="formula">$$P(t)=\sum_{k\ge1}p_k t^k,\qquad E(t)=\prod_{i=1}^n(1+x_it)=\sum_{k=0}^n e_k t^k$$</div>
+        <p>对 $\log E(t)=\sum_i\log(1+x_it)$ 求导得 $\dfrac{t\,E'(t)}{E(t)}=\sum_{k\ge1}(-1)^{k+1}p_k t^k$，展开比较 $t$ 的同次幂系数，即可补上 $k\le n$ 时多出的 $(-1)^k\,k\,e_k$ 项，从而得到完整的牛顿恒等式。</p>
+
+        <p class="sub-h">五、小例：$n=3$ 与 $n=2$</p>
+        <ul class="simple">
+          <li>$k=1$：$p_1=e_1$；</li>
+          <li>$k=2$：$p_2=e_1p_1-2e_2=e_1^2-2e_2$（正是平方和公式）；</li>
+          <li>$k=3$：$p_3=e_1p_2-e_2p_1+3e_3$；</li>
+          <li>$k=4&gt;n$：$p_4=e_1p_3-e_2p_2+e_3p_1$（末尾<strong>没有</strong>系数项）。</li>
+        </ul>
+        <p>取 $n=2$，$x_1=1,x_2=2$：$e_1=3,e_2=2$。递推得 $p_2=3^2-2\cdot2=5$、$p_3=3\cdot5-2\cdot3=9$，与直接计算 $1+4=5$、$1+8=9$ 完全一致。</p>
+
+        <p class="sub-h">六、实战：由 $S_1\sim S_4$ 反求 $S_6$</p>
+        <p>把 $a,b,c,d$ 看作 4 个根，记 $\sigma_k=e_k$。先由 $S_1\sim S_4$ 反解出 $\sigma_1\sim\sigma_4$（$k\le n$，带系数）：</p>
+        <ul class="simple">
+          <li>$S_1-\sigma_1=0\Rightarrow \sigma_1=S_1=1$；</li>
+          <li>$S_2-\sigma_1S_1+2\sigma_2=0\Rightarrow 2-1+2\sigma_2=0\Rightarrow \sigma_2=-\tfrac12$；</li>
+          <li>$S_3-\sigma_1S_2+\sigma_2S_1-3\sigma_3=0\Rightarrow 3-2-\tfrac12=3\sigma_3\Rightarrow \sigma_3=\tfrac16$；</li>
+          <li>$S_4-\sigma_1S_3+\sigma_2S_2-\sigma_3S_1+4\sigma_4=0\Rightarrow 4-3-1-\tfrac16+4\sigma_4=0\Rightarrow \sigma_4=\tfrac1{24}$。</li>
+        </ul>
+        <p>对 $k&gt;4$ 进入无系数递推：</p>
+        <div class="formula">$$S_k=\sigma_1S_{k-1}-\sigma_2S_{k-2}+\sigma_3S_{k-3}-\sigma_4S_{k-4}=S_{k-1}+\tfrac12 S_{k-2}+\tfrac16 S_{k-3}-\tfrac1{24}S_{k-4}$$</div>
+        <p>于是</p>
+        <div class="formula">$$S_5=S_4+\tfrac12S_3+\tfrac16S_2-\tfrac1{24}S_1=4+\tfrac32+\tfrac13-\tfrac1{24}=\frac{139}{24}$$</div>
+        <div class="formula">$$S_6=S_5+\tfrac12S_4+\tfrac16S_3-\tfrac1{24}S_2=\frac{139}{24}+2+\tfrac12-\tfrac1{12}=\frac{197}{24}$$</div>
+        <p>改用 $\sigma$ 直接验算 $S_6$：$S_6=\sigma_1S_5-\sigma_2S_4+\sigma_3S_3-\sigma_4S_2=1\cdot\frac{139}{24}+\tfrac12\cdot4+\tfrac16\cdot3-\tfrac1{24}\cdot2=\frac{139+48+12-2}{24}=\frac{197}{24}$，与递推完全一致。</p>
+
+        <div class="note">网上（含部分视频讲解）有时把 $S_6$ 写成 $\frac{209}{24}$，这是移项时的算术笔误。用<strong>牛顿递推</strong>与下面的<strong>六次幂和恒等式</strong>两条独立路线复核，结果都是 $S_6=\dfrac{197}{24}$。这也是"牛顿递推优于硬展开对称多项式"的一个直接例子。</div>
+
+        <p class="sub-h">七、另一条路：幂和乘积方程</p>
+        <p>幂和之间也存在固定整数系数的恒等式（本质仍是同一套对称多项式理论）。例如五次齐次关系</p>
+        <div class="formula">$$S_1^5+20S_1^2S_3+15S_1S_2^2+24S_5=10S_1^3S_2+30S_1S_4+20S_2S_3$$</div>
+        <p>代入数值解得 $24S_5=139\Rightarrow S_5=\frac{139}{24}$，与牛顿递推吻合。六次关系项更多：</p>
+        <div class="formula">$$S_1^6+40S_1^3S_3+45S_1^2S_2^2+144S_1S_5+90S_2S_4+40S_3^2=15S_1^4S_2+90S_1^2S_4+120S_1S_2S_3+15S_2^3+120S_6$$</div>
+        <p>代入 $S_1\sim S_5$ 得 $120S_6=985\Rightarrow S_6=\frac{197}{24}$，再次印证。这类"幂和乘积方程"理论正确，但项多、系数繁，手算极易出错；<strong>牛顿递推才是稳健的主路</strong>。</p>
+
+        <p class="sub-h">八、链式关系：韦达 → 初等对称 → 基本定理 → 牛顿</p>
+        <ul class="simple">
+          <li><strong>韦达定理（0 阶）</strong>：多项式系数 ⇔ 根的初等对称多项式 $e_1,\dots,e_n$；</li>
+          <li><strong>对称多项式基本定理</strong>：一切根的对称表达式都逃不出 $e_1,\dots,e_n$ 的组合（存在 + 唯一），但<strong>只保证"能做到"，不给算法</strong>；</li>
+          <li><strong>牛顿恒等式</strong>：专门处理幂和 $p_k=\sum x_i^k$ 这一大类对称多项式，给出 $p\leftrightarrow e$ 的<strong>双向</strong>显式递推。</li>
+        </ul>
+        <p>牛顿恒等式也可反解，把 $e_k$ 用 $p_1,\dots,p_k$ 表示：</p>
+        <div class="formula">$$e_1=p_1,\qquad e_2=\tfrac12\bigl(p_1^2-p_2\bigr),\qquad e_3=\tfrac16\bigl(p_1^3-3p_1p_2+2p_3\bigr)$$</div>
+        <p>可见 $\{p_1,\dots,p_n\}$ 与 $\{e_1,\dots,e_n\}$ 都是对称多项式的一组生成元，牛顿恒等式充当两者之间的"坐标变换矩阵"。</p>
+
+        <table class="data">
+          <thead><tr><th>对象</th><th>定义</th><th>角色</th><th>与对方的关系</th></tr></thead>
+          <tbody>
+            <tr><td>初等对称 $e_k$</td><td>$\sum_{i_1&lt;\cdots&lt;i_k}x_{i_1}\cdots x_{i_k}$</td><td>韦达系数、多项式根理论天然基底</td><td>基本定理的"坐标系"</td></tr>
+            <tr><td>幂和 $p_k$</td><td>$\sum_i x_i^k$</td><td>另一组生成元</td><td>经牛顿恒等式与 $e_k$ 互换</td></tr>
+          </tbody>
+        </table>
+
+        <div class="figure">
+          <svg viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="26" width="160" height="52" rx="6" fill="rgba(58,107,138,0.08)" stroke="#3a6b8a"/>
+            <text x="110" y="50" text-anchor="middle" font-size="13" fill="#2c2c2c">幂和 p_k</text>
+            <text x="110" y="68" text-anchor="middle" font-size="11" fill="#6b6b6b">Σ xᵢᵏ</text>
+            <rect x="290" y="26" width="160" height="52" rx="6" fill="rgba(106,139,58,0.12)" stroke="#6a8b3a"/>
+            <text x="370" y="50" text-anchor="middle" font-size="13" fill="#2c2c2c">初等对称 e_k</text>
+            <text x="370" y="68" text-anchor="middle" font-size="11" fill="#6b6b6b">韦达系数</text>
+            <line x1="196" y1="52" x2="284" y2="52" stroke="#b45050" stroke-width="1.4"/>
+            <polygon points="290,52 280,48 280,56" fill="#b45050"/>
+            <polygon points="190,52 200,48 200,56" fill="#b45050"/>
+            <text x="240" y="42" text-anchor="middle" font-size="10.5" fill="#b45050">牛顿恒等式</text>
+            <text x="240" y="74" text-anchor="middle" font-size="9" fill="#9a9a9a">双向换算 p ↔ e</text>
+            <rect x="140" y="168" width="200" height="52" rx="6" fill="rgba(201,169,106,0.16)" stroke="#c9a96a"/>
+            <text x="240" y="192" text-anchor="middle" font-size="12.5" fill="#2c2c2c">一切对称多项式 f</text>
+            <text x="240" y="210" text-anchor="middle" font-size="11" fill="#6b6b6b">= F(e₁,…,eₙ)</text>
+            <line x1="366" y1="78" x2="300" y2="166" stroke="#6a8b3a" stroke-width="1.3"/>
+            <polygon points="300,168 296,158 306,160" fill="#6a8b3a"/>
+            <text x="398" y="128" text-anchor="middle" font-size="10" fill="#6a8b3a">基本定理</text>
+            <text x="398" y="142" text-anchor="middle" font-size="9" fill="#9a9a9a">存在 + 唯一</text>
+            <line x1="114" y1="78" x2="180" y2="166" stroke="#3a6b8a" stroke-width="1.3"/>
+            <polygon points="180,168 184,158 174,160" fill="#3a6b8a"/>
+            <text x="86" y="128" text-anchor="middle" font-size="10" fill="#3a6b8a">p_k 是特例</text>
+            <text x="240" y="242" text-anchor="middle" font-size="9.5" fill="#9a9a9a">幂和被基本定理"包住"，牛顿恒等式把它显式解出</text>
+          </svg>
+          <div class="figure-caption">结构图：初等对称多项式 $e_k$（韦达系数）是一切对称式 $f=F(e_1,\dots,e_n)$ 的基底；幂和 $p_k$ 是其中的特例，牛顿恒等式在 $p$ 与 $e$ 之间给出双向显式换算。</div>
+        </div>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>对称多项式基本定理：任意对称式 $=$ 唯一 $F(e_1,\dots,e_n)$（存在 + 唯一，但不给算法）。</li>
+            <li>牛顿恒等式：$k\le n$ 带系数 $(-1)^k k e_k$；$k&gt;n$ 是<strong>无系数</strong>线性递推——最容易抄错的一条。</li>
+            <li>来源：$k&gt;n$ 由"根满足特征方程 + 求和"；$k\le n$ 需生成函数 / 对数求导 $\dfrac{tE'}{E}=\sum(-1)^{k+1}p_kt^k$。</li>
+            <li>牛顿恒等式可反解，实现幂和 $\{p_k\}$ 与初等对称 $\{e_k\}$ 的双向换算。</li>
+            <li>链条：韦达（0 阶）→ 基本定理（推广到一切对称式）→ 牛顿恒等式（专治幂和）。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 012：卷积与组合数：范德蒙德卷积 -->
+    <div class="entry" id="thm-12">
+      <div class="entry-header">
+        <span class="entry-date">012 · 组合 / 生成函数</span>
+        <span class="entry-title">卷积与组合数：范德蒙德卷积</span>
+      </div>
+      <div class="entry-body">
+        <p>一个常见的笔误是把</p>
+        <div class="formula">$$\binom{n}{0}\binom{n}{n}+\binom{n}{1}\binom{n}{n-1}+\cdots+\binom{n}{n}\binom{n}{0}=4^n$$</div>
+        <p>当成恒等式。它<strong>是错的</strong>：左边其实是<strong>范德蒙德卷积</strong>，等于 $\dbinom{2n}{n}$，而不是 $4^n$。真正等于 $4^n$ 的是"两组合数之和相乘"：$\Bigl(\sum_k\binom nk\Bigr)^2=(2^n)^2=4^n$。这两个式子极易混淆。</p>
+
+        <p class="sub-h">一、范德蒙德卷积（Vandermonde）</p>
+        <p>通用形式（$m,n$ 任意非负整数）：</p>
+        <div class="formula">$$\binom{m+n}{t}=\sum_{k=0}^{t}\binom{m}{k}\binom{n}{t-k}$$</div>
+        <p>取 $m=n$、$t=n$：</p>
+        <div class="formula">$$\binom{2n}{n}=\sum_{k=0}^{n}\binom{n}{k}\binom{n}{n-k}$$</div>
+        <p>又因组合数对称性 $\binom{n}{n-k}=\binom{n}{k}$，也可写成<strong>平方和</strong>形式：</p>
+        <div class="formula">$$\sum_{k=0}^{n}\binom{n}{k}^{2}=\binom{2n}{n}$$</div>
+
+        <p class="sub-h">二、两条极易混淆的公式</p>
+        <table class="data">
+          <thead><tr><th>式子</th><th>含义</th><th>结果</th></tr></thead>
+          <tbody>
+            <tr><td>$\displaystyle\sum_{k=0}^{n}\binom nk\binom n{n-k}$</td><td>配对乘积再求和（卷积）</td><td>$\dbinom{2n}{n}$</td></tr>
+            <tr><td>$\displaystyle\Bigl(\sum_{k=0}^{n}\binom nk\Bigr)\Bigl(\sum_{k=0}^{n}\binom nk\Bigr)$</td><td>两个完整和式<strong>直接相乘</strong></td><td>$2^n\cdot2^n=4^n$</td></tr>
+          </tbody>
+        </table>
+        <p>区别在于：卷积是"凑出固定下标和 $k$，把 $i+(k-i)$ 的配对相乘再相加"；而平方是把两个和<strong>整体</strong>相乘，含 $n^2$ 个交叉项，远多于卷积的 $n+1$ 项。</p>
+
+        <p class="sub-h">三、证明（生成函数，一行搞定）</p>
+        <p>由 $(1+x)^n(1+x)^n=(1+x)^{2n}$，比较两边 $x^n$ 的系数：</p>
+        <ul class="simple">
+          <li>右边 $(1+x)^{2n}$ 中 $x^n$ 系数为 $\binom{2n}{n}$；</li>
+          <li>左边展开后，$x^n$ 的系数恰是 $\sum_k\binom nk\binom n{n-k}$（$\binom nk x^k$ 配 $\binom n{n-k}x^{n-k}$）。</li>
+        </ul>
+        <p>左右系数相等，即得范德蒙德卷积。</p>
+
+        <p class="sub-h">四、什么是"卷积"</p>
+        <p><strong>函数卷积（微积分 / 信号）</strong>：固定总和 $t$，遍历所有分法 $\tau+(t-\tau)=t$ 配对相乘再累加（积分是连续版的求和）</p>
+        <div class="formula">$$(f*g)(t)=\int_{-\infty}^{+\infty}f(\tau)\,g(t-\tau)\,\mathrm d\tau$$</div>
+        <p><strong>离散卷积（组合 / 数列）</strong>：把积分换成求和、连续变量换成离散下标，思想完全一样</p>
+        <div class="formula">$$(a*b)_k=\sum_i a_i\,b_{k-i}$$</div>
+        <p>关键桥梁：<strong>多项式相乘 ⇔ 系数做离散卷积</strong>。</p>
+        <div class="formula">$$\Bigl(\sum_i a_ix^i\Bigr)\Bigl(\sum_j b_jx^j\Bigr)=\sum_k\Bigl(\sum_i a_i b_{k-i}\Bigr)x^k$$</div>
+        <p>把 $a,b$ 取成二项式系数 $\binom nk$，母函数就是 $(1+x)^n$，于是"多项式乘法"直接给出范德蒙德卷积。</p>
+
+        <p class="sub-h">五、组合直观解释（不靠代数）</p>
+        <p>$\binom{2n}{n}$：从 $2n$ 个人里选出 $n$ 个。把这 $2n$ 人分成两组、每组 $n$ 人。若第 1 组选 $i$ 人，则第 2 组必须选 $n-i$ 人，对所有可行 $i$ 求和即得 $\sum_i\binom ni\binom n{n-i}$——这正是卷积求和的现实意义。</p>
+
+        <p class="sub-h">六、统一视角</p>
+        <table class="data">
+          <thead><tr><th>类型</th><th>载体</th><th>运算</th><th>典型场景</th></tr></thead>
+          <tbody>
+            <tr><td>连续卷积</td><td>函数</td><td>$\int f(\tau)g(t-\tau)\,\mathrm d\tau$</td><td>信号滤波、连续概率分布</td></tr>
+            <tr><td>离散卷积</td><td>数列</td><td>$\sum_i a_ib_{k-i}$</td><td>多项式系数（范德蒙德）、独立随机变量之和、数字信号</td></tr>
+          </tbody>
+        </table>
+        <p>一句话：<strong>函数卷积是连续版，范德蒙德卷积是有限离散版，运算内核完全一致</strong>，只是应用场景不同。</p>
+        <p>小数值验证（$n=3$）：卷积和 $=1\cdot1+3\cdot3+3\cdot3+1\cdot1=20=\binom63$；而 $4^3=64$，两者明显不同。</p>
+
+        <div class="figure">
+          <svg viewBox="0 0 480 210" xmlns="http://www.w3.org/2000/svg">
+            <rect x="34" y="24" width="118" height="44" rx="6" fill="rgba(58,107,138,0.08)" stroke="#3a6b8a"/>
+            <text x="93" y="51" text-anchor="middle" font-size="12" fill="#2c2c2c">(1+x)ⁿ</text>
+            <text x="176" y="51" text-anchor="middle" font-size="16" fill="#b45050">×</text>
+            <rect x="196" y="24" width="118" height="44" rx="6" fill="rgba(58,107,138,0.08)" stroke="#3a6b8a"/>
+            <text x="255" y="51" text-anchor="middle" font-size="12" fill="#2c2c2c">(1+x)ⁿ</text>
+            <text x="338" y="51" text-anchor="middle" font-size="16" fill="#b45050">=</text>
+            <rect x="360" y="24" width="96" height="44" rx="6" fill="rgba(106,139,58,0.14)" stroke="#6a8b3a"/>
+            <text x="408" y="51" text-anchor="middle" font-size="12" fill="#2c2c2c">(1+x)²ⁿ</text>
+            <line x1="93" y1="68" x2="93" y2="104" stroke="#9a9a9a" stroke-dasharray="3,3"/>
+            <line x1="255" y1="68" x2="255" y2="104" stroke="#9a9a9a" stroke-dasharray="3,3"/>
+            <line x1="408" y1="68" x2="408" y2="104" stroke="#9a9a9a" stroke-dasharray="3,3"/>
+            <text x="174" y="92" text-anchor="middle" font-size="10" fill="#b45050">系数做卷积 Σ aᵢ b_{k−i}</text>
+            <text x="93" y="124" text-anchor="middle" font-size="11" fill="#3a6b8a">[xⁿ] = Σ CₙᵏCₙ^{n−k}</text>
+            <text x="255" y="124" text-anchor="middle" font-size="11" fill="#9a9a9a">（叠成卷积）</text>
+            <text x="408" y="124" text-anchor="middle" font-size="11" fill="#6a8b3a">[xⁿ] = C_{2n}ⁿ</text>
+            <text x="240" y="168" text-anchor="middle" font-size="13" fill="#2c2c2c">范德蒙德卷积： Σₖ Cₙᵏ Cₙ^{n−k} = C_{2n}ⁿ</text>
+            <text x="240" y="192" text-anchor="middle" font-size="10" fill="#9a9a9a">注意：它 ≠ (Σ Cₙᵏ)² = 4ⁿ，两者截然不同</text>
+          </svg>
+          <div class="figure-caption">生成函数视角：$(1+x)^n\cdot(1+x)^n=(1+x)^{2n}$，比较 $x^n$ 系数即得范德蒙德卷积。多项式相乘的本质就是系数做离散卷积。</div>
+        </div>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>范德蒙德卷积：$\binom{m+n}{t}=\sum_k\binom mk\binom n{t-k}$；特例 $\sum_k\binom nk\binom n{n-k}=\binom{2n}{n}$。</li>
+            <li>它 <strong>≠</strong> $4^n$；等于 $4^n$ 的是两组合数和式的整体乘积。</li>
+            <li>证明：$(1+x)^n(1+x)^n=(1+x)^{2n}$ 比较 $x^n$ 系数。</li>
+            <li>卷积内核：连续/离散都"凑固定总和、配对相乘再累加"；多项式相乘 ⇔ 系数卷积。</li>
+            <li>组合解释：从 $2n$ 人分两组各选一部分凑够 $n$ 人。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- 013：抛物线纯滚动与悬链线 -->
+    <div class="entry" id="thm-13">
+      <div class="entry-header">
+        <span class="entry-date">013 · 解析几何 / 曲线</span>
+        <span class="entry-title">抛物线沿直线纯滚动时，焦点的轨迹是悬链线</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>结论（正确）</strong>：一条抛物线在直线上无滑动（纯滚动）时，它的<strong>焦点</strong>所形成的轨迹严格是一条<strong>悬链线</strong> $y=a\cosh(x/a)$，其中 $a$ 等于抛物线的焦参数 $p$。下面给出完整推导。</p>
+
+        <p class="sub-h">一、建模与基本设定</p>
+        <p>设抛物线开口向上、顶点在原点，标准方程与焦点：</p>
+        <div class="formula">$$y=\frac{x^2}{4p},\qquad F_0=(0,p)$$</div>
+        <p>其中 $p$ 是焦点到顶点的距离（焦参数）。让抛物线沿 $x$ 轴正方向纯滚动，即滚动中满足两条：<strong>接触点处切线始终与 $x$ 轴重合</strong>；<strong>滚过的弧长 $=$ 接触点在 $x$ 轴上走过的距离</strong>（无滑动）。</p>
+
+        <p class="sub-h">二、参数化与弧长</p>
+        <p>设某一时刻抛物线与 $x$ 轴在抛物线上的点 $P(x_0,y_0)$ 处相切。切线斜率 $k=y'(x_0)=\dfrac{x_0}{2p}$。记切线与 $x$ 轴夹角为 $\theta$，则 $\tan\theta=\dfrac{x_0}{2p}$。令 $t=\tan\theta$，则</p>
+        <div class="formula">$$x_0=2pt,\qquad y_0=\frac{x_0^2}{4p}=pt^2$$</div>
+        <p>从顶点 $(0,0)$ 到 $P$ 的弧长：</p>
+        <div class="formula">$$\mathrm ds=\sqrt{1+(y')^2}\,\mathrm dx=\sqrt{1+\frac{x^2}{4p^2}}\,\mathrm dx$$</div>
+        <div class="formula">$$s=\int_0^{x_0}\sqrt{1+\frac{x^2}{4p^2}}\,\mathrm dx=p\Bigl[t\sqrt{1+t^2}+\ln\bigl(t+\sqrt{1+t^2}\bigr)\Bigr]$$</div>
+        <p>（换元 $x=2pu$ 后化为 $2p\int_0^t\sqrt{1+u^2}\,\mathrm du$，再套标准积分 $\int\sqrt{1+u^2}\,\mathrm du=\tfrac12\bigl[u\sqrt{1+u^2}+\ln(u+\sqrt{1+u^2})\bigr]$。）</p>
+
+        <p class="sub-h">三、焦点坐标的变换（旋转 + 平移）</p>
+        <p>纯滚动时接触点落到 $x$ 轴上坐标 $(s,0)$。为得到此时焦点 $F$ 的位置，对原图做两步：<strong>先顺时针旋转 $\theta$</strong>（使 $P$ 处切线水平），<strong>再平移</strong>使旋转后的 $P$ 落到 $(s,0)$。</p>
+        <p>顺时针旋转矩阵 $R(\theta)=\begin{pmatrix}\cos\theta & \sin\theta\\ -\sin\theta & \cos\theta\end{pmatrix}$。原焦点 $(0,p)$ 旋转后为 $(p\sin\theta,\ p\cos\theta)$；接触点 $P(x_0,y_0)$ 旋转后为 $(x_0\cos\theta+y_0\sin\theta,\ -x_0\sin\theta+y_0\cos\theta)$。平移向量为二者之差，最终焦点坐标 $(X,Y)$：</p>
+        <div class="formula">$$X=p\sin\theta+s-x_0\cos\theta-y_0\sin\theta,\qquad Y=p\cos\theta+x_0\sin\theta-y_0\cos\theta$$</div>
+
+        <p class="sub-h">四、化简得到悬链线</p>
+        <p>代入 $x_0=2pt,\ y_0=pt^2,\ \sin\theta=\dfrac{t}{\sqrt{1+t^2}},\ \cos\theta=\dfrac{1}{\sqrt{1+t^2}}$ 及 $s$ 的表达式：</p>
+        <div class="formula">$$X=\frac{pt}{\sqrt{1+t^2}}+p\Bigl[t\sqrt{1+t^2}+\ln\bigl(t+\sqrt{1+t^2}\bigr)\Bigr]-\frac{2pt}{\sqrt{1+t^2}}-\frac{pt^3}{\sqrt{1+t^2}}=p\ln\bigl(t+\sqrt{1+t^2}\bigr)$$</div>
+        <div class="formula">$$Y=\frac{p}{\sqrt{1+t^2}}+\frac{2pt^2}{\sqrt{1+t^2}}-\frac{pt^2}{\sqrt{1+t^2}}=p\sqrt{1+t^2}$$</div>
+        <p>消去参数 $t$：由 $Y=p\sqrt{1+t^2}$ 得 $\sqrt{1+t^2}=\dfrac Yp$，代入 $X$ 得 $X=p\ln\!\bigl(t+\tfrac Yp\bigr)$，即 $t=e^{X/p}-\dfrac Yp$。代回 $\sqrt{1+t^2}=\frac Yp$ 并平方：</p>
+        <div class="formula">$$1+\Bigl(e^{X/p}-\frac Yp\Bigr)^2=\frac{Y^2}{p^2}\;\Longrightarrow\;1+e^{2X/p}-2\frac Yp e^{X/p}=0$$</div>
+        <div class="formula">$$Y=p\cdot\frac{e^{X/p}+e^{-X/p}}{2}=p\cosh\frac{X}{p}$$</div>
+        <p>这正是悬链线标准方程 $y=a\cosh(x/a)$，其中 $a=p$。</p>
+
+        <p class="sub-h">五、补充结论</p>
+        <ul class="simple">
+          <li>悬链线的<strong>最低点</strong>恰是抛物线初始位置的焦点 $(0,p)$；</li>
+          <li>滚动中抛物线的<strong>准线</strong>始终与 $x$ 轴平行，且到焦点轨迹（悬链线）的距离恒为 $p$；</li>
+          <li>对任意开口方向的抛物线同样成立，只需相应调整坐标系；</li>
+          <li>抛物线<strong>顶点</strong>的滚动轨迹是摆线的一种推广（相关但不同的曲线）。</li>
+        </ul>
+
+        <div class="figure">
+          <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="196" x2="470" y2="196" stroke="#333" stroke-width="1.6"/>
+            <text x="430" y="214" font-size="10" fill="#666">直线（接触点所在）</text>
+            <path d="M 55 150 Q 120 212 185 150" fill="none" stroke="#3a6b8a" stroke-width="1.8"/>
+            <circle cx="120" cy="191" r="3" fill="#3a6b8a"/>
+            <text x="150" y="178" font-size="9.5" fill="#3a6b8a">抛物线</text>
+            <circle cx="120" cy="150" r="3.6" fill="#b45050"/>
+            <line x1="120" y1="191" x2="120" y2="150" stroke="#b45050" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="126" y="174" font-size="9.5" fill="#b45050">p</text>
+            <path d="M 55 92 C 96 158 144 158 185 92" fill="none" stroke="#6a8b3a" stroke-width="1.8"/>
+            <circle cx="120" cy="141" r="3" fill="#6a8b3a"/>
+            <text x="250" y="70" font-size="11" fill="#6a8b3a">焦点轨迹：悬链线</text>
+            <text x="250" y="86" font-size="10" fill="#6a8b3a">Y = p·cosh(X/p)，最低点 = 初始焦点</text>
+            <line x1="320" y1="212" x2="420" y2="212" stroke="#b45050" stroke-width="1.5"/>
+            <polygon points="420,212 410,208 410,216" fill="#b45050"/>
+            <text x="368" y="204" text-anchor="middle" font-size="10" fill="#b45050">纯滚动方向</text>
+          </svg>
+          <div class="figure-caption">抛物线沿直线纯滚动：焦点（红点）划出的轨迹是一条悬链线（绿曲线），其最低点正是抛物线初始位置的焦点，高度为焦参数 $p$。</div>
+        </div>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>抛物线 $y=\dfrac{x^2}{4p}$ 沿直线纯滚动，焦点轨迹为悬链线 $Y=p\cosh(X/p)$。</li>
+            <li>关键参数：$x_0=2pt,\ y_0=pt^2,\ s=p\bigl[t\sqrt{1+t^2}+\ln(t+\sqrt{1+t^2})\bigr]$。</li>
+            <li>两步变换："顺时针旋转 $\theta$ 使切线水平" + "平移使接触点落到 $(s,0)$"。</li>
+            <li>消参得 $Y=p\sqrt{1+t^2}$、$X=p\ln(t+\sqrt{1+t^2})$，最终 $Y=p\cosh(X/p)$。</li>
+            <li>悬链线的最低点 $=$ 抛物线初始焦点；准线到轨迹的距离恒为 $p$。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ====== 趣题 ====== -->
@@ -2496,6 +3178,89 @@
           <li>关键：翻转中间 3 盏将问题拆为两个 N−1 子问题</li>
           <li>终态：所有灭灯连成连续一段</li>
         </ol>
+      </div>
+    </div>
+
+    <!-- 005：Inaba 硬币谜题 -->
+    <div class="entry" id="puzzle-5">
+      <div class="entry-header">
+        <span class="entry-date">005 · 离散几何 / 概率方法</span>
+        <span class="entry-title">Inaba 硬币谜题：用互不重叠的单位圆覆盖平面上的点</span>
+      </div>
+      <div class="entry-body">
+        <p><strong>问题</strong>：平面上给定 $n$ 个点，是否总能找到若干个<strong>互不重叠（允许相切）的单位圆</strong>把它们全部盖住？（圆心可任意放置，半径固定为 1。）</p>
+        <p>这是经典的<strong>离散几何存在性问题</strong>，由日本谜题设计师稻叶直贵（Naoki Inaba）于 2008 年提出并证明，称 <strong>Inaba 硬币谜题</strong>（Inaba's coin puzzle）。</p>
+
+        <p class="sub-h">一、已证结论与开放边界</p>
+        <table class="data">
+          <thead><tr><th>点数 $n$</th><th>结论</th><th>来源</th></tr></thead>
+          <tbody>
+            <tr><td>10</td><td>任意 10 个点总能被不交单位圆覆盖</td><td>Inaba 2008，严格证明</td></tr>
+            <tr><td>12</td><td>任意 12 个点总能被覆盖（更强的结论）</td><td>Aloupis 等，CCCG 2012</td></tr>
+            <tr><td>13</td><td>"总能覆盖"的保证点数下限进一步推进到 13</td><td>Aloupis 等（几何约束 + 概率方法）</td></tr>
+            <tr><td>45</td><td>存在<strong>无法</strong>被覆盖的构型（计算机验证）</td><td>密集排布在略大于单位圆的区域内</td></tr>
+          </tbody>
+        </table>
+        <p>目前学界已知：<strong>任意 13 个点总能被不交单位圆覆盖</strong>（严格证明）；同时可构造 <strong>45 个点</strong>的反例（计算机验证）；而 <strong>14 到 44 之间的精确边界仍是开放问题</strong>。反例规模的上限也曾从 53 收紧到约 50。</p>
+
+        <p class="sub-h">二、概率方法：10 个点为什么成立</p>
+        <p>基础版证明用<strong>概率方法 + 并集界</strong>，逻辑极简：</p>
+        <ol>
+          <li>取平面上单位圆的<strong>正六边形最密装填</strong>（蜂窝状排列的不交单位圆），它对平面的覆盖密度为 $d=\dfrac{\pi}{2\sqrt3}\approx0.9069$，即任一固定点落在某个圆内的概率约为 $0.9069$。</li>
+          <li><strong>随机整体平移</strong>这个圆阵。对任意一个单点，它恰被某个圆盖住的概率就是 $d\approx0.9069$，未被盖住的概率为 $1-d\approx0.0931$。</li>
+          <li>用<strong>并集界</strong>估计："$n$ 个点中至少有一个没被盖住"的概率不超过 $n(1-d)$。</li>
+          <li>取 $n=10$：$10\times(1-d)\approx0.931&lt;1$。既然"存在漏点"并非必然事件，就必然存在某个平移位置使 10 个点<strong>全部</strong>被盖住；此时只保留盖到点的那些圆，即得符合要求的不交覆盖方案。</li>
+        </ol>
+
+        <p class="sub-h">三、基础方法为何止步于 10</p>
+        <ul class="simple">
+          <li>$n=10$：失败概率上界 $\approx0.931&lt;1$，证明成立；</li>
+          <li>$n=11$：失败概率上界 $\approx1.024&gt;1$，粗糙估计失效——<strong>不是 11 个点一定不行，而是这个方法太松、证不出来</strong>。</li>
+        </ul>
+        <p>失败概率上界 $n(1-d)$ 达到 $1$ 的临界点在 $n\approx10.7$，这正是"基础版恰好卡在 10 个点"的根源。</p>
+
+        <p class="sub-h">四、如何延伸：靠几何约束收紧边界</p>
+        <p>并集界之所以松，是因为它默认"每个点没被盖住"相互独立，而现实中点的空间分布有强相关性：</p>
+        <ul class="simple">
+          <li>若两点距离 $&lt;2$，它们可被<strong>同一个</strong>单位圆覆盖，"漏掉"事件高度绑定，真实失败概率远小于单点概率之和；</li>
+          <li>若点集聚成小簇，反而能用更少的圆覆盖，整体成功率更高。</li>
+        </ul>
+        <p>改进思路：把任意 $n$ 点集按点间距、聚类数量、点集直径等划成若干<strong>几何构型</strong>，对每种构型分别计算失败概率的紧上界，最终证明所有构型的失败概率都 $&lt;1$，从而必存在可行的平移方案。2012 年的工作正是用这种方式把"总能覆盖"的下限推进到 13，并把"必然存在反例"的上限从 53 压低到约 50。</p>
+
+        <p class="sub-h">五、为什么不能无限推广</p>
+        <p>无论怎样收紧概率估计，都不可能证明"任意多个点都可以"，因为<strong>反例客观存在</strong>：把足够多的点密集排布在半径略大于 1 的圆形区域内，最多用 1 个单位圆盖住一部分点，其余点所需的圆心距第一个圆心必须 $\ge2$，而这个区域根本放不下。于是在足够大的 $n$ 上问题必然失败。</p>
+
+        <div class="note">这类题目属于<strong>离散几何的存在性问题</strong>，概率方法是典型的<strong>非构造性证明</strong>：只保证"一定有解"，不告诉你圆心怎么找。若要做构造性证明（对任意点集给出一套找圆的算法），难度大得多，也很难得到这么强的结论。概率方法的优势正是"用极低的逻辑成本，换到很强的存在性结果"。</div>
+
+        <div class="figure">
+          <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
+            <g fill="rgba(58,107,138,0.06)" stroke="#3a6b8a" stroke-width="1">
+              <circle cx="52" cy="62" r="26"/><circle cx="104" cy="62" r="26"/><circle cx="156" cy="62" r="26"/><circle cx="208" cy="62" r="26"/><circle cx="260" cy="62" r="26"/><circle cx="312" cy="62" r="26"/><circle cx="364" cy="62" r="26"/><circle cx="416" cy="62" r="26"/>
+              <circle cx="26" cy="107" r="26"/><circle cx="78" cy="107" r="26"/><circle cx="130" cy="107" r="26"/><circle cx="182" cy="107" r="26"/><circle cx="234" cy="107" r="26"/><circle cx="286" cy="107" r="26"/><circle cx="338" cy="107" r="26"/><circle cx="390" cy="107" r="26"/><circle cx="442" cy="107" r="26"/>
+              <circle cx="52" cy="152" r="26"/><circle cx="104" cy="152" r="26"/><circle cx="156" cy="152" r="26"/><circle cx="208" cy="152" r="26"/><circle cx="260" cy="152" r="26"/><circle cx="312" cy="152" r="26"/><circle cx="364" cy="152" r="26"/><circle cx="416" cy="152" r="26"/>
+            </g>
+            <g fill="#b45050">
+              <circle cx="70" cy="74" r="3"/><circle cx="150" cy="120" r="3"/><circle cx="212" cy="82" r="3"/><circle cx="300" cy="132" r="3"/><circle cx="360" cy="72" r="3"/><circle cx="402" cy="150" r="3"/><circle cx="118" cy="150" r="3"/><circle cx="252" cy="150" r="3"/><circle cx="182" cy="62" r="3"/><circle cx="332" cy="105" r="3"/>
+            </g>
+            <circle cx="286" cy="107" r="26" fill="none" stroke="#b45050" stroke-width="1.8"/>
+            <text x="286" y="188" text-anchor="middle" font-size="10" fill="#b45050">红圈 = 随机平移后盖到点的某个圆</text>
+            <text x="240" y="24" text-anchor="middle" font-size="10.5" fill="#3a6b8a">单位圆的正六边形最密装填（密度 π/(2√3) ≈ 0.9069）</text>
+            <rect x="20" y="176" width="10" height="10" fill="#b45050" rx="2"/>
+            <text x="36" y="185" font-size="9.5" fill="#666">红点 = 待覆盖的 10 个点</text>
+          </svg>
+          <div class="figure-caption">正六边形最密装填：随机整体平移圆阵后，任一固定点落入圆内的概率等于覆盖率 $d\approx0.9069$；对 10 个点，漏点概率上界 $10(1-d)\approx0.931&lt;1$，故必存在一个平移使全部点被覆盖。</div>
+        </div>
+
+        <div class="keypoint">
+          <div class="keypoint-title">核心要点</div>
+          <ol>
+            <li>10 个点：Inaba 2008 严格证明——总能被互不重叠的单位圆覆盖。</li>
+            <li>证明核心：最密装填密度 $d=\pi/(2\sqrt3)\approx0.9069$，并集界给出 $10(1-d)\approx0.931&lt;1$。</li>
+            <li>基础版止于 10：$n=11$ 时 $11(1-d)\approx1.024&gt;1$，上界失效（不是一定不行）。</li>
+            <li>延伸靠几何约束收紧概率上界：已知任意 13 个点可行；45 点存在反例；14–44 边界开放。</li>
+            <li>概率方法是非构造性的：只证"存在"，不给构造算法。</li>
+          </ol>
+        </div>
       </div>
     </div>
 
