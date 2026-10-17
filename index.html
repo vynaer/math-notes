@@ -1744,7 +1744,7 @@
         <p><strong>本质原因</strong>：$a^x$ 依赖实数的度量/序结构（两数越近，幂越近），所以有理逼近有唯一极限；而算术导数<strong>完全依赖素因子代数结构</strong>，与"大小远近"无关。数轴上几乎重合的两个数（如 $1$ 与 $\frac{2^m}{2^m-1}$）素因子结构可以天差地别。十进制分母 $10^n=2^n5^n$ 的导数随 $n$ 快速增长，把整个分数的导数带跑，永不收敛。</p>
 
         <p class="sub-h">六、研究现状与地位</p>
-        <div class="formula">$$\text{历史：1911 Shelly 提出 → 1950 Putnam 竞赛 → 1961 Barbeau 系统整理 → 2003 Ufnarovski \& Ahlander 里程碑论文}$$</div>
+        <div class="formula">$$\begin{gathered}\text{历史：1911 Shelly 提出 → 1950 Putnam 竞赛}\\\text{→ 1961 Barbeau 系统整理 → 2003 Ufnarovski \& Ahlander 里程碑论文}\end{gathered}$$</div>
         <ul class="simple">
           <li>它不是数论下的一级大分支，而是<strong>一个小众专题</strong>，更像模仿微分的"玩具模型"，用来窥探整数素因子结构；</li>
           <li>OEIS 序列 <strong>A003415</strong> 专门记录 $n'$，有大量计算实验；</li>
@@ -2344,7 +2344,7 @@
 
         <p class="sub-h">多项式系数的递推关系</p>
         <p>类似二项式系数的帕斯卡递推，多项式系数满足：</p>
-        <div class="formula">$$\binom{n}{n_1, n_2, \ldots, n_m} = \binom{n-1}{n_1-1, n_2, \ldots, n_m} + \binom{n-1}{n_1, n_2-1, \ldots, n_m} + \cdots + \binom{n-1}{n_1, n_2, \ldots, n_m-1}$$</div>
+        <div class="formula">$$\begin{aligned}\binom{n}{n_1, n_2, \ldots, n_m} &= \binom{n-1}{n_1-1, n_2, \ldots, n_m} + \binom{n-1}{n_1, n_2-1, \ldots, n_m}\\&\quad + \cdots + \binom{n-1}{n_1, n_2, \ldots, n_m-1}\end{aligned}$$</div>
         <p>组合意义：考虑最后一个位置分给哪个变量——分给 x<sub>1</sub> 则第一项，分给 x<sub>2</sub> 则第二项，依此类推。</p>
 
         <p class="sub-h">恒等式：范德蒙德卷积的推广</p>
@@ -2494,7 +2494,7 @@
         <p><strong>幂和</strong>（power sum）：每个变量取 $k$ 次方后求和</p>
         <div class="formula">$$p_k=x_1^k+x_2^k+\cdots+x_n^k$$</div>
         <p><strong>初等对称多项式</strong>（elementary symmetric polynomial）：所有 $k$ 元乘积之和</p>
-        <div class="formula">$$e_0=1,\quad e_1=\sum_{i=1}^n x_i,\quad e_2=\sum_{1\le i&lt;j\le n}x_ix_j,\quad e_3=\sum_{1\le i&lt;j&lt;k\le n}x_ix_jx_k,\quad \dots,\quad e_n=x_1x_2\cdots x_n$$</div>
+        <div class="formula">$$\begin{aligned}e_0&=1,\quad e_1=\sum_{i=1}^n x_i,\quad e_2=\sum_{1\le i&lt;j\le n}x_ix_j,\\e_3&=\sum_{1\le i&lt;j&lt;k\le n}x_ix_jx_k,\quad \dots,\quad e_n=x_1x_2\cdots x_n\end{aligned}$$</div>
         <p>所谓<strong>对称多项式</strong>，是把变量 $x_1,\dots,x_n$ 任意置换后多项式不变的式子。例：$x_1^2+x_2^2+x_3^2$ 是对称的；$x_1^2+x_2$ 不对称——交换 $x_1,x_2$ 式子就变。</p>
 
         <p class="sub-h">二、对称多项式基本定理（存在 + 唯一）</p>
@@ -2548,7 +2548,7 @@
         <p>幂和之间也存在固定整数系数的恒等式（本质仍是同一套对称多项式理论）。例如五次齐次关系</p>
         <div class="formula">$$S_1^5+20S_1^2S_3+15S_1S_2^2+24S_5=10S_1^3S_2+30S_1S_4+20S_2S_3$$</div>
         <p>代入数值解得 $24S_5=139\Rightarrow S_5=\frac{139}{24}$，与牛顿递推吻合。六次关系项更多：</p>
-        <div class="formula">$$S_1^6+40S_1^3S_3+45S_1^2S_2^2+144S_1S_5+90S_2S_4+40S_3^2=15S_1^4S_2+90S_1^2S_4+120S_1S_2S_3+15S_2^3+120S_6$$</div>
+        <div class="formula">$$\begin{aligned}&S_1^6+40S_1^3S_3+45S_1^2S_2^2\\&\quad+144S_1S_5+90S_2S_4+40S_3^2\\&\quad=15S_1^4S_2+90S_1^2S_4+120S_1S_2S_3+15S_2^3+120S_6\end{aligned}$$</div>
         <p>代入 $S_1\sim S_5$ 得 $120S_6=985\Rightarrow S_6=\frac{197}{24}$，再次印证。这类"幂和乘积方程"理论正确，但项多、系数繁，手算极易出错；<strong>牛顿递推才是稳健的主路</strong>。</p>
 
         <p class="sub-h">八、链式关系：韦达 → 初等对称 → 基本定理 → 牛顿</p>
@@ -2735,7 +2735,7 @@
 
         <p class="sub-h">四、化简得到悬链线</p>
         <p>代入 $x_0=2pt,\ y_0=pt^2,\ \sin\theta=\dfrac{t}{\sqrt{1+t^2}},\ \cos\theta=\dfrac{1}{\sqrt{1+t^2}}$ 及 $s$ 的表达式：</p>
-        <div class="formula">$$X=\frac{pt}{\sqrt{1+t^2}}+p\Bigl[t\sqrt{1+t^2}+\ln\bigl(t+\sqrt{1+t^2}\bigr)\Bigr]-\frac{2pt}{\sqrt{1+t^2}}-\frac{pt^3}{\sqrt{1+t^2}}=p\ln\bigl(t+\sqrt{1+t^2}\bigr)$$</div>
+        <div class="formula">$$\begin{aligned}X&=\frac{pt}{\sqrt{1+t^2}}+p\Bigl[t\sqrt{1+t^2}+\ln\bigl(t+\sqrt{1+t^2}\bigr)\Bigr]\\&\quad-\frac{2pt}{\sqrt{1+t^2}}-\frac{pt^3}{\sqrt{1+t^2}}=p\ln\bigl(t+\sqrt{1+t^2}\bigr)\end{aligned}$$</div>
         <div class="formula">$$Y=\frac{p}{\sqrt{1+t^2}}+\frac{2pt^2}{\sqrt{1+t^2}}-\frac{pt^2}{\sqrt{1+t^2}}=p\sqrt{1+t^2}$$</div>
         <p>消去参数 $t$：由 $Y=p\sqrt{1+t^2}$ 得 $\sqrt{1+t^2}=\dfrac Yp$，代入 $X$ 得 $X=p\ln\!\bigl(t+\tfrac Yp\bigr)$，即 $t=e^{X/p}-\dfrac Yp$。代回 $\sqrt{1+t^2}=\frac Yp$ 并平方：</p>
         <div class="formula">$$1+\Bigl(e^{X/p}-\frac Yp\Bigr)^2=\frac{Y^2}{p^2}\;\Longrightarrow\;1+e^{2X/p}-2\frac Yp e^{X/p}=0$$</div>
@@ -3355,7 +3355,7 @@
 
       <p class="sub-h">步骤 2：计算最近极点的主部（留数）</p>
       <p>对一阶极点 x = π/2，用洛必达法则求留数：</p>
-      <div class="formula">$$\lim_{x\to\pi/2} (x-\pi/2)\tan x = \lim_{x\to\pi/2} \frac{(x-\pi/2)\sin x}{\cos x} = \lim_{x\to\pi/2} \frac{\sin x + (x-\pi/2)\cos x}{-\sin x} = -1$$</div>
+      <div class="formula">$$\begin{aligned}\lim_{x\to\pi/2} (x-\pi/2)\tan x &= \lim_{x\to\pi/2} \frac{(x-\pi/2)\sin x}{\cos x}\\&= \lim_{x\to\pi/2} \frac{\sin x + (x-\pi/2)\cos x}{-\sin x} = -1\end{aligned}$$</div>
       <p>因此 tan x 在 x = π/2 处的留数为 −1，主部为 −1/(x−π/2) = 1/(π/2−x)。同理 x = −π/2 处留数也为 −1。</p>
 
       <p class="sub-h">步骤 3：达布渐近定理求系数主项</p>
