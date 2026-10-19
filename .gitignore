@@ -1,0 +1,11 @@
+# 凭证文件：绝对不要提交（本仓库是公开的 GitHub Pages，提交 = 泄露）
+.git-credentials
+.git-credentials-store
+*.token
+*.pat
+
+# 用户上传的原始文件（隐私，且笔记正文并不引用）
+.uploads/
+
+# 分享/预览打包（由 Trae 自动生成、体积大，无需入库）
+.trae-html-share-packages/
